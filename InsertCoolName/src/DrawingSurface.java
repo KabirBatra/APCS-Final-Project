@@ -2,8 +2,8 @@ import processing.core.PApplet;
 
 public class DrawingSurface extends PApplet {
 	
-	int x, y;
-	float h;
+	private int cameraX, cameraY;
+	GameWindow game;
 	
 	public static void main(String[] args) {
 		System.out.println("hello world");
@@ -18,22 +18,16 @@ public class DrawingSurface extends PApplet {
 		surface.setResizable(true);
 		surface.setTitle("CoolNameForGame");
 		surface.setLocation(0, 0);
-		background(0);
 		fill(255);
 		noStroke();
-		x = width/2;
-		y = height/2;
-		h = 0;
-		colorMode(HSB);
+		cameraX = width/2;
+		cameraY = height/2;
+		game = new GameWindow(this);
 	}
 	
 	public void draw() {
-		ellipse(x, y, 7, 7);
-		x += ((int)(Math.random()*3) - 1) * 5;
-		y += ((int)(Math.random()*3) - 1) * 5;
-		fill(h, 255, 255);
-		h += 0.5;
-		h %= 255;
+		//background(0);
+		game.draw();
 	}
 	
 	
