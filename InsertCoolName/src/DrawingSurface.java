@@ -17,8 +17,10 @@ public class DrawingSurface extends PApplet {
 	public void setup() {
 		surface.setResizable(true);
 		surface.setTitle("CoolNameForGame");
+		surface.setLocation(0, 0);
 		background(0);
-		stroke(255);
+		fill(255);
+		noStroke();
 		x = width/2;
 		y = height/2;
 		h = 0;
@@ -26,10 +28,10 @@ public class DrawingSurface extends PApplet {
 	}
 	
 	public void draw() {
-		point(x, y);
+		ellipse(x, y, 7, 7);
 		x += ((int)(Math.random()*3) - 1) * 5;
 		y += ((int)(Math.random()*3) - 1) * 5;
-		stroke(h, 255, 255);
+		fill(h, 255, 255);
 		h += 0.5;
 		h %= 255;
 	}
