@@ -17,7 +17,7 @@ public class Map {
 		this.ss = ss;
 		//for testing purposes: 
 		// should be String name = "forest";mapImage = Assets.getBufferedImage(name);
-		mapImage = loadImage("room.png");
+		mapImage = loadImage("bigroom.png");
 		loadTiles(mapImage);
 		
 		
@@ -48,7 +48,10 @@ public class Map {
 			    int b = (pixel) & 0xff;
 			    
 			    //depending on the rgb values, add objects to the handler (if they resemble game objects
-			    if(r == 255) {
+			    if(b == 255) {
+//			    	handler
+			    }
+			    else if(r == 255) {
 			    	tiles[w][h] = 1;
 			    }
 			    else {
