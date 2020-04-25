@@ -9,6 +9,7 @@ public abstract class Map {
 	protected GameHandler handler;
 	protected int[][] tiles;
 	protected boolean[][] solids;
+	protected ID[][] gameObjects;
 	
 	protected int width;
 	protected int height;
@@ -49,9 +50,11 @@ public abstract class Map {
 	private void loadTiles(BufferedImage image) {
 		width = image.getWidth();
 		height = image.getHeight();
-		System.out.println(width);
+		
 		tiles = new int[width][height];
 		solids = new boolean[width][height];
+		gameObjects = new ID[width][height];
+
 		for(int w = 0; w < width; w++) {
 			for(int h = 0; h < height; h++) {
 				int pixel = image.getRGB(w, h);
@@ -63,6 +66,8 @@ public abstract class Map {
 			    //depending on the rgb values, add objects to the handler (if they resemble game objects
 			    if(b == 255) {
 			    	tiles[w][h] = 0;
+			    	gameObjects[w][h] = ID.Player;
+			    	
 			    	//handler.addGameObject(new Player(w, h, "player", handler));
 			    }
 			    else if(r == 255) { // walls

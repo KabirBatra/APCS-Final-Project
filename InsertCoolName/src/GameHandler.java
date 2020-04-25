@@ -174,6 +174,9 @@ public class GameHandler {
 		else if(s.key == 'r' || s.key == 'R') {
 			setMap("testRoom", getPlayer());
 		}
+		else if(s.key == 'm' || s.key == 'M') {
+			setMap("testRoom3", getPlayer());
+		}
 		
 	}
 	

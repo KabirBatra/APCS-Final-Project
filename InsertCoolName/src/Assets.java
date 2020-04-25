@@ -19,6 +19,7 @@ public class Assets {
 		// images
 		dict.put("bigTestRoom", loadImage("bigroom.png"));
 		dict.put("littleTestRoom", loadImage("room.png"));
+		dict.put("mazeTest", loadImage("mediumMaze.png"));
 		
 		
 		
@@ -26,6 +27,7 @@ public class Assets {
 		//maps.put("testRoom", new Map(getBufferedImage("bigTestRoom"), new SpriteSheet("testRoomSpriteSheet"), handler));
 		maps.put("testRoom", new Room1(handler));
 		maps.put("testRoom2", new Room2(handler));
+		maps.put("testRoom3", new Maze1(handler));
 	}
 	
 	private BufferedImage loadImage(String path) {
