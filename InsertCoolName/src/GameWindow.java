@@ -18,8 +18,8 @@ public class GameWindow extends Window {
 	public GameWindow(PApplet surface) {
 		super(surface);
 		handler = new GameObjectHandler(surface);
-
-		// room = Assets.getRoom("testRoom")
+		new Assets(); // initializes all of the assets
+		// replace with room = Assets.getRoom("testRoom")
 		room = new Map("testRoom", null, null, handler);
 	}
 

@@ -9,6 +9,7 @@ public class Map {
 	private SpriteSheet ss;
 	private GameObjectHandler handler;
 	private int[][] tiles;
+	private boolean[][] solids;
 	
 	private int width;
 	private int height;
@@ -19,7 +20,7 @@ public class Map {
 		this.handler = handler;
 		//for testing purposes: 
 		// should be String name = "forest";mapImage = Assets.getBufferedImage(name);
-		mapImage = loadImage("bigroom.png");
+		mapImage = Assets.getBufferedImage("bigTestRoom");
 		loadTiles(mapImage);
 		
 		
@@ -29,6 +30,12 @@ public class Map {
 		if(x < 0 || x >= width || y < 0 || y >= height)
 			return -1;
 		return tiles[x][y];
+	}
+	
+	public boolean isSolidTile(int x, int y) {
+		if(x < 0 || x >= width || y < 0 || y >= height)
+			return true; //outside of the map is sold
+		return solids[x][y];
 	}
 	
 	public int getWidth() {
@@ -43,6 +50,7 @@ public class Map {
 		width = image.getWidth();
 		height = image.getHeight();
 		tiles = new int[width][height];
+		solids = new boolean[width][height];
 		for(int w = 0; w < width; w++) {
 			for(int h = 0; h < height; h++) {
 				int pixel = image.getRGB(w, h);
@@ -57,24 +65,16 @@ public class Map {
 			    }
 			    else if(r == 255) {
 			    	tiles[w][h] = 1;
+			    	solids[w][h] = true;
 			    }
 			    else {
 			    	tiles[w][h] = 0;
+			    	//solids[w][h] = false;
 			    }
 			    
 			}
 		}
 	}
 	
-	// should be in assets class 
-	private BufferedImage loadImage(String path) {
-		BufferedImage image = null;
-		try {
-			image = ImageIO.read(getClass().getResource(path));
-		} catch (IOException e) {
-			System.out.println("image load unsuccessful");
-			e.printStackTrace();
-		}
-		return image;
-	}
+	
 }
