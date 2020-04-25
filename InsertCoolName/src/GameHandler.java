@@ -16,7 +16,8 @@ public class GameHandler {
 	private boolean right;
 	
 	private float newPosX, newPosY;
-	private static final float HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS = 0.9F; //values from 0.9 - 0.99999...
+	// rename this varible as BORDER_OFFSET
+	private static final float HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS = 0.1F; //values from 0.00001 - 0.1
 	
 	public GameHandler(PApplet surface) {
 		s = surface;
@@ -34,6 +35,10 @@ public class GameHandler {
 		}
 		currentMap = Assets.getMap(name);
 		currentMap.populateGameObjects(p);
+	}
+	
+	public Map getCurrentMap() {
+		return currentMap;
 	}
 
 	public void addGameObject(GameObject o) {
@@ -67,28 +72,28 @@ public class GameHandler {
 				
 				// x direction
 				if(cr.getVelX() < 0 
-						&& (currentMap.isSolidTile((int)newPosX, (int)cr.getPosY())
-						|| currentMap.isSolidTile((int)newPosX, (int)(cr.getPosY() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS))) ) {
+						&& (currentMap.isSolidTile((int)newPosX, (int)(cr.getPosY() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS))
+						|| currentMap.isSolidTile((int)newPosX, (int)(cr.getPosY() + 1-HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS))) ) {
 					cr.setVelX(0);
 					newPosX = (int)newPosX + 1;
 				}
 				else if(cr.getVelX() > 0 
-						&& (currentMap.isSolidTile((int)newPosX+1, (int)cr.getPosY())
-						|| currentMap.isSolidTile((int)newPosX+1, (int)(cr.getPosY()+HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS))) ) {
+						&& (currentMap.isSolidTile((int)newPosX+1, (int)(cr.getPosY() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS))
+						|| currentMap.isSolidTile((int)newPosX+1, (int)(cr.getPosY()+1-HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS))) ) {
 					cr.setVelX(0);
 					newPosX = (int)newPosX;
 				}
 				
 				// y dir
 				if(cr.getVelY() < 0 
-						&& (currentMap.isSolidTile((int)cr.getPosX(), (int)newPosY)
-						|| currentMap.isSolidTile((int)(cr.getPosX() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS), (int)newPosY)) ) {
+						&& (currentMap.isSolidTile((int)(cr.getPosX() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS), (int)newPosY)
+						|| currentMap.isSolidTile((int)(cr.getPosX() + 1-HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS), (int)newPosY)) ) {
 					cr.setVelY(0);
 					newPosY = (int)newPosY + 1;
 				}
 				else if(cr.getVelY() > 0 
-						&& (currentMap.isSolidTile((int)cr.getPosX(), (int)newPosY + 1)
-						|| currentMap.isSolidTile((int)(cr.getPosX() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS), (int)newPosY + 1)) ) {
+						&& (currentMap.isSolidTile((int)(cr.getPosX() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS), (int)newPosY + 1)
+						|| currentMap.isSolidTile((int)(cr.getPosX() + 1-HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS), (int)newPosY + 1)) ) {
 					cr.setVelY(0);
 					newPosY = (int)newPosY;
 				}
@@ -109,8 +114,8 @@ public class GameHandler {
 	
 	
 	public void drawMap(float offsetX, float offsetY, float tileOffsetX, float tileOffsetY, float visibleTilesX, float visibleTilesY, float tileWidth, float tileHeight) {
-		for(int x = -1; x < visibleTilesX+2; x++) {
-			for(int y = -1; y < visibleTilesY+2; y++) {
+		for(int x = -1; x < visibleTilesX+1; x++) {
+			for(int y = -1; y < visibleTilesY+1; y++) {
 				int tile = currentMap.getTile(x + (int)offsetX, y + (int)offsetY);
 				
 //				s.image(img, a, b);

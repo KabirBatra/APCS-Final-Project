@@ -25,11 +25,10 @@ public class GameWindow extends Window {
 	}
 
 	public void setup() {
-		cameraX = s.width/2;
-		cameraY = s.height/2;
-		
 		
 		player = handler.getPlayer();
+		cameraX = player.getPosX();
+		cameraY = player.getPosY();
 		System.out.println(handler.getPlayer());
 	}
 
@@ -40,16 +39,25 @@ public class GameWindow extends Window {
 		
 		handler.tick(ellapsedTime);
 		
-		// need to smoothen camera
-		cameraX = player.getPosX();
-		cameraY = player.getPosY();
+		
 		
 		visibleTilesX = s.width/tileWidth;
 		visibleTilesY = s.height/tileHeight;
 
+		// need to smoothen camera
+		cameraX -= (cameraX - player.getPosX()) * 0.07f;
+		cameraY -= (cameraY - player.getPosY()) * 0.07f;
+		
 		// distance from camera to topLeft
 		offsetX = cameraX - visibleTilesX/2f;
 		offsetY = cameraY - visibleTilesY/2f;
+		
+		if(offsetX < 0) offsetX = 0;
+		if(offsetY < 0) offsetY = 0;
+		
+		if(offsetX >= handler.getCurrentMap().getWidth() - visibleTilesX) offsetX = handler.getCurrentMap().getWidth() - visibleTilesX;
+		if(offsetY >= handler.getCurrentMap().getHeight() - visibleTilesY) offsetY = handler.getCurrentMap().getHeight() - visibleTilesY;
+
 		
 		tileOffsetX = (offsetX - (int)offsetX) * tileWidth;
 		tileOffsetY = (offsetY - (int)offsetY) * tileHeight;
