@@ -14,16 +14,16 @@ public class Player extends Creature {
 		velX = 0;
 		velY = 0;
 		if(handler.getUp()) {
-			velY = -0.3f;
+			velY += -0.3f;
 		}
 		if(handler.getDown()) {
-			velY = 0.3f;
+			velY += 0.3f;
 		}
 		if(handler.getLeft()) {
-			velX = -0.3f;
+			velX += -0.3f;
 		}
 		if(handler.getRight()) {
-			velX = 0.3f;
+			velX += 0.3f;
 		}
 		
 		if(Math.abs(velX) + Math.abs(velY) > maxVel) { //pretend that is pythagorean theorem
