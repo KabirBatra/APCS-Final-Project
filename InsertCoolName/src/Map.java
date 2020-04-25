@@ -3,27 +3,23 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class Map {
+public abstract class Map {
 	
-	private String name;
-	private SpriteSheet ss;
-	private GameObjectHandler handler;
-	private int[][] tiles;
-	private boolean[][] solids;
+	protected SpriteSheet ss;
+	protected GameHandler handler;
+	protected int[][] tiles;
+	protected boolean[][] solids;
 	
-	private int width;
-	private int height;
+	protected int width;
+	protected int height;
 
-	public Map(String name, BufferedImage mapImage, SpriteSheet ss, GameObjectHandler handler) {
-		this.name = name;
-		this.ss = ss;
+	public Map(GameHandler handler) {
 		this.handler = handler;
-		//for testing purposes: 
-		// should be String name = "forest";mapImage = Assets.getBufferedImage(name);
-		mapImage = Assets.getBufferedImage("bigTestRoom");
+	}
+	
+	public void create(BufferedImage mapImage, SpriteSheet ss) {
+		this.ss = ss;
 		loadTiles(mapImage);
-		
-		
 	}
 	
 	public int getTile(int x, int y) {
@@ -46,9 +42,14 @@ public class Map {
 		return height;
 	}
 	
+	public SpriteSheet getSpriteSheet() {
+		return ss;
+	}
+	
 	private void loadTiles(BufferedImage image) {
 		width = image.getWidth();
 		height = image.getHeight();
+		System.out.println(width);
 		tiles = new int[width][height];
 		solids = new boolean[width][height];
 		for(int w = 0; w < width; w++) {
@@ -61,20 +62,22 @@ public class Map {
 			    
 			    //depending on the rgb values, add objects to the handler (if they resemble game objects
 			    if(b == 255) {
-			    	handler.addGameObject(new Player(w, h, "player", handler));
+			    	tiles[w][h] = 0;
+			    	//handler.addGameObject(new Player(w, h, "player", handler));
 			    }
-			    else if(r == 255) {
+			    else if(r == 255) { // walls
+			    	// index of thing in sprite sheet
 			    	tiles[w][h] = 1;
 			    	solids[w][h] = true;
 			    }
-			    else {
+			    else { // floor
 			    	tiles[w][h] = 0;
 			    	//solids[w][h] = false;
 			    }
-			    
 			}
 		}
 	}
 	
+	public abstract void populateGameObjects(Player p);
 	
 }

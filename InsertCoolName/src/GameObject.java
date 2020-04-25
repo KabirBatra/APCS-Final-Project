@@ -1,3 +1,5 @@
+import java.awt.Rectangle;
+
 import processing.core.PApplet;
 
 public abstract class GameObject {
@@ -26,5 +28,12 @@ public abstract class GameObject {
 	public float getPosY() {
 		return posY;
 	}
+	
+	public void setPos(float x, float y) {
+		posX = x;
+		posY = y;
+	}
+	
+	public abstract Rectangle getBounds();
 	
 }

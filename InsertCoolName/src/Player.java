@@ -1,12 +1,20 @@
+import java.awt.Rectangle;
+
 import processing.core.PApplet;
 
 public class Player extends Creature {
 
-	private GameObjectHandler handler;
-	public Player(float x, float y, String name, GameObjectHandler handler) {
+	
+	private GameHandler handler;
+	
+	// for collisions
+	private float newPosX, newPosY;
+	
+	
+	public Player(float x, float y, String name, GameHandler handler) {
 		super(x, y, name);
 		this.handler = handler;
-		maxVel = 0.3f;
+		maxVel = 0.1f;
 	}
 
 	@Override
@@ -14,25 +22,25 @@ public class Player extends Creature {
 		velX = 0;
 		velY = 0;
 		if(handler.getUp()) {
-			velY += -0.3f;
+			velY += -maxVel;
 		}
 		if(handler.getDown()) {
-			velY += 0.3f;
+			velY += maxVel;
 		}
 		if(handler.getLeft()) {
-			velX += -0.3f;
+			velX += -maxVel;
 		}
 		if(handler.getRight()) {
-			velX += 0.3f;
+			velX += maxVel;
 		}
 		
-		if(Math.abs(velX) + Math.abs(velY) > maxVel) { //pretend that is pythagorean theorem
+		// diagonal speed is still maxVel
+		if(Math.abs(velX) + Math.abs(velY) > maxVel) { //works same way as pythagorean theorem
 			float ratio = (float)Math.sqrt(2);
 			velX /= ratio;
 			velY /= ratio;
 		}
-		
-		super.act();
+
 	}
 
 	@Override
@@ -46,5 +54,11 @@ public class Player extends Creature {
 	public void onInteract(GameObject obj) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Rectangle getBounds() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

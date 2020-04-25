@@ -3,8 +3,7 @@ import processing.core.PApplet;
 
 public class GameWindow extends Window {
 	
-	private GameObjectHandler handler;
-	private Map room;
+	private GameHandler handler;
 	private float cameraX, cameraY;
 	
 	private int tileWidth = 60;
@@ -15,29 +14,36 @@ public class GameWindow extends Window {
 	private float offsetX, offsetY, tileOffsetX, tileOffsetY;
 	private GameObject player;
 	
+	private float ellapsedTime = 0;
+	private int previousTime = 0;
+	
 	public GameWindow(PApplet surface) {
 		super(surface);
-		handler = new GameObjectHandler(surface);
-		new Assets(); // initializes all of the assets
-		// replace with room = Assets.getRoom("testRoom")
-		room = new Map("testRoom", null, null, handler);
+		handler = new GameHandler(surface);
+		new Assets(handler); // initializes all of the assets and creates gameObjects
+		handler.setMap("testRoom", null);
 	}
 
 	public void setup() {
 		cameraX = s.width/2;
 		cameraY = s.height/2;
+		
+		
 		player = handler.getPlayer();
 		System.out.println(handler.getPlayer());
 	}
 
 	public void draw() {
 		s.background(0);
+		ellapsedTime = (s.millis() - previousTime)/1000f;
+		previousTime = s.millis();
 		
-		handler.tick();
+		System.out.println(ellapsedTime);
+		handler.tick(ellapsedTime);
 		
+		// need to smoothen camera
 		cameraX = player.getPosX();
 		cameraY = player.getPosY();
-		//System.out.println(player.getPosX());
 		
 		visibleTilesX = s.width/tileWidth;
 		visibleTilesY = s.height/tileHeight;
@@ -49,23 +55,8 @@ public class GameWindow extends Window {
 		tileOffsetX = (offsetX - (int)offsetX) * tileWidth;
 		tileOffsetY = (offsetY - (int)offsetY) * tileHeight;
 
-		
-		for(int x = -1; x < visibleTilesX+2; x++) {
-			for(int y = -1; y < visibleTilesY+2; y++) {
-				int tile = room.getTile(x + (int)offsetX, y + (int)offsetY);
-				if(tile == 0) {
-					s.fill(255);
-				}
-				else if(tile == 1) {
-					s.fill(0, 0, 255);
-				} else {
-					s.fill(0);
-				}
-				s.rect(x * tileWidth - tileOffsetX, y * tileHeight - tileOffsetY, tileWidth + 1f, tileHeight + 1f);
-			}
-		}
-		
-		handler.draw(offsetX, offsetY, tileWidth, tileHeight);
+		handler.drawMap(offsetX, offsetY, tileOffsetX, tileOffsetY, visibleTilesX, visibleTilesY, tileWidth, tileHeight);
+		handler.drawObjects(offsetX, offsetY, tileWidth, tileHeight);
 
 		
 	}

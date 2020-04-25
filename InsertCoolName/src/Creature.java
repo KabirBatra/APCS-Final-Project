@@ -13,8 +13,13 @@ public abstract class Creature extends GameObject {
 		velY = 0;
 	}
 	
-	public void act() {
-		posX += velX;
-		posY += velY;
+	public abstract void act();
+	
+	public float getVelX() {
+		return velX;
+	}
+	
+	public float getVelY() {
+		return velY;
 	}
 }
