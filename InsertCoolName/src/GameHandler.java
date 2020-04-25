@@ -156,15 +156,15 @@ public class GameHandler {
 			up = true;
 			
 		} 
-		else if(s.keyCode == PConstants.DOWN) {
+		else if(s.keyCode == PConstants.DOWN || s.key == 's' || s.key == 'S') {
 			down = true;
 
 		} 
-		else if(s.keyCode == PConstants.LEFT) {
+		else if(s.keyCode == PConstants.LEFT || s.key == 'a' || s.key == 'A') {
 			left = true;
 
 		} 
-		else if(s.keyCode == PConstants.RIGHT) {
+		else if(s.keyCode == PConstants.RIGHT || s.key == 'd' || s.key == 'D') {
 			right = true;
 		} 
 		else if(s.key == 'f' || s.key == 'F') {
@@ -181,13 +181,13 @@ public class GameHandler {
 		if(s.keyCode == PConstants.UP || s.key == 'w' || s.key == 'W') {
 			up = false;
 			
-		} else if(s.keyCode == PConstants.DOWN) {
+		} else if(s.keyCode == PConstants.DOWN || s.key == 's' || s.key == 'S') {
 			down = false;
 
-		} else if(s.keyCode == PConstants.LEFT) {
+		} else if(s.keyCode == PConstants.LEFT || s.key == 'a' || s.key == 'A') {
 			left = false;
 
-		} else if(s.keyCode == PConstants.RIGHT) {
+		} else if(s.keyCode == PConstants.RIGHT || s.key == 'd' || s.key == 'D') {
 			right = false;
 
 		}
