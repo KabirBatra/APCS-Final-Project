@@ -15,9 +15,16 @@ public abstract class GameObject {
 	// every frame
 	public abstract void act();
 	// act should call this
-	public abstract void drawSelf(PApplet p);
+	public abstract void drawSelf(float x, float y, float tileWidth, float tileHeight, PApplet s);
 	// when 2 game objects are touching
 	public abstract void onInteract(GameObject obj);
 	
+	public float getPosX() {
+		return posX;
+	}
+	
+	public float getPosY() {
+		return posY;
+	}
 	
 }

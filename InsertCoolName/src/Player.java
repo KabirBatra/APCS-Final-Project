@@ -2,8 +2,10 @@ import processing.core.PApplet;
 
 public class Player extends Creature {
 
-	public Player(float x, float y, String name) {
+	private GameObjectHandler handler;
+	public Player(float x, float y, String name, GameObjectHandler handler) {
 		super(x, y, name);
+		this.handler = handler;
 	}
 
 	@Override
@@ -13,9 +15,10 @@ public class Player extends Creature {
 	}
 
 	@Override
-	public void drawSelf(PApplet p) {
+	public void drawSelf(float x, float y, float tileWidth, float tileHeight, PApplet s) {
 		// TODO Auto-generated method stub
-		p.rect(posX, posY, 32, 32);
+		s.fill(255, 0, 0);
+		s.rect(x, y, tileWidth, tileHeight);
 	}
 
 	@Override

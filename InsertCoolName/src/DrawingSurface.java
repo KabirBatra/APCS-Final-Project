@@ -3,8 +3,6 @@ import processing.core.PApplet;
 public class DrawingSurface extends PApplet {
 
 	private WindowHandler wh;
-	private int cameraX, cameraY;
-
 	
 	public static void main(String[] args) {
 		System.out.println("hello world");
@@ -17,7 +15,7 @@ public class DrawingSurface extends PApplet {
 	}
 	
 	public void settings() {
-		size(600,600);
+		size(32*8,32*8);
 	}
 	
 	public void setup() {
@@ -26,13 +24,20 @@ public class DrawingSurface extends PApplet {
 		surface.setLocation(0, 0);
 		fill(255);
 		noStroke();
-		cameraX = width/2;
-		cameraY = height/2;
+		wh.getCurrentWindow().setup();
 	}
 	
 	public void draw() {
 		//background(0);
 		wh.getCurrentWindow().draw();
+	}
+	
+	public void keyPressed() {
+		wh.getCurrentWindow().keyPressed();
+	}
+	
+	public void keyReleased() {
+		wh.getCurrentWindow().keyReleased();
 	}
 	
 	

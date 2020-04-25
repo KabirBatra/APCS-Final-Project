@@ -7,14 +7,16 @@ public class Map {
 	
 	private String name;
 	private SpriteSheet ss;
+	private GameObjectHandler handler;
 	private int[][] tiles;
 	
 	private int width;
 	private int height;
 
-	public Map(String name, BufferedImage mapImage, SpriteSheet ss) {
+	public Map(String name, BufferedImage mapImage, SpriteSheet ss, GameObjectHandler handler) {
 		this.name = name;
 		this.ss = ss;
+		this.handler = handler;
 		//for testing purposes: 
 		// should be String name = "forest";mapImage = Assets.getBufferedImage(name);
 		mapImage = loadImage("bigroom.png");
@@ -24,6 +26,8 @@ public class Map {
 	}
 	
 	public int getTile(int x, int y) {
+		if(x < 0 || x >= width || y < 0 || y >= height)
+			return -1;
 		return tiles[x][y];
 	}
 	
@@ -49,7 +53,7 @@ public class Map {
 			    
 			    //depending on the rgb values, add objects to the handler (if they resemble game objects
 			    if(b == 255) {
-//			    	handler
+			    	handler.addGameObject(new Player(w, h, "player", handler));
 			    }
 			    else if(r == 255) {
 			    	tiles[w][h] = 1;
