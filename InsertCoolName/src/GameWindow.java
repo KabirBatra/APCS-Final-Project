@@ -7,8 +7,8 @@ public class GameWindow extends Window {
 	private Map room;
 	private float cameraX, cameraY;
 	
-	private int tileWidth = 32;
-	private int tileHeight = 32;
+	private int tileWidth = 60;
+	private int tileHeight = 60;
 
 	//integers that are repeatedly reassigned in the draw method:
 	private int visibleTilesX, visibleTilesY;
@@ -32,6 +32,8 @@ public class GameWindow extends Window {
 
 	public void draw() {
 		s.background(0);
+		
+		handler.tick();
 		
 		cameraX = player.getPosX();
 		cameraY = player.getPosY();
@@ -59,12 +61,13 @@ public class GameWindow extends Window {
 				} else {
 					s.fill(0);
 				}
-				s.rect(x * tileWidth - tileOffsetX, y * tileHeight - tileOffsetY, tileWidth, tileHeight);
+				s.rect(x * tileWidth - tileOffsetX, y * tileHeight - tileOffsetY, tileWidth + 1f, tileHeight + 1f);
 			}
 		}
 		
-		handler.tick();
 		handler.draw(offsetX, offsetY, tileWidth, tileHeight);
+
+		
 	}
 	
 	public void keyPressed() {

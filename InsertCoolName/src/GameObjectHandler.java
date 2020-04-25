@@ -1,6 +1,7 @@
 import java.util.LinkedList;
 
 import processing.core.PApplet;
+import processing.core.PConstants;
 
 public class GameObjectHandler {
 	
@@ -49,13 +50,51 @@ public class GameObjectHandler {
 		}
 	}
 	
+	public boolean getUp() {
+		return up;
+	}
+	public boolean getDown() {
+		return down;
+	}
+	public boolean getLeft() {
+		return left;
+	}
+	public boolean getRight() {
+		return right;
+	}
+	
 	public void keyPressed() {
-		
+		//replace with s.key == 'w' || 'W'
+		if(s.keyCode == PConstants.UP) {
+			up = true;
+			
+		} else if(s.keyCode == PConstants.DOWN) {
+			down = true;
+
+		} else if(s.keyCode == PConstants.LEFT) {
+			left = true;
+
+		} else if(s.keyCode == PConstants.RIGHT) {
+			right = true;
+
+		}
 		
 	}
 	
 	public void keyReleased() {
-		
+		if(s.keyCode == PConstants.UP) {
+			up = false;
+			
+		} else if(s.keyCode == PConstants.DOWN) {
+			down = false;
+
+		} else if(s.keyCode == PConstants.LEFT) {
+			left = false;
+
+		} else if(s.keyCode == PConstants.RIGHT) {
+			right = false;
+
+		}
 	}
 	
 }
