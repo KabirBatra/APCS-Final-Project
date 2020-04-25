@@ -34,6 +34,16 @@ public abstract class GameObject {
 		posY = y;
 	}
 	
+	public void setPosX(float posX) {
+		this.posX = posX;
+	}
+
+
+	public void setPosY(float posY) {
+		this.posY = posY;
+	}
+
+
 	public abstract Rectangle getBounds();
 	
 }

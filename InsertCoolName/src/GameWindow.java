@@ -38,7 +38,6 @@ public class GameWindow extends Window {
 		ellapsedTime = (s.millis() - previousTime)/1000f;
 		previousTime = s.millis();
 		
-		System.out.println(ellapsedTime);
 		handler.tick(ellapsedTime);
 		
 		// need to smoothen camera

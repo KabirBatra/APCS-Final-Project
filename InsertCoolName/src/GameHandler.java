@@ -16,6 +16,7 @@ public class GameHandler {
 	private boolean right;
 	
 	private float newPosX, newPosY;
+	private static final float HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS = 0.9F; //values from 0.9 - 0.99999...
 	
 	public GameHandler(PApplet surface) {
 		s = surface;
@@ -54,10 +55,44 @@ public class GameHandler {
 			
 			if(obj instanceof Creature) {
 				Creature cr = (Creature)obj;
+				
+				// movement//collisions
 				newPosX = cr.getVelX() * ellapsedTime + cr.getPosX();
 				newPosY = cr.getVelY() * ellapsedTime + cr.getPosY();
+				
+				if(newPosX < 0)
+					newPosX = 0;
+				if(newPosY < 0)
+					newPosY = 0;
+				
+				// x direction
+				if(cr.getVelX() < 0 
+						&& (currentMap.isSolidTile((int)newPosX, (int)cr.getPosY())
+						|| currentMap.isSolidTile((int)newPosX, (int)(cr.getPosY() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS))) ) {
+					cr.setVelX(0);
+					newPosX = (int)newPosX + 1;
+				}
+				else if(cr.getVelX() > 0 
+						&& (currentMap.isSolidTile((int)newPosX+1, (int)cr.getPosY())
+						|| currentMap.isSolidTile((int)newPosX+1, (int)(cr.getPosY()+HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS))) ) {
+					cr.setVelX(0);
+					newPosX = (int)newPosX;
+				}
+				
+				// y dir
+				if(cr.getVelY() < 0 
+						&& (currentMap.isSolidTile((int)cr.getPosX(), (int)newPosY)
+						|| currentMap.isSolidTile((int)(cr.getPosX() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS), (int)newPosY)) ) {
+					cr.setVelY(0);
+					newPosY = (int)newPosY + 1;
+				}
+				else if(cr.getVelY() > 0 
+						&& (currentMap.isSolidTile((int)cr.getPosX(), (int)newPosY + 1)
+						|| currentMap.isSolidTile((int)(cr.getPosX() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS), (int)newPosY + 1)) ) {
+					cr.setVelY(0);
+					newPosY = (int)newPosY;
+				}
 
-				// movement//collisions
 				cr.setPos(newPosX, newPosY);
 			}
 			

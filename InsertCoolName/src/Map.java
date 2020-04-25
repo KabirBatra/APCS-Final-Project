@@ -30,7 +30,7 @@ public abstract class Map {
 	
 	public boolean isSolidTile(int x, int y) {
 		if(x < 0 || x >= width || y < 0 || y >= height)
-			return true; //outside of the map is sold
+			return true; //outside of the map is solid
 		return solids[x][y];
 	}
 	
