@@ -14,7 +14,7 @@ public class Player extends Creature {
 	public Player(float x, float y, String name, GameHandler handler) {
 		super(x, y, name);
 		this.handler = handler;
-		maxVel = 0.1f;
+		maxVel = 6f;
 	}
 
 	@Override

@@ -54,8 +54,8 @@ public class GameHandler {
 			
 			if(obj instanceof Creature) {
 				Creature cr = (Creature)obj;
-				newPosX = cr.getVelX() + cr.getPosX();
-				newPosY = cr.getVelY() + cr.getPosY();
+				newPosX = cr.getVelX() * ellapsedTime + cr.getPosX();
+				newPosY = cr.getVelY() * ellapsedTime + cr.getPosY();
 
 				// movement//collisions
 				cr.setPos(newPosX, newPosY);
