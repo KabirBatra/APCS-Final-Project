@@ -3,64 +3,35 @@ import java.awt.Rectangle;
 import processing.core.PApplet;
 
 public class Bullet extends GameObject implements Movable {
+	
+	private float velX, velY;
+	private static float maxVel = 5;
 
-	public Bullet(float x, float y, String name) {
+	public Bullet(float x, float y, float angle, String name) {
 		super(x, y, name);
+		velX = 1; 
+		velY = 1;
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
 	public float getVelX() {
 		// TODO Auto-generated method stub
-		return 0;
+		return velX;
 	}
 
-	@Override
 	public float getVelY() {
 		// TODO Auto-generated method stub
-		return 0;
+		return velY;
 	}
 
-	@Override
 	public void setVelX(float velX) {
 		// TODO Auto-generated method stub
-		
+		this.velX = velX;
 	}
 
-	@Override
 	public void setVelY(float velY) {
 		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public float getPosX() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public float getPosY() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setPosX(float posX) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setPosY(float posY) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setPos(float posX, float posY) {
-		// TODO Auto-generated method stub
-		
+		this.velY = velY;
 	}
 
 	@Override
@@ -71,7 +42,8 @@ public class Bullet extends GameObject implements Movable {
 
 	@Override
 	public void drawSelf(float x, float y, float tileWidth, float tileHeight, PApplet s) {
-		// TODO Auto-generated method stub
+		s.fill(0, 255, 0);
+		s.rect(x, y, 20, 20);
 		
 	}
 

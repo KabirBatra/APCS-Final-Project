@@ -16,12 +16,12 @@ public class GameHandler {
 	private boolean down;
 	private boolean left;
 	private boolean right;
-	private boolean isShooting;
+//	private boolean isShooting;
 
 	
 	private float newPosX, newPosY;
-	// rename this varible as BORDER_OFFSET
-	private static final float HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS = 0.1F; // values from 0.00001 - 0.1
+	private static final float BORDER_OFFSET_FOR_CREATURES = 0.1F; // values from 0.00001 - 0.1
+	private static final float BORDER_OFFSET_FOR_BULLETS = 0.0001F; // values from 0.00001 - 0.1
 
 	public GameHandler(PApplet surface) {
 		s = surface;
@@ -31,7 +31,7 @@ public class GameHandler {
 		down = false;
 		left = false;
 		right = false;
-		isShooting = false;
+//		isShooting = false;
 	}
 
 	public void setMap(String name, Player p) {
@@ -48,6 +48,7 @@ public class GameHandler {
 	// This doesn't work, must put it inside the tick
 	public void addGameObject(GameObject o) {
 		objects.add(o);
+		System.out.println("GAME OBJECT ADDED");
 	}
 
 	public Player getPlayer() {
@@ -64,51 +65,14 @@ public class GameHandler {
 		for (GameObject obj : objects) {
 			obj.act();
 			
-			if (obj instanceof Movable) {
-				Movable cr = (Movable) obj;
+			if (obj instanceof Creature) {
+				Creature cr = (Creature)obj;
 
-				// movement//collisions
-				newPosX = cr.getVelX() * ellapsedTime + cr.getPosX();
-				newPosY = cr.getVelY() * ellapsedTime + cr.getPosY();
+				creatureVsMapCollision(cr, ellapsedTime);
+			} else if(obj instanceof Bullet) {
+				Bullet b = (Bullet)obj;
 
-				if (newPosX < 0)
-					newPosX = 0;
-				if (newPosY < 0)
-					newPosY = 0;
-
-				// x direction
-				if (cr.getVelX() < 0 && (currentMap.isSolidTile((int) newPosX,
-						(int) (cr.getPosY() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS))
-						|| currentMap.isSolidTile((int) newPosX,
-								(int) (cr.getPosY() + 1 - HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS)))) {
-					cr.setVelX(0);
-					newPosX = (int) newPosX + 1;
-				} else if (cr.getVelX() > 0 && (currentMap.isSolidTile((int) newPosX + 1,
-						(int) (cr.getPosY() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS))
-						|| currentMap.isSolidTile((int) newPosX + 1,
-								(int) (cr.getPosY() + 1 - HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS)))) {
-					cr.setVelX(0);
-					newPosX = (int) newPosX;
-				}
-
-				// y dir
-				if (cr.getVelY() < 0 && (currentMap.isSolidTile(
-						(int) (cr.getPosX() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS), (int) newPosY)
-						|| currentMap.isSolidTile(
-								(int) (cr.getPosX() + 1 - HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS),
-								(int) newPosY))) {
-					cr.setVelY(0);
-					newPosY = (int) newPosY + 1;
-				} else if (cr.getVelY() > 0 && (currentMap.isSolidTile(
-						(int) (cr.getPosX() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS), (int) newPosY + 1)
-						|| currentMap.isSolidTile(
-								(int) (cr.getPosX() + 1 - HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS),
-								(int) newPosY + 1))) {
-					cr.setVelY(0);
-					newPosY = (int) newPosY;
-				}
-
-				cr.setPos(newPosX, newPosY);
+				bulletVsMapCollision(b, ellapsedTime);
 			}
 
 		}
@@ -159,34 +123,42 @@ public class GameHandler {
 		return right;
 	}
 
-	public boolean isShooting() {
-		return isShooting;
-	}
+//	public boolean isShooting() {
+//		return isShooting;
+//	}
 
 	public void keyPressed() {
 		// replace with s.key == 'w' || 'W'
 		if (s.keyCode == PConstants.UP || s.key == 'w' || s.key == 'W') {
 			up = true;
 
-		} else if (s.keyCode == PConstants.DOWN || s.key == 's' || s.key == 'S') {
+		} 
+		else if (s.keyCode == PConstants.DOWN || s.key == 's' || s.key == 'S') {
 			down = true;
 
-		} else if (s.keyCode == PConstants.LEFT || s.key == 'a' || s.key == 'A') {
+		} 
+		else if (s.keyCode == PConstants.LEFT || s.key == 'a' || s.key == 'A') {
 			left = true;
 
-		} else if (s.keyCode == PConstants.RIGHT || s.key == 'd' || s.key == 'D') {
+		} 
+		else if (s.keyCode == PConstants.RIGHT || s.key == 'd' || s.key == 'D') {
 			right = true;
 			
-		} else if (s.key == ' ') {
-			isShooting = true;
+		} 
+		else if (s.key == ' ') {
+//			isShooting = true;
+			getPlayer().shoot(s);
 			
-		} else if (s.key == 'f' || s.key == 'F') {
+		} 
+		else if (s.key == 'f' || s.key == 'F') {
 			setMap("testRoom2", getPlayer());
 			
-		} else if (s.key == 'r' || s.key == 'R') {
+		} 
+		else if (s.key == 'r' || s.key == 'R') {
 			setMap("testRoom", getPlayer());
 			
-		} else if (s.key == 'm' || s.key == 'M') {
+		} 
+		else if (s.key == 'm' || s.key == 'M') {
 			setMap("testRoom3", getPlayer());
 			
 		}
@@ -197,20 +169,115 @@ public class GameHandler {
 		if (s.keyCode == PConstants.UP || s.key == 'w' || s.key == 'W') {
 			up = false;
 
-		} else if (s.keyCode == PConstants.DOWN || s.key == 's' || s.key == 'S') {
+		} 
+		else if (s.keyCode == PConstants.DOWN || s.key == 's' || s.key == 'S') {
 			down = false;
 
-		} else if (s.keyCode == PConstants.LEFT || s.key == 'a' || s.key == 'A') {
+		} 
+		else if (s.keyCode == PConstants.LEFT || s.key == 'a' || s.key == 'A') {
 			left = false;
 
-		} else if (s.keyCode == PConstants.RIGHT || s.key == 'd' || s.key == 'D') {
+		} 
+		else if (s.keyCode == PConstants.RIGHT || s.key == 'd' || s.key == 'D') {
 			right = false;
 
-		} else if (s.key == ' ') {
-			isShooting = false;
-			
-		}
+		} 
+//		else if (s.key == ' ') {
+//			isShooting = false;
+//			
+//		}
 
 	}
+	
+	public void creatureVsMapCollision(Creature cr, float ellapsedTime) {
+		// movement/collisions
+		newPosX = cr.getVelX() * ellapsedTime + cr.getPosX();
+		newPosY = cr.getVelY() * ellapsedTime + cr.getPosY();
+
+		if (newPosX < 0)
+			newPosX = 0;
+		if (newPosY < 0)
+			newPosY = 0;
+
+		// x direction
+		if (cr.getVelX() < 0 && (currentMap.isSolidTile((int) newPosX,
+				(int) (cr.getPosY() + BORDER_OFFSET_FOR_CREATURES))
+				|| currentMap.isSolidTile((int) newPosX,
+						(int) (cr.getPosY() + 1 - BORDER_OFFSET_FOR_CREATURES)))) {
+			cr.setVelX(0);
+			newPosX = (int) newPosX + 1;
+		} else if (cr.getVelX() > 0 && (currentMap.isSolidTile((int) newPosX + 1,
+				(int) (cr.getPosY() + BORDER_OFFSET_FOR_CREATURES))
+				|| currentMap.isSolidTile((int) newPosX + 1,
+						(int) (cr.getPosY() + 1 - BORDER_OFFSET_FOR_CREATURES)))) {
+			cr.setVelX(0);
+			newPosX = (int) newPosX;
+		}
+
+		// y dir
+		if (cr.getVelY() < 0 && (currentMap.isSolidTile(
+				(int) (cr.getPosX() + BORDER_OFFSET_FOR_CREATURES), (int) newPosY)
+				|| currentMap.isSolidTile(
+						(int) (cr.getPosX() + 1 - BORDER_OFFSET_FOR_CREATURES),
+						(int) newPosY))) {
+			cr.setVelY(0);
+			newPosY = (int) newPosY + 1;
+		} else if (cr.getVelY() > 0 && (currentMap.isSolidTile(
+				(int) (cr.getPosX() + BORDER_OFFSET_FOR_CREATURES), (int) newPosY + 1)
+				|| currentMap.isSolidTile(
+						(int) (cr.getPosX() + 1 - BORDER_OFFSET_FOR_CREATURES),
+						(int) newPosY + 1))) {
+			cr.setVelY(0);
+			newPosY = (int) newPosY;
+		}
+
+		cr.setPos(newPosX, newPosY);
+	}
+	
+	public void bulletVsMapCollision(Bullet b, float ellapsedTime) {
+		// movement/collisions
+		newPosX = b.getVelX() * ellapsedTime + b.getPosX();
+		newPosY = b.getVelY() * ellapsedTime + b.getPosY();
+
+		if (newPosX < 0)
+			
+		if (newPosY < 0)
+			newPosY = 0;
+
+		// x direction
+		if (b.getVelX() < 0 && (currentMap.isSolidTile((int) newPosX,
+				(int) (b.getPosY() + BORDER_OFFSET_FOR_CREATURES))
+				|| currentMap.isSolidTile((int) newPosX,
+						(int) (b.getPosY() + 1 - BORDER_OFFSET_FOR_CREATURES)))) {
+			b.setVelX(0);
+			newPosX = (int) newPosX + 1;
+		} else if (b.getVelX() > 0 && (currentMap.isSolidTile((int) newPosX + 1,
+				(int) (b.getPosY() + BORDER_OFFSET_FOR_CREATURES))
+				|| currentMap.isSolidTile((int) newPosX + 1,
+						(int) (b.getPosY() + 1 - BORDER_OFFSET_FOR_CREATURES)))) {
+			b.setVelX(0);
+			newPosX = (int) newPosX;
+		}
+
+		// y dir
+		if (b.getVelY() < 0 && (currentMap.isSolidTile(
+				(int) (b.getPosX() + BORDER_OFFSET_FOR_CREATURES), (int) newPosY)
+				|| currentMap.isSolidTile(
+						(int) (b.getPosX() + 1 - BORDER_OFFSET_FOR_CREATURES),
+						(int) newPosY))) {
+			b.setVelY(0);
+			newPosY = (int) newPosY + 1;
+		} else if (b.getVelY() > 0 && (currentMap.isSolidTile(
+				(int) (b.getPosX() + BORDER_OFFSET_FOR_CREATURES), (int) newPosY + 1)
+				|| currentMap.isSolidTile(
+						(int) (b.getPosX() + 1 - BORDER_OFFSET_FOR_CREATURES),
+						(int) newPosY + 1))) {
+			b.setVelY(0);
+			newPosY = (int) newPosY;
+		}
+
+		b.setPos(newPosX, newPosY);
+	}
+
 
 }
