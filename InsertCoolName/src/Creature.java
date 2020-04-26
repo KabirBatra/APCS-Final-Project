@@ -1,5 +1,5 @@
 
-public abstract class Creature extends GameObject {
+public abstract class Creature extends GameObject implements Movable {
 		
 	protected float velX, velY;
 	protected int health;

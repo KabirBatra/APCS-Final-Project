@@ -7,9 +7,7 @@ public class Player extends Creature {
 	
 	private GameHandler handler;
 	
-	// for collisions
-	private float newPosX, newPosY;
-	
+	// for collisions	
 	
 	public Player(float x, float y, String name, GameHandler handler) {
 		super(x, y, name);
@@ -17,8 +15,9 @@ public class Player extends Creature {
 		maxVel = 10f;
 	}
 
-	@Override
 	public void act() {
+		
+		// movement
 		velX = 0;
 		velY = 0;
 		if(handler.getUp()) {
@@ -41,7 +40,16 @@ public class Player extends Creature {
 			velX /= ratio;
 			velY /= ratio;
 		}
-
+		
+		if (handler.isShooting()) {
+			// I am trying to get it so that the bullets go towards the 
+			// direction of the mouse, auto aim can be enabled later when enemies are visible
+		
+//		System.out.println(p.x + " " + p.y + "\n" + newPosX + " " + newPosY);
+//		float angle = (float)Math.atan((float) ((numberOne.getPosY() - offSetY) * 60) - p.y / (float) (numberOne.getPosX() - offSetX) * 60 - p.x);
+			handler.addGameObject(new RifleBullet(handler.getPlayer().getPosX(), handler.getPlayer().getPosX(), 0, 20, 0, 0, "308"));
+		}
+			
 	}
 
 	@Override

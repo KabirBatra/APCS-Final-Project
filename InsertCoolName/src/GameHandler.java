@@ -16,12 +16,10 @@ public class GameHandler {
 	private boolean down;
 	private boolean left;
 	private boolean right;
-	private boolean shoot;
+	private boolean isShooting;
 
 	
 	private float newPosX, newPosY;
-	private float newBulletPosX, newBulletPosY;
-	private float offSetX, offSetY;
 	// rename this varible as BORDER_OFFSET
 	private static final float HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS = 0.1F; // values from 0.00001 - 0.1
 
@@ -33,7 +31,7 @@ public class GameHandler {
 		down = false;
 		left = false;
 		right = false;
-		shoot = false;
+		isShooting = false;
 	}
 
 	public void setMap(String name, Player p) {
@@ -61,63 +59,13 @@ public class GameHandler {
 	}
 
 	public void tick(float ellapsedTime) {
-		if (getShoot()) {
-			Player numberOne = getPlayer();    // I am trying to get it so that the bullets go towards the 
-											   //direction of the mouse, auto aim can be enabled later when enemies are visible
-			
-			Point p = MouseInfo.getPointerInfo().getLocation();
-	//		System.out.println(p.x + " " + p.y + "\n" + newPosX + " " + newPosY);
-	//		float angle = (float)Math.atan((float) ((numberOne.getPosY() - offSetY) * 60) - p.y / (float) (numberOne.getPosX() - offSetX) * 60 - p.x);
-			objects.add(new RifleBullet(numberOne.getPosX(), numberOne.getPosY(), 0, 20, 0, 0, "308"));
-				
-			}
 		
 		
 		for (GameObject obj : objects) {
 			obj.act();
-		
-			if (obj instanceof Bullet) {
-				Bullet b = (Bullet) obj;
-				
-				newBulletPosX = b.getVelX() * ellapsedTime + b.getPosX();
-				newBulletPosY = b.getVelY() * ellapsedTime + b.getPosY();
-				b.setPos(newBulletPosX, newBulletPosY);	
-				if (b.getVelX() < 0 && (currentMap.isSolidTile((int) newPosX,
-						(int) (b.getPosY() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS))
-						|| currentMap.isSolidTile((int) newPosX,
-								(int) (b.getPosY() + 1 - HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS)))) {
-					b.setVelX(0);
-					b.setVelY(0);
-				} else if (b.getVelX() > 0 && (currentMap.isSolidTile((int) newPosX + 1,
-						(int) (b.getPosY() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS))
-						|| currentMap.isSolidTile((int) newPosX + 1,
-								(int) (b.getPosY() + 1 - HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS)))) {
-					b.setVelX(0);
-					b.setVelY(0);
-				}
-
-				// y dir
-				if (b.getVelY() < 0 && (currentMap.isSolidTile(
-						(int) (b.getPosX() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS), (int) newPosY)
-						|| currentMap.isSolidTile(
-								(int) (b.getPosX() + 1 - HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS),
-								(int) newPosY))) {
-					b.setVelX(0);
-					b.setVelY(0);
-				} else if (b.getVelY() > 0 && (currentMap.isSolidTile(
-						(int) (b.getPosX() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS), (int) newPosY + 1)
-						|| currentMap.isSolidTile(
-								(int) (b.getPosX() + 1 - HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS),
-								(int) newPosY + 1))) {
-					b.setVelX(0);
-					b.setVelY(0);
-				}
-
-				
-			}
 			
-			if (obj instanceof Creature) {
-				Creature cr = (Creature) obj;
+			if (obj instanceof Movable) {
+				Movable cr = (Movable) obj;
 
 				// movement//collisions
 				newPosX = cr.getVelX() * ellapsedTime + cr.getPosX();
@@ -169,8 +117,6 @@ public class GameHandler {
 
 	public void drawObjects(float offsetX, float offsetY, float tileWidth, float tileHeight) {
 		for (GameObject obj : objects) {
-			this.offSetX = offsetX;
-			this.offSetY = offsetY;
 			obj.drawSelf((obj.getPosX() - offsetX) * tileWidth, (obj.getPosY() - offsetY) * tileWidth, tileWidth,
 					tileHeight, s);
 
@@ -197,10 +143,6 @@ public class GameHandler {
 		}
 	}
 
-//	public boolean isSolidTile() {
-//		
-//	}
-
 	public boolean getUp() {
 		return up;
 	}
@@ -217,8 +159,8 @@ public class GameHandler {
 		return right;
 	}
 
-	public boolean getShoot() {
-		return shoot;
+	public boolean isShooting() {
+		return isShooting;
 	}
 
 	public void keyPressed() {
@@ -234,17 +176,21 @@ public class GameHandler {
 
 		} else if (s.keyCode == PConstants.RIGHT || s.key == 'd' || s.key == 'D') {
 			right = true;
+			
+		} else if (s.key == ' ') {
+			isShooting = true;
+			
 		} else if (s.key == 'f' || s.key == 'F') {
-
 			setMap("testRoom2", getPlayer());
+			
 		} else if (s.key == 'r' || s.key == 'R') {
 			setMap("testRoom", getPlayer());
+			
 		} else if (s.key == 'm' || s.key == 'M') {
 			setMap("testRoom3", getPlayer());
-		} else if (s.key == ' ') {
-			shoot = true;
+			
 		}
-
+		
 	}
 
 	public void keyReleased() {
@@ -261,7 +207,8 @@ public class GameHandler {
 			right = false;
 
 		} else if (s.key == ' ') {
-			shoot = false;
+			isShooting = false;
+			
 		}
 
 	}

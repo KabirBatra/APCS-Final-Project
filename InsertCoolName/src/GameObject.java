@@ -29,9 +29,9 @@ public abstract class GameObject {
 		return posY;
 	}
 	
-	public void setPos(float x, float y) {
-		posX = x;
-		posY = y;
+	public void setPos(float posX, float posY) {
+		this.posX = posX;
+		this.posY = posY;
 	}
 	
 	public void setPosX(float posX) {
