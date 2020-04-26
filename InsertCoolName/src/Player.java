@@ -34,6 +34,7 @@ public class Player extends Creature {
 			velX += maxVel;
 		}
 		
+		
 		// diagonal speed is still maxVel
 		if(Math.abs(velX) + Math.abs(velY) > maxVel) { //works same way as pythagorean theorem
 			float ratio = (float)Math.sqrt(2);

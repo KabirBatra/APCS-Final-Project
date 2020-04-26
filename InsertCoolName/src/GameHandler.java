@@ -1,129 +1,193 @@
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.util.LinkedList;
 
 import processing.core.PApplet;
 import processing.core.PConstants;
 
 public class GameHandler {
-	
+
 	private PApplet s;
 	private LinkedList<GameObject> objects;
-	
+
 	private Map currentMap;
-	
+
 	private boolean up;
 	private boolean down;
 	private boolean left;
 	private boolean right;
+	private boolean shoot;
+
 	
 	private float newPosX, newPosY;
+	private float newBulletPosX, newBulletPosY;
+	private float offSetX, offSetY;
 	// rename this varible as BORDER_OFFSET
-	private static final float HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS = 0.1F; //values from 0.00001 - 0.1
-	
+	private static final float HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS = 0.1F; // values from 0.00001 - 0.1
+
 	public GameHandler(PApplet surface) {
 		s = surface;
 		objects = new LinkedList<GameObject>();
-		
+
 		up = false;
 		down = false;
 		left = false;
 		right = false;
+		shoot = false;
 	}
-	
+
 	public void setMap(String name, Player p) {
-		if(currentMap != null) {
+		if (currentMap != null) {
 			objects.clear();
 		}
 		currentMap = Assets.getMap(name);
 		currentMap.populateGameObjects(p);
 	}
-	
+
 	public Map getCurrentMap() {
 		return currentMap;
 	}
-
+	// This doesn't work, must put it inside the tick
 	public void addGameObject(GameObject o) {
 		objects.add(o);
 	}
-	
+
 	public Player getPlayer() {
-		for(GameObject obj : objects) {
-			if(obj instanceof Player)
-				return (Player)obj;
+		for (GameObject obj : objects) {
+			if (obj instanceof Player)
+				return (Player) obj;
 		}
 		return null;
 	}
-	
+
 	public void tick(float ellapsedTime) {
-		
-		for(GameObject obj : objects) {
-			obj.act();
+		if (getShoot()) {
+			Player numberOne = getPlayer();    // I am trying to get it so that the bullets go towards the 
+											   //direction of the mouse, auto aim can be enabled later when enemies are visible
 			
-			if(obj instanceof Creature) {
-				Creature cr = (Creature)obj;
+			Point p = MouseInfo.getPointerInfo().getLocation();
+	//		System.out.println(p.x + " " + p.y + "\n" + newPosX + " " + newPosY);
+	//		float angle = (float)Math.atan((float) ((numberOne.getPosY() - offSetY) * 60) - p.y / (float) (numberOne.getPosX() - offSetX) * 60 - p.x);
+			objects.add(new RifleBullet(numberOne.getPosX(), numberOne.getPosY(), 0, 20, 0, 0, "308"));
 				
+			}
+		
+		
+		for (GameObject obj : objects) {
+			obj.act();
+		
+			if (obj instanceof Bullet) {
+				Bullet b = (Bullet) obj;
+				
+				newBulletPosX = b.getVelX() * ellapsedTime + b.getPosX();
+				newBulletPosY = b.getVelY() * ellapsedTime + b.getPosY();
+				b.setPos(newBulletPosX, newBulletPosY);	
+				if (b.getVelX() < 0 && (currentMap.isSolidTile((int) newPosX,
+						(int) (b.getPosY() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS))
+						|| currentMap.isSolidTile((int) newPosX,
+								(int) (b.getPosY() + 1 - HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS)))) {
+					b.setVelX(0);
+					b.setVelY(0);
+				} else if (b.getVelX() > 0 && (currentMap.isSolidTile((int) newPosX + 1,
+						(int) (b.getPosY() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS))
+						|| currentMap.isSolidTile((int) newPosX + 1,
+								(int) (b.getPosY() + 1 - HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS)))) {
+					b.setVelX(0);
+					b.setVelY(0);
+				}
+
+				// y dir
+				if (b.getVelY() < 0 && (currentMap.isSolidTile(
+						(int) (b.getPosX() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS), (int) newPosY)
+						|| currentMap.isSolidTile(
+								(int) (b.getPosX() + 1 - HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS),
+								(int) newPosY))) {
+					b.setVelX(0);
+					b.setVelY(0);
+				} else if (b.getVelY() > 0 && (currentMap.isSolidTile(
+						(int) (b.getPosX() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS), (int) newPosY + 1)
+						|| currentMap.isSolidTile(
+								(int) (b.getPosX() + 1 - HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS),
+								(int) newPosY + 1))) {
+					b.setVelX(0);
+					b.setVelY(0);
+				}
+
+				
+			}
+			
+			if (obj instanceof Creature) {
+				Creature cr = (Creature) obj;
+
 				// movement//collisions
 				newPosX = cr.getVelX() * ellapsedTime + cr.getPosX();
 				newPosY = cr.getVelY() * ellapsedTime + cr.getPosY();
-				
-				if(newPosX < 0)
+
+				if (newPosX < 0)
 					newPosX = 0;
-				if(newPosY < 0)
+				if (newPosY < 0)
 					newPosY = 0;
-				
+
 				// x direction
-				if(cr.getVelX() < 0 
-						&& (currentMap.isSolidTile((int)newPosX, (int)(cr.getPosY() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS))
-						|| currentMap.isSolidTile((int)newPosX, (int)(cr.getPosY() + 1-HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS))) ) {
+				if (cr.getVelX() < 0 && (currentMap.isSolidTile((int) newPosX,
+						(int) (cr.getPosY() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS))
+						|| currentMap.isSolidTile((int) newPosX,
+								(int) (cr.getPosY() + 1 - HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS)))) {
 					cr.setVelX(0);
-					newPosX = (int)newPosX + 1;
-				}
-				else if(cr.getVelX() > 0 
-						&& (currentMap.isSolidTile((int)newPosX+1, (int)(cr.getPosY() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS))
-						|| currentMap.isSolidTile((int)newPosX+1, (int)(cr.getPosY()+1-HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS))) ) {
+					newPosX = (int) newPosX + 1;
+				} else if (cr.getVelX() > 0 && (currentMap.isSolidTile((int) newPosX + 1,
+						(int) (cr.getPosY() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS))
+						|| currentMap.isSolidTile((int) newPosX + 1,
+								(int) (cr.getPosY() + 1 - HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS)))) {
 					cr.setVelX(0);
-					newPosX = (int)newPosX;
+					newPosX = (int) newPosX;
 				}
-				
+
 				// y dir
-				if(cr.getVelY() < 0 
-						&& (currentMap.isSolidTile((int)(cr.getPosX() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS), (int)newPosY)
-						|| currentMap.isSolidTile((int)(cr.getPosX() + 1-HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS), (int)newPosY)) ) {
+				if (cr.getVelY() < 0 && (currentMap.isSolidTile(
+						(int) (cr.getPosX() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS), (int) newPosY)
+						|| currentMap.isSolidTile(
+								(int) (cr.getPosX() + 1 - HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS),
+								(int) newPosY))) {
 					cr.setVelY(0);
-					newPosY = (int)newPosY + 1;
-				}
-				else if(cr.getVelY() > 0 
-						&& (currentMap.isSolidTile((int)(cr.getPosX() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS), (int)newPosY + 1)
-						|| currentMap.isSolidTile((int)(cr.getPosX() + 1-HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS), (int)newPosY + 1)) ) {
+					newPosY = (int) newPosY + 1;
+				} else if (cr.getVelY() > 0 && (currentMap.isSolidTile(
+						(int) (cr.getPosX() + HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS), (int) newPosY + 1)
+						|| currentMap.isSolidTile(
+								(int) (cr.getPosX() + 1 - HOW_HARD_IT_IS_TO_GET_THROUGH_ONE_TILE_TUNNELS),
+								(int) newPosY + 1))) {
 					cr.setVelY(0);
-					newPosY = (int)newPosY;
+					newPosY = (int) newPosY;
 				}
 
 				cr.setPos(newPosX, newPosY);
 			}
-			
-			
+
 		}
+		
 	}
-	
+
 	public void drawObjects(float offsetX, float offsetY, float tileWidth, float tileHeight) {
-		for(GameObject obj : objects) {
-			obj.drawSelf((obj.getPosX() - offsetX)*tileWidth, (obj.getPosY() - offsetY)*tileWidth, tileWidth, tileHeight, s);
-			
+		for (GameObject obj : objects) {
+			this.offSetX = offsetX;
+			this.offSetY = offsetY;
+			obj.drawSelf((obj.getPosX() - offsetX) * tileWidth, (obj.getPosY() - offsetY) * tileWidth, tileWidth,
+					tileHeight, s);
+
 		}
 	}
-	
-	
-	public void drawMap(float offsetX, float offsetY, float tileOffsetX, float tileOffsetY, float visibleTilesX, float visibleTilesY, float tileWidth, float tileHeight) {
-		for(int x = -1; x < visibleTilesX+1; x++) {
-			for(int y = -1; y < visibleTilesY+1; y++) {
-				int tile = currentMap.getTile(x + (int)offsetX, y + (int)offsetY);
-				
+
+	public void drawMap(float offsetX, float offsetY, float tileOffsetX, float tileOffsetY, float visibleTilesX,
+			float visibleTilesY, float tileWidth, float tileHeight) {
+		for (int x = -1; x < visibleTilesX + 1; x++) {
+			for (int y = -1; y < visibleTilesY + 1; y++) {
+				int tile = currentMap.getTile(x + (int) offsetX, y + (int) offsetY);
+
 //				s.image(img, a, b);
-				
-				if(tile == 0) {
+
+				if (tile == 0) {
 					s.fill(255);
-				}
-				else if(tile == 1) {
+				} else if (tile == 1) {
 					s.fill(0, 0, 255);
 				} else {
 					s.fill(0);
@@ -132,68 +196,74 @@ public class GameHandler {
 			}
 		}
 	}
-	
+
 //	public boolean isSolidTile() {
 //		
 //	}
-	
+
 	public boolean getUp() {
 		return up;
 	}
+
 	public boolean getDown() {
 		return down;
 	}
+
 	public boolean getLeft() {
 		return left;
 	}
+
 	public boolean getRight() {
 		return right;
 	}
-	
+
+	public boolean getShoot() {
+		return shoot;
+	}
+
 	public void keyPressed() {
-		//replace with s.key == 'w' || 'W'
-		if(s.keyCode == PConstants.UP || s.key == 'w' || s.key == 'W') {
+		// replace with s.key == 'w' || 'W'
+		if (s.keyCode == PConstants.UP || s.key == 'w' || s.key == 'W') {
 			up = true;
-			
-		} 
-		else if(s.keyCode == PConstants.DOWN || s.key == 's' || s.key == 'S') {
+
+		} else if (s.keyCode == PConstants.DOWN || s.key == 's' || s.key == 'S') {
 			down = true;
 
-		} 
-		else if(s.keyCode == PConstants.LEFT || s.key == 'a' || s.key == 'A') {
+		} else if (s.keyCode == PConstants.LEFT || s.key == 'a' || s.key == 'A') {
 			left = true;
 
-		} 
-		else if(s.keyCode == PConstants.RIGHT || s.key == 'd' || s.key == 'D') {
+		} else if (s.keyCode == PConstants.RIGHT || s.key == 'd' || s.key == 'D') {
 			right = true;
-		} 
-		else if(s.key == 'f' || s.key == 'F') {
-			
+		} else if (s.key == 'f' || s.key == 'F') {
+
 			setMap("testRoom2", getPlayer());
-		}
-		else if(s.key == 'r' || s.key == 'R') {
+		} else if (s.key == 'r' || s.key == 'R') {
 			setMap("testRoom", getPlayer());
-		}
-		else if(s.key == 'm' || s.key == 'M') {
+		} else if (s.key == 'm' || s.key == 'M') {
 			setMap("testRoom3", getPlayer());
+		} else if (s.key == ' ') {
+			shoot = true;
 		}
-		
+
 	}
-	
+
 	public void keyReleased() {
-		if(s.keyCode == PConstants.UP || s.key == 'w' || s.key == 'W') {
+		if (s.keyCode == PConstants.UP || s.key == 'w' || s.key == 'W') {
 			up = false;
-			
-		} else if(s.keyCode == PConstants.DOWN || s.key == 's' || s.key == 'S') {
+
+		} else if (s.keyCode == PConstants.DOWN || s.key == 's' || s.key == 'S') {
 			down = false;
 
-		} else if(s.keyCode == PConstants.LEFT || s.key == 'a' || s.key == 'A') {
+		} else if (s.keyCode == PConstants.LEFT || s.key == 'a' || s.key == 'A') {
 			left = false;
 
-		} else if(s.keyCode == PConstants.RIGHT || s.key == 'd' || s.key == 'D') {
+		} else if (s.keyCode == PConstants.RIGHT || s.key == 'd' || s.key == 'D') {
 			right = false;
 
+		} else if (s.key == ' ') {
+			shoot = false;
 		}
+
 	}
-	
+
 }

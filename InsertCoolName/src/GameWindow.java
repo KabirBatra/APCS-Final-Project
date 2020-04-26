@@ -23,7 +23,7 @@ public class GameWindow extends Window {
 		new Assets(handler); // initializes all of the assets and creates gameObjects
 		handler.setMap("testRoom", null);
 	}
-
+	
 	public void setup() {
 		
 		player = handler.getPlayer();
@@ -31,7 +31,7 @@ public class GameWindow extends Window {
 		cameraY = player.getPosY();
 		System.out.println(handler.getPlayer());
 	}
-
+	
 	public void draw() {
 		s.background(0);
 		ellapsedTime = (s.millis() - previousTime)/1000f;
