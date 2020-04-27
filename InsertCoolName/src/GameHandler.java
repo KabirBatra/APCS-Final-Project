@@ -68,11 +68,14 @@ public class GameHandler {
 			if (obj instanceof Creature) {
 				Creature cr = (Creature)obj;
 
-				creatureVsMapCollision(cr, ellapsedTime);
+				creatureCollisionsAndMovement(cr, ellapsedTime);
 			} else if(obj instanceof Bullet) {
 				Bullet b = (Bullet)obj;
 
-				bulletVsMapCollision(b, ellapsedTime);
+				bulletCollisionsAndMovement(b, ellapsedTime);
+//				if(bulletCollisionsAndMovement(b, ellapsedTime)) {
+//					objects.remove(obj);
+//				}
 			}
 
 		}
@@ -189,7 +192,7 @@ public class GameHandler {
 
 	}
 	
-	public void creatureVsMapCollision(Creature cr, float ellapsedTime) {
+	public void creatureCollisionsAndMovement(Creature cr, float ellapsedTime) {
 		// movement/collisions
 		newPosX = cr.getVelX() * ellapsedTime + cr.getPosX();
 		newPosY = cr.getVelY() * ellapsedTime + cr.getPosY();
@@ -234,7 +237,7 @@ public class GameHandler {
 		cr.setPos(newPosX, newPosY);
 	}
 	
-	public void bulletVsMapCollision(Bullet b, float ellapsedTime) {
+	public void bulletCollisionsAndMovement(Bullet b, float ellapsedTime) {
 		// movement/collisions
 		newPosX = b.getVelX() * ellapsedTime + b.getPosX();
 		newPosY = b.getVelY() * ellapsedTime + b.getPosY();

@@ -40,9 +40,6 @@ public class Player extends Creature {
 			velX /= ratio;
 			velY /= ratio;
 		}
-		
-		
-			
 	}
 	
 	public void shoot(PApplet s) {
@@ -51,10 +48,9 @@ public class Player extends Creature {
 	
 //		System.out.println(p.x + " " + p.y + "\n" + newPosX + " " + newPosY);
 //		float angle = (float)Math.atan((float) ((numberOne.getPosY() - offSetY) * 60) - p.y / (float) (numberOne.getPosX() - offSetX) * 60 - p.x);
-		
-		float angle = (float)Math.tan((s.mouseY - s.height)/(s.mouseX - s.width)); //temporary calculation
+		float angle = (float)Math.atan((s.mouseY - s.height)/(s.mouseX - s.width)); //temporary calculation
 		//handler.addGameObject(new RifleBullet(handler.getPlayer().getPosX(), handler.getPlayer().getPosX(), 0, 20, 0, 0, "308"));
-		handler.addGameObject(new Bullet(handler.getPlayer().getPosX()+0.5f, handler.getPlayer().getPosY()+0.5f, angle, "308"));
+		handler.addGameObject(new RifleBullet(handler.getPlayer().getPosX()+0.5f, handler.getPlayer().getPosY()+0.5f, angle, "308"));
 	}
 
 	@Override

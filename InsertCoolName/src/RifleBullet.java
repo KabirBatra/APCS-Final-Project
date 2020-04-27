@@ -3,27 +3,17 @@ import java.awt.Rectangle;
 import processing.core.PApplet;
 
 public class RifleBullet extends Bullet {
-
-	private float maxVel;
-
-	public RifleBullet(float x, float y, float angle, float speed, float damage, float fireRate, String name) {
-		super(x, y, angle, speed, damage, fireRate, name);
-		maxVel = 50f;
-		// TODO Auto-generated constructor stub
+	
+	protected static float speed = 7;
+	protected static float damage = 10;
+	
+	
+	public RifleBullet(float x, float y, float angle, String name) {
+		super(x, y, angle, name);
+		
 	}
 
-	@Override
 	public void act() {
-
-		velX = (float) (speed * Math.cos(angle));
-		velY = (float) (speed * Math.sin(angle));
-		// System.out.println("hello!! " + velX + " " + velY);
-
-		if (Math.abs(velX) + Math.abs(velY) > maxVel) { // works same way as pythagorean theorem
-			float ratio = (float) Math.sqrt(2);
-			velX /= ratio;
-			velY /= ratio;
-		}
 
 	}
 

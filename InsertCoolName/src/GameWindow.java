@@ -39,12 +39,10 @@ public class GameWindow extends Window {
 		
 		handler.tick(ellapsedTime);
 		
-		
-		
 		visibleTilesX = s.width/tileWidth;
 		visibleTilesY = s.height/tileHeight;
 
-		// need to smoothen camera
+		// smooth camera
 		cameraX -= (cameraX - player.getPosX()) * 0.07f;
 		cameraY -= (cameraY - player.getPosY()) * 0.07f;
 		

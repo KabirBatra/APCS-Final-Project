@@ -2,28 +2,32 @@ import java.awt.Rectangle;
 
 import processing.core.PApplet;
 
-public abstract class Bullet extends GameObject {
-	protected float velX, velY;
-	protected float locx;
-	protected float locy;
-	protected float angle;
-	protected float speed;
-	protected float damage;
-	protected float fireRate;
+public class Bullet extends GameObject implements Movable {
+	
+	protected float velX;
+	protected float velY;
+	
+	protected static float speed = 5f;
+	protected static float damage = 5f;
+	
+	//protected float fireRate;  part of player/weapon class
 
-	public Bullet(float x, float y, float angle, float speed, float damage, float fireRate, String name) {
+	public Bullet(float x, float y, float angle, String name) {
 		super(x, y, name);
-		locx = x;
-		locy = y;
-		this.angle = angle;
-		this.speed = speed;
-		this.damage = damage;
-		this.fireRate = fireRate;
-		// TODO Auto-generated constructor stub
+				
+		velX = speed * (float)Math.cos(angle);
+		velY = (float) (speed * Math.sin(angle));
+		System.out.println(Math.cos(angle));
+		
+		
+		
+		//this.damage = damage;
+		//this.fireRate = fireRate;
 	}
 
-	@Override
-	public abstract void act();
+	public void act() {
+		
+	}
 
 	public float getVelX() {
 		return velX;
@@ -39,6 +43,18 @@ public abstract class Bullet extends GameObject {
 
 	public void setVelY(float velY) {
 		this.velY = velY;
+	}
+
+	public void drawSelf(float x, float y, float tileWidth, float tileHeight, PApplet s) {
+		
+	}
+
+	public void onInteract(GameObject obj) {
+		
+	}
+
+	public Rectangle getBounds() {
+		return null;
 	}
 
 }
