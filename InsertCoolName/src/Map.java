@@ -7,9 +7,8 @@ public abstract class Map {
 	
 	protected SpriteSheet ss;
 	protected GameHandler handler;
-	protected int[][] tiles;
+	protected Type[][] tiles;
 	protected boolean[][] solids;
-	protected ID[][] gameObjects;
 	
 	protected int width;
 	protected int height;
@@ -23,9 +22,9 @@ public abstract class Map {
 		loadTiles(mapImage);
 	}
 	
-	public int getTile(int x, int y) {
+	public Type getTile(int x, int y) {
 		if(x < 0 || x >= width || y < 0 || y >= height)
-			return -1;
+			return Type.None;
 		return tiles[x][y];
 	}
 	
@@ -51,9 +50,8 @@ public abstract class Map {
 		width = image.getWidth();
 		height = image.getHeight();
 		
-		tiles = new int[width][height];
+		tiles = new Type[width][height];
 		solids = new boolean[width][height];
-		gameObjects = new ID[width][height];
 
 		for(int w = 0; w < width; w++) {
 			for(int h = 0; h < height; h++) {
@@ -65,18 +63,17 @@ public abstract class Map {
 			    
 			    //depending on the rgb values, add objects to the handler (if they resemble game objects
 			    if(b == 255) {
-			    	tiles[w][h] = 0;
-			    	gameObjects[w][h] = ID.Player;
+			    	tiles[w][h] = Type.Player;
 			    	
 			    	//handler.addGameObject(new Player(w, h, "player", handler));
 			    }
 			    else if(r == 255) { // walls
 			    	// index of thing in sprite sheet
-			    	tiles[w][h] = 1;
+			    	tiles[w][h] = Type.Wall;
 			    	solids[w][h] = true;
 			    }
 			    else { // floor
-			    	tiles[w][h] = 0;
+			    	tiles[w][h] = Type.Floor;
 			    	//solids[w][h] = false;
 			    }
 			}

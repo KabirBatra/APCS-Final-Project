@@ -94,16 +94,21 @@ public class GameHandler {
 			float visibleTilesY, float tileWidth, float tileHeight) {
 		for (int x = -1; x < visibleTilesX + 1; x++) {
 			for (int y = -1; y < visibleTilesY + 1; y++) {
-				int tile = currentMap.getTile(x + (int) offsetX, y + (int) offsetY);
+				Type tile = currentMap.getTile(x + (int) offsetX, y + (int) offsetY);
 
 //				s.image(img, a, b);
 
-				if (tile == 0) {
-					s.fill(255);
-				} else if (tile == 1) {
+				if (tile == Type.Wall) {
 					s.fill(0, 0, 255);
-				} else {
+				} 
+				else if (tile == Type.None){
 					s.fill(0);
+				} 
+				else if (tile == Type.Floor || tile == Type.Enemy || tile == Type.Player) {
+					s.fill(255);
+				}
+				else {
+					s.fill(51); // error color
 				}
 				s.rect(x * tileWidth - tileOffsetX, y * tileHeight - tileOffsetY, tileWidth + 1f, tileHeight + 1f);
 			}

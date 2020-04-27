@@ -9,9 +9,9 @@ public class Maze1 extends Map {
 	public Maze1(GameHandler handler) {
 		super(handler);
 		create(Assets.getBufferedImage("mazeTest"), null);
-		for(int x = 0; x < gameObjects.length; x++) {
-			for(int y = 0; y < gameObjects[0].length; y++) {
-				if(gameObjects[x][y] == ID.Player) {
+		for(int x = 0; x < tiles.length; x++) {
+			for(int y = 0; y < tiles[0].length; y++) {
+				if(tiles[x][y] == Type.Player) {
 					playerStartPosX = x;
 					playerStartPosY = y;
 				}
