@@ -4,6 +4,7 @@ import processing.core.PApplet;
 
 public class Player extends Creature {
 
+	static int a = 0;
 	
 	private GameHandler handler;
 	
@@ -43,14 +44,9 @@ public class Player extends Creature {
 	}
 	
 	public void shoot(PApplet s) {
-		// I am trying to get it so that the bullets go towards the 
-		// direction of the mouse, auto aim can be enabled later when enemies are visible
-	
-//		System.out.println(p.x + " " + p.y + "\n" + newPosX + " " + newPosY);
-//		float angle = (float)Math.atan((float) ((numberOne.getPosY() - offSetY) * 60) - p.y / (float) (numberOne.getPosX() - offSetX) * 60 - p.x);
-		float angle = (float)Math.atan((s.mouseY - s.height)/(s.mouseX - s.width)); //temporary calculation
-		//handler.addGameObject(new RifleBullet(handler.getPlayer().getPosX(), handler.getPlayer().getPosX(), 0, 20, 0, 0, "308"));
+		float angle = (float)(a * Math.PI / 180); //temporary calculation
 		handler.addGameObject(new RifleBullet(handler.getPlayer().getPosX()+0.5f, handler.getPlayer().getPosY()+0.5f, angle, "308"));
+		a += 30;
 	}
 
 	@Override

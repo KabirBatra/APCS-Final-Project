@@ -1,5 +1,7 @@
 import java.awt.MouseInfo;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import processing.core.PApplet;
@@ -21,7 +23,6 @@ public class GameHandler {
 	
 	private float newPosX, newPosY;
 	private static final float BORDER_OFFSET_FOR_CREATURES = 0.1F; // values from 0.00001 - 0.1
-	private static final float BORDER_OFFSET_FOR_BULLETS = 0.0001F; // values from 0.00001 - 0.1
 
 	public GameHandler(PApplet surface) {
 		s = surface;
@@ -61,23 +62,28 @@ public class GameHandler {
 
 	public void tick(float ellapsedTime) {
 		
-		
+		LinkedList<GameObject> bulletsToRemove = new LinkedList<GameObject>();
+
 		for (GameObject obj : objects) {
 			obj.act();
-			
+
 			if (obj instanceof Creature) {
 				Creature cr = (Creature)obj;
 
 				creatureCollisionsAndMovement(cr, ellapsedTime);
-			} else if(obj instanceof Bullet) {
+			} 
+			else if(obj instanceof Bullet) {
 				Bullet b = (Bullet)obj;
 
-				bulletCollisionsAndMovement(b, ellapsedTime);
-//				if(bulletCollisionsAndMovement(b, ellapsedTime)) {
-//					objects.remove(obj);
-//				}
+//				bulletCollisionsAndMovement(b, ellapsedTime);
+				if(bulletCollisionsAndMovement(b, ellapsedTime)) {
+					bulletsToRemove.add(obj);
+				}
 			}
-
+		}
+		
+		for(GameObject destroyedBullet : bulletsToRemove) {
+			objects.remove(destroyedBullet);
 		}
 		
 	}
@@ -242,49 +248,85 @@ public class GameHandler {
 		cr.setPos(newPosX, newPosY);
 	}
 	
-	public void bulletCollisionsAndMovement(Bullet b, float ellapsedTime) {
+	
+	
+	
+	//true if there is a collision
+	public boolean bulletCollisionsAndMovement(Bullet b, float ellapsedTime) {
 		// movement/collisions
 		newPosX = b.getVelX() * ellapsedTime + b.getPosX();
 		newPosY = b.getVelY() * ellapsedTime + b.getPosY();
 
-		if (newPosX < 0)
-			
-		if (newPosY < 0)
-			newPosY = 0;
+		if (newPosX < 0 || newPosY < 0)
+			return true;
 
+		Rectangle bounds = b.getBounds(); // old position
+		float x = bounds.x/1000f;
+		float y = bounds.y/1000f;
+		
+		float width = bounds.width/1000f;
+		float height = bounds.height/1000f;
+		//bounds.width;
+		//bounds.height;
+		
 		// x direction
-		if (b.getVelX() < 0 && (currentMap.isSolidTile((int) newPosX,
-				(int) (b.getPosY() + BORDER_OFFSET_FOR_CREATURES))
-				|| currentMap.isSolidTile((int) newPosX,
-						(int) (b.getPosY() + 1 - BORDER_OFFSET_FOR_CREATURES)))) {
-			b.setVelX(0);
-			newPosX = (int) newPosX + 1;
-		} else if (b.getVelX() > 0 && (currentMap.isSolidTile((int) newPosX + 1,
-				(int) (b.getPosY() + BORDER_OFFSET_FOR_CREATURES))
-				|| currentMap.isSolidTile((int) newPosX + 1,
-						(int) (b.getPosY() + 1 - BORDER_OFFSET_FOR_CREATURES)))) {
-			b.setVelX(0);
-			newPosX = (int) newPosX;
+		if (b.getVelX() < 0 &&
+				(currentMap.isSolidTile((int)newPosX, (int)y)
+				|| currentMap.isSolidTile((int)newPosX, (int)(y + height)))) {
+			//System.out.println("1");
+			return true;
+		} else if (b.getVelX() > 0 && 
+				(currentMap.isSolidTile((int)(newPosX + width), (int) y)
+				|| currentMap.isSolidTile((int)(newPosX + width), (int) (y + height)))) {
+//			System.out.println((int)(newPosX + width));
+			return true;
 		}
 
 		// y dir
-		if (b.getVelY() < 0 && (currentMap.isSolidTile(
-				(int) (b.getPosX() + BORDER_OFFSET_FOR_CREATURES), (int) newPosY)
-				|| currentMap.isSolidTile(
-						(int) (b.getPosX() + 1 - BORDER_OFFSET_FOR_CREATURES),
-						(int) newPosY))) {
-			b.setVelY(0);
-			newPosY = (int) newPosY + 1;
-		} else if (b.getVelY() > 0 && (currentMap.isSolidTile(
-				(int) (b.getPosX() + BORDER_OFFSET_FOR_CREATURES), (int) newPosY + 1)
-				|| currentMap.isSolidTile(
-						(int) (b.getPosX() + 1 - BORDER_OFFSET_FOR_CREATURES),
-						(int) newPosY + 1))) {
-			b.setVelY(0);
-			newPosY = (int) newPosY;
+		if (b.getVelY() < 0 &&
+				(currentMap.isSolidTile((int) (x), (int) newPosY)
+				|| currentMap.isSolidTile((int) (x + width), (int) newPosY))) {
+			//System.out.println("3");
+			return true;
+		} else if (b.getVelY() > 0 &&
+				(currentMap.isSolidTile((int) (x), (int)(newPosY + height))
+				|| currentMap.isSolidTile((int) (x + width), (int)(newPosY + height)))) {
+			//System.out.println("4");
+			return true;
+		}
+		
+		
+		
+		
+		
+		/*
+		// x direction
+		if (b.getVelX() < 0 &&
+				(currentMap.isSolidTile((int)newPosX, (int)bounds.y)
+				|| currentMap.isSolidTile((int)newPosX, (int)(bounds.y + bounds.height)))) {
+			return true;
+		} else if (b.getVelX() > 0 && 
+				(currentMap.isSolidTile((int)(newPosX + bounds.width), (int) bounds.y)
+				|| currentMap.isSolidTile((int)(newPosX + bounds.width), (int) (bounds.y + bounds.height)))) {
+			return true;
 		}
 
+		// y dir
+		if (b.getVelY() < 0 &&
+				(currentMap.isSolidTile((int) (bounds.x), (int) newPosY)
+				|| currentMap.isSolidTile((int) (bounds.x + bounds.width), (int) newPosY))) {
+			return true;
+		} else if (b.getVelY() > 0 &&
+				(currentMap.isSolidTile((int) (bounds.x), (int)(newPosY + bounds.height))
+				|| currentMap.isSolidTile((int) (bounds.x + bounds.width), (int)(newPosY + bounds.height)))) {
+			return true;
+		}
+		*/
+		
+		//no collision
+		
 		b.setPos(newPosX, newPosY);
+		return false;
 	}
 
 
