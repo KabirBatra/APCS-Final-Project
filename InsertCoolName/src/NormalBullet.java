@@ -2,13 +2,13 @@ import java.awt.Rectangle;
 
 import processing.core.PApplet;
 
-public class RifleBullet extends Bullet {
+public class NormalBullet extends Bullet {
 	
 	protected static float speed = 10f;
 	protected static float damage = 10;
 	
 	
-	public RifleBullet(float x, float y, float angle, String name) {
+	public NormalBullet(float x, float y, float angle, String name) {
 		super(x, y, angle, speed, name);
 	
 	}

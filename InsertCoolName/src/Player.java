@@ -45,7 +45,7 @@ public class Player extends Creature {
 	
 	public void shoot(PApplet s) {
 		float angle = (float)(a * Math.PI / 180); //temporary calculation
-		handler.addGameObject(new RifleBullet(handler.getPlayer().getPosX()+0.5f, handler.getPlayer().getPosY()+0.5f, angle, "308"));
+		handler.addGameObject(new NormalBullet(handler.getPlayer().getPosX()+0.5f, handler.getPlayer().getPosY()+0.5f, angle, "308"));
 		a += 30;
 	}
 
