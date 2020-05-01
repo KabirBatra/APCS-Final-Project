@@ -1,9 +1,9 @@
 
 public class EnemyRoom extends Map {
 
-	public EnemyRoom(GameHandler handler) {
+	public EnemyRoom(GameHandler handler, SpriteSheet ss) {
 		super(handler);
-		create(Assets.getBufferedImage("enemyRoomTest"), null);
+		create(Assets.getBufferedImage("enemyRoomTest"), ss);
 		setPlayerStartPos();
 	}
 

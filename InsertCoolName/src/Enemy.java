@@ -3,17 +3,17 @@ import processing.core.PApplet;
 
 public class Enemy extends Creature {
 
-	public Enemy(float x, float y, String name) {
-		super(x, y, name);
-		velX = 2;
-		velY = 2;
+	public Enemy(float x, float y, String name, SpriteSheet ss) {
+		super(x, y, name, ss);
+		velX = 1;
+		velY = 1;
 	}
 
-	public void act(float ellapsedTime) {
+	public void update(float ellapsedTime) {
 		//ai movement per tick
-		if(ellapsedTime == 0)
-		velX *= -1;
-		velY *= -1;
+		//if(ellapsedTime == 0)
+		velX = (int)(Math.random() * 15) - 7;
+		velY = (int)(Math.random() * 15) - 7;
 	}
 
 	public void drawSelf(float x, float y, float tileWidth, float tileHeight, PApplet s) {

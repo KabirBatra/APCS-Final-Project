@@ -23,6 +23,7 @@ public abstract class Map {
 	
 	public void create(BufferedImage mapImage, SpriteSheet ss) {
 		this.ss = ss;
+		System.out.println("loaded " + ss);
 		loadTiles(mapImage);
 	}
 	
@@ -100,16 +101,17 @@ public abstract class Map {
 	public void populateGameObjects(Player p) {
 		if(p != null) {
 			p.setPos(playerStartPosX, playerStartPosY);
+			p.setSpriteSheet(ss);
 			handler.addGameObject(p);
 
 		} else {
-			handler.addGameObject(new Player(playerStartPosX, playerStartPosY, "player", handler));
+			handler.addGameObject(new Player(playerStartPosX, playerStartPosY, "player", ss, handler));
 		}
 		
 		for(int x = 0; x < tiles.length; x++) {
 			for(int y = 0; y < tiles[0].length; y++) {
 				if(tiles[x][y] == Type.Enemy) {
-					handler.addGameObject(new Enemy(x, y, "regular enemy"));
+					handler.addGameObject(new Enemy(x, y, "regular enemy", ss));
 				}
 			}
 		}

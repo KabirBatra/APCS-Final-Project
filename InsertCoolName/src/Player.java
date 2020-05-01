@@ -1,6 +1,7 @@
 
 
 import processing.core.PApplet;
+import processing.core.PImage;
 
 public class Player extends Creature {
 
@@ -8,13 +9,13 @@ public class Player extends Creature {
 	
 	private GameHandler handler;
 		
-	public Player(float x, float y, String name, GameHandler handler) {
-		super(x, y, name);
+	public Player(float x, float y, String name, SpriteSheet ss, GameHandler handler) {
+		super(x, y, name, ss);
 		this.handler = handler;
 		maxVel = 10f;
 	}
 
-	public void act(float ellapsedTime) {
+	public void update(float ellapsedTime) {
 		
 		// movement
 		velX = 0;
@@ -48,9 +49,14 @@ public class Player extends Creature {
 	}
 
 	public void drawSelf(float x, float y, float tileWidth, float tileHeight, PApplet s) {
-		// TODO Auto-generated method stub
 		s.fill(255, 0, 0);
 		s.rect(x, y, tileWidth, tileHeight);
+		
+		if(currentSprite != null) {
+			PImage img = new PImage((java.awt.Image)currentSprite); 
+
+			s.image(img, x, y);
+		}
 	}
 
 	public void onInteract(GameObject obj) {

@@ -10,12 +10,12 @@ public class GameHandler {
 	private LinkedList<GameObject> objects;
 
 	private Map currentMap;
+	private SpriteSheet playerSpriteSheet;
 
 	private boolean up;
 	private boolean down;
 	private boolean left;
 	private boolean right;
-
 	
 	private float newPosX, newPosY;
 	private static final float BORDER_OFFSET_FOR_CREATURES = 0.1F; // values from 0.00001 - 0.1
@@ -23,7 +23,7 @@ public class GameHandler {
 	public GameHandler(PApplet surface) {
 		s = surface;
 		objects = new LinkedList<GameObject>();
-
+		
 		up = false;
 		down = false;
 		left = false;
@@ -36,6 +36,8 @@ public class GameHandler {
 		}
 		currentMap = Assets.getMap(name);
 		currentMap.populateGameObjects(p);
+		
+		playerSpriteSheet = Assets.getSpriteSheet("playerSheet");
 	}
 
 	public Map getCurrentMap() {
@@ -60,7 +62,7 @@ public class GameHandler {
 		LinkedList<GameObject> bulletsToRemove = new LinkedList<GameObject>();
 
 		for (GameObject obj : objects) {
-			obj.act(ellapsedTime);
+			obj.update(ellapsedTime);
 			
 			// wall collisions
 			if(obj.solidVsWall) {

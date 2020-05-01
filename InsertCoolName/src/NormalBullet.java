@@ -14,7 +14,7 @@ public class NormalBullet extends Bullet {
 	
 	}
 
-	public void act(float ellapsedTime) {
+	public void update(float ellapsedTime) {
 
 	}
 

@@ -8,22 +8,15 @@ public abstract class GameObject {
 	protected String name;
 	protected boolean solidVsWall = true, solidVsGameObject = true;
 	
-	protected enum Direction {North, South, East, West};
-	protected enum AnimationState {Standing, Walking, Dead};
-
-	protected Direction facingDirection = Direction.South;
-	protected AnimationState state = AnimationState.Standing;
-
-	
 	public GameObject(float x, float y, String name) {
 		posX = x;
 		posY = y;
 		this.name = name;
 	}
-	
+
 	
 	// method for animation purposes
-	public abstract void act(float ellapsedTime);
+	public abstract void update(float ellapsedTime);
 	// draws itself
 	public abstract void drawSelf(float x, float y, float tileWidth, float tileHeight, PApplet s);
 	// when 2 game objects are touching
