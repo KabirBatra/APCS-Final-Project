@@ -1,4 +1,5 @@
 import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 
 import processing.core.PApplet;
 
@@ -13,7 +14,7 @@ public class NormalBullet extends Bullet {
 	
 	}
 
-	public void act() {
+	public void act(float ellapsedTime) {
 
 	}
 
@@ -37,16 +38,12 @@ public class NormalBullet extends Bullet {
 
 	}
 
-	@Override
 	public void onInteract(GameObject obj) {
-		// TODO Auto-generated method stub
 
 	}
 
-	@Override
-	public Rectangle getBounds() {
-		//constructor only allows integers... so now 1000 represents 3 more decimal places
-		return new Rectangle((int)(posX*1000), (int)(posY*1000), (int)(1f/4 * 1000), (int)(1f/4 * 1000));
+	public Rectangle2D.Double getBounds() {
+		return new Rectangle2D.Double(posX, posY, 1f/4, 1f/4);
 	}
 
 }

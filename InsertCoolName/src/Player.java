@@ -1,4 +1,4 @@
-import java.awt.Rectangle;
+
 
 import processing.core.PApplet;
 
@@ -7,16 +7,14 @@ public class Player extends Creature {
 	static int a = 0;
 	
 	private GameHandler handler;
-	
-	// for collisions	
-	
+		
 	public Player(float x, float y, String name, GameHandler handler) {
 		super(x, y, name);
 		this.handler = handler;
 		maxVel = 10f;
 	}
 
-	public void act() {
+	public void act(float ellapsedTime) {
 		
 		// movement
 		velX = 0;
@@ -49,22 +47,14 @@ public class Player extends Creature {
 		a += 30;
 	}
 
-	@Override
 	public void drawSelf(float x, float y, float tileWidth, float tileHeight, PApplet s) {
 		// TODO Auto-generated method stub
 		s.fill(255, 0, 0);
 		s.rect(x, y, tileWidth, tileHeight);
 	}
 
-	@Override
 	public void onInteract(GameObject obj) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public Rectangle getBounds() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

@@ -1,4 +1,4 @@
-import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.util.LinkedList;
 
 import processing.core.PApplet;
@@ -60,21 +60,31 @@ public class GameHandler {
 		LinkedList<GameObject> bulletsToRemove = new LinkedList<GameObject>();
 
 		for (GameObject obj : objects) {
-			obj.act();
+			obj.act(ellapsedTime);
+			
+			// wall collisions
+			if(obj.solidVsWall) {
+				
+				if (obj instanceof Creature) {
+					Creature cr = (Creature)obj;
 
-			if (obj instanceof Creature) {
-				Creature cr = (Creature)obj;
+					creatureCollisionsAndMovement(cr, ellapsedTime);
+				} 
+				
+				else if(obj instanceof Bullet) {
+					Bullet b = (Bullet)obj;
 
-				creatureCollisionsAndMovement(cr, ellapsedTime);
-			} 
-			else if(obj instanceof Bullet) {
-				Bullet b = (Bullet)obj;
-
-//				bulletCollisionsAndMovement(b, ellapsedTime);
-				if(bulletCollisionsAndMovement(b, ellapsedTime)) {
-					bulletsToRemove.add(obj);
+					// if collided
+					if(bulletCollisionsAndMovement(b, ellapsedTime)) {
+						bulletsToRemove.add(obj);
+					}
 				}
 			}
+			
+			if(obj.solidVsGameObject) {
+				// do dynamic collisions here
+			}
+			
 		}
 		
 		for(GameObject destroyedBullet : bulletsToRemove) {
@@ -156,7 +166,7 @@ public class GameHandler {
 			
 		} 
 		else if (s.key == 'f' || s.key == 'F') {
-			setMap("testRoom2", getPlayer());
+			setMap("testRoom4", getPlayer());
 			
 		} 
 		else if (s.key == 'r' || s.key == 'R') {
@@ -164,8 +174,7 @@ public class GameHandler {
 			
 		} 
 		else if (s.key == 'm' || s.key == 'M') {
-			setMap("testRoom3", getPlayer());
-			
+			setMap("testRoom2", getPlayer());
 		}
 		
 	}
@@ -247,12 +256,12 @@ public class GameHandler {
 		if (newPosX < 0 || newPosY < 0)
 			return true;
 
-		Rectangle bounds = b.getBounds(); // old position
-		float x = bounds.x/1000f;
-		float y = bounds.y/1000f;
+		Rectangle2D.Double bounds = b.getBounds(); // old position
+		float x = (float)bounds.x;
+		float y = (float)bounds.y;
 		
-		float width = bounds.width/1000f;
-		float height = bounds.height/1000f;
+		float width = (float)bounds.width;
+		float height = (float)bounds.height;
 		//bounds.width;
 		//bounds.height;
 		

@@ -1,3 +1,5 @@
+import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 
 public abstract class Creature extends GameObject implements Movable {
 		
@@ -12,9 +14,7 @@ public abstract class Creature extends GameObject implements Movable {
 		velX = 0;
 		velY = 0;
 	}
-	
-	public abstract void act();
-	
+		
 	public float getVelX() {
 		return velX;
 	}
@@ -29,5 +29,9 @@ public abstract class Creature extends GameObject implements Movable {
 
 	public void setVelY(float velY) {
 		this.velY = velY;
+	}
+	
+	public Rectangle2D.Double getBounds() {
+		return new Rectangle2D.Double(posX, posY, 1, 1);
 	}
 }

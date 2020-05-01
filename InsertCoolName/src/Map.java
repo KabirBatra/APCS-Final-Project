@@ -12,6 +12,10 @@ public abstract class Map {
 	
 	protected int width;
 	protected int height;
+	
+	protected int playerStartPosX = 0;
+	protected int playerStartPosY = 0;
+
 
 	public Map(GameHandler handler) {
 		this.handler = handler;
@@ -61,16 +65,18 @@ public abstract class Map {
 			    int g = (pixel >> 8) & 0xff;
 			    int b = (pixel) & 0xff;
 			    
-			    //depending on the rgb values, add objects to the handler (if they resemble game objects
-			    if(b == 255) {
-			    	tiles[w][h] = Type.Player;
-			    	
-			    	//handler.addGameObject(new Player(w, h, "player", handler));
-			    }
-			    else if(r == 255) { // walls
-			    	// index of thing in sprite sheet
+			    //depending on the rgb values
+			    
+			    if(r == 255) { // walls
+			    	// here would be index of thing in sprite sheet
 			    	tiles[w][h] = Type.Wall;
 			    	solids[w][h] = true;
+			    }
+			    else if(g == 255) {
+			    	tiles[w][h] = Type.Enemy;
+			    }
+			    else if(b == 255) {
+			    	tiles[w][h] = Type.Player;
 			    }
 			    else { // floor
 			    	tiles[w][h] = Type.Floor;
@@ -80,6 +86,33 @@ public abstract class Map {
 		}
 	}
 	
-	public abstract void populateGameObjects(Player p);
+	public void setPlayerStartPos() {
+		for(int x = 0; x < tiles.length; x++) {
+			for(int y = 0; y < tiles[0].length; y++) {
+				if(tiles[x][y] == Type.Player) {
+					playerStartPosX = x;
+					playerStartPosY = y;
+				}
+			}
+		}
+	}
+	
+	public void populateGameObjects(Player p) {
+		if(p != null) {
+			p.setPos(playerStartPosX, playerStartPosY);
+			handler.addGameObject(p);
+
+		} else {
+			handler.addGameObject(new Player(playerStartPosX, playerStartPosY, "player", handler));
+		}
+		
+		for(int x = 0; x < tiles.length; x++) {
+			for(int y = 0; y < tiles[0].length; y++) {
+				if(tiles[x][y] == Type.Enemy) {
+					handler.addGameObject(new Enemy(x, y, "regular enemy"));
+				}
+			}
+		}
+	}
 	
 }
