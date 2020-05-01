@@ -1,7 +1,4 @@
-import java.awt.MouseInfo;
-import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import processing.core.PApplet;
@@ -18,7 +15,6 @@ public class GameHandler {
 	private boolean down;
 	private boolean left;
 	private boolean right;
-//	private boolean isShooting;
 
 	
 	private float newPosX, newPosY;
@@ -32,7 +28,6 @@ public class GameHandler {
 		down = false;
 		left = false;
 		right = false;
-//		isShooting = false;
 	}
 
 	public void setMap(String name, Player p) {
@@ -46,10 +41,10 @@ public class GameHandler {
 	public Map getCurrentMap() {
 		return currentMap;
 	}
-	// This doesn't work, must put it inside the tick
-	public void addGameObject(GameObject o) {
-		objects.add(o);
-		System.out.println("GAME OBJECT ADDED");
+	
+	public void addGameObject(GameObject obj) {
+		objects.add(obj);
+		System.out.println("added a game object of " + obj.getClass());
 	}
 
 	public Player getPlayer() {
@@ -137,12 +132,9 @@ public class GameHandler {
 		return right;
 	}
 
-//	public boolean isShooting() {
-//		return isShooting;
-//	}
+
 
 	public void keyPressed() {
-		// replace with s.key == 'w' || 'W'
 		if (s.keyCode == PConstants.UP || s.key == 'w' || s.key == 'W') {
 			up = true;
 
@@ -160,7 +152,6 @@ public class GameHandler {
 			
 		} 
 		else if (s.key == ' ') {
-//			isShooting = true;
 			getPlayer().shoot(s);
 			
 		} 
@@ -195,11 +186,7 @@ public class GameHandler {
 		else if (s.keyCode == PConstants.RIGHT || s.key == 'd' || s.key == 'D') {
 			right = false;
 
-		} 
-//		else if (s.key == ' ') {
-//			isShooting = false;
-//			
-//		}
+		}
 
 	}
 	
@@ -273,12 +260,10 @@ public class GameHandler {
 		if (b.getVelX() < 0 &&
 				(currentMap.isSolidTile((int)newPosX, (int)y)
 				|| currentMap.isSolidTile((int)newPosX, (int)(y + height)))) {
-			//System.out.println("1");
 			return true;
 		} else if (b.getVelX() > 0 && 
 				(currentMap.isSolidTile((int)(newPosX + width), (int) y)
 				|| currentMap.isSolidTile((int)(newPosX + width), (int) (y + height)))) {
-//			System.out.println((int)(newPosX + width));
 			return true;
 		}
 
@@ -286,42 +271,12 @@ public class GameHandler {
 		if (b.getVelY() < 0 &&
 				(currentMap.isSolidTile((int) (x), (int) newPosY)
 				|| currentMap.isSolidTile((int) (x + width), (int) newPosY))) {
-			//System.out.println("3");
 			return true;
 		} else if (b.getVelY() > 0 &&
 				(currentMap.isSolidTile((int) (x), (int)(newPosY + height))
 				|| currentMap.isSolidTile((int) (x + width), (int)(newPosY + height)))) {
-			//System.out.println("4");
 			return true;
 		}
-		
-		
-		
-		
-		
-		/*
-		// x direction
-		if (b.getVelX() < 0 &&
-				(currentMap.isSolidTile((int)newPosX, (int)bounds.y)
-				|| currentMap.isSolidTile((int)newPosX, (int)(bounds.y + bounds.height)))) {
-			return true;
-		} else if (b.getVelX() > 0 && 
-				(currentMap.isSolidTile((int)(newPosX + bounds.width), (int) bounds.y)
-				|| currentMap.isSolidTile((int)(newPosX + bounds.width), (int) (bounds.y + bounds.height)))) {
-			return true;
-		}
-
-		// y dir
-		if (b.getVelY() < 0 &&
-				(currentMap.isSolidTile((int) (bounds.x), (int) newPosY)
-				|| currentMap.isSolidTile((int) (bounds.x + bounds.width), (int) newPosY))) {
-			return true;
-		} else if (b.getVelY() > 0 &&
-				(currentMap.isSolidTile((int) (bounds.x), (int)(newPosY + bounds.height))
-				|| currentMap.isSolidTile((int) (bounds.x + bounds.width), (int)(newPosY + bounds.height)))) {
-			return true;
-		}
-		*/
 		
 		//no collision
 		

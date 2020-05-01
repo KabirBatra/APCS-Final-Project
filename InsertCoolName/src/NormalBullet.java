@@ -28,11 +28,11 @@ public class NormalBullet extends Bullet {
 //				y1 + tileHeight / 14);
 		
 		
-		s.rect(x, y, tileWidth/4, tileHeight/7);
+		s.rect(x, y, tileWidth/4, tileHeight/4);
 		s.pushStyle();
-		s.noFill();
-		s.stroke(0, 255, 255);
-		s.rect(x, y, tileWidth/4, tileHeight/7);
+//		s.noFill();
+//		s.stroke(0, 255, 255);
+//		s.rect(x, y, tileWidth/4, tileHeight/7);
 		s.popStyle();
 
 	}
@@ -46,7 +46,7 @@ public class NormalBullet extends Bullet {
 	@Override
 	public Rectangle getBounds() {
 		//constructor only allows integers... so now 1000 represents 3 more decimal places
-		return new Rectangle((int)(posX*1000), (int)(posY*1000), (int)(1f/4 * 1000), (int)(1f/7 * 1000));
+		return new Rectangle((int)(posX*1000), (int)(posY*1000), (int)(1f/4 * 1000), (int)(1f/4 * 1000));
 	}
 
 }
