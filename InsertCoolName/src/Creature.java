@@ -1,4 +1,3 @@
-import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
@@ -58,7 +57,7 @@ public abstract class Creature extends GameObject implements Movable {
 			facingDirection = Direction.NORTH;
 		
 		if(ss != null) {
-			currentSprite = ss.getSprite((int)(Math.random()*5), (int)(Math.random()*2));
+			currentSprite = ss.getSprite(4,1);
 		}
 	}
 		

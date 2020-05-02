@@ -4,15 +4,13 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 public class Player extends Creature {
-
-	static int a = 0;
 	
 	private GameHandler handler;
 		
 	public Player(float x, float y, String name, SpriteSheet ss, GameHandler handler) {
 		super(x, y, name, ss);
 		this.handler = handler;
-		maxVel = 10f;
+		maxVel = 8f;
 	}
 
 	public void update(float ellapsedTime) {
@@ -43,9 +41,31 @@ public class Player extends Creature {
 	}
 	
 	public void shoot(PApplet s) {
-		float angle = (float)(a * Math.PI / 180); //temporary calculation
+		Enemy closestEnemy = null;
+		float closestDistanceSquared = -1;
+		float distanceSquared;
+		for(GameObject obj : handler.objects) {
+			if(obj instanceof Enemy) {
+				
+				distanceSquared = (posX - obj.posX)*(posX - obj.posX) + (posY - obj.posY)*(posY - obj.posY);
+				
+				if(closestEnemy == null || distanceSquared < closestDistanceSquared) {
+					closestEnemy = (Enemy)obj;
+					closestDistanceSquared = distanceSquared;
+				}
+			}
+		}
+		float angle;
+
+		if(closestEnemy != null) {
+			angle = (float)Math.atan((posY - closestEnemy.posY)/(posX - closestEnemy.posX));
+			if(posX > closestEnemy.posX) {
+				angle+=Math.PI;
+			}
+		} else {
+			angle = 0; // shoot in the direction moving (using enum's index?)
+		}
 		handler.addGameObject(new NormalBullet(handler.getPlayer().getPosX()+0.5f, handler.getPlayer().getPosY()+0.5f, angle, "308"));
-		a += 30;
 	}
 
 	public void drawSelf(float x, float y, int tileWidth, int tileHeight, PApplet s) {
@@ -54,13 +74,11 @@ public class Player extends Creature {
 		
 		if(currentSprite != null) {
 			PImage img = new PImage((java.awt.Image)currentSprite); 
-			img.resize((int)tileWidth, 0);
-			s.image(img, x, y);
+			s.image(img, x, y, tileWidth, tileHeight);
 		}
 	}
 
 	public void onInteract(GameObject obj) {
-		// TODO Auto-generated method stub
 		
 	}
 }

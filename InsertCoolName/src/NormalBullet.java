@@ -5,7 +5,7 @@ import processing.core.PApplet;
 
 public class NormalBullet extends Bullet {
 	
-	protected static float speed = 10f;
+	protected static float speed = 13f;
 	protected static float damage = 10;
 	
 	

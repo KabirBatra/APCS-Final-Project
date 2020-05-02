@@ -7,10 +7,12 @@ import processing.core.PConstants;
 public class GameHandler {
 
 	private PApplet s;
-	private LinkedList<GameObject> objects;
+	
+	// so that player can access it and shoot toward nearest enemy
+	public LinkedList<GameObject> objects;
 
 	private Map currentMap;
-	private SpriteSheet playerSpriteSheet;
+	//private SpriteSheet playerSpriteSheet;
 
 	private boolean up;
 	private boolean down;
@@ -37,7 +39,7 @@ public class GameHandler {
 		currentMap = Assets.getMap(name);
 		currentMap.populateGameObjects(p);
 		
-		playerSpriteSheet = Assets.getSpriteSheet("playerSheet");
+		//playerSpriteSheet = Assets.getSpriteSheet("playerSheet");
 	}
 
 	public Map getCurrentMap() {
