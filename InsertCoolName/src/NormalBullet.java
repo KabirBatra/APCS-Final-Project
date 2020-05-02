@@ -18,8 +18,7 @@ public class NormalBullet extends Bullet {
 
 	}
 
-	@Override
-	public void drawSelf(float x, float y, float tileWidth, float tileHeight, PApplet s) {
+	public void drawSelf(float x, float y, int tileWidth, int tileHeight, PApplet s) {
 		s.fill(181, 166, 66);
 //		float x1 = x ;
 //		float y1 = y + tileHeight * (3f / 7f);
@@ -29,7 +28,7 @@ public class NormalBullet extends Bullet {
 //				y1 + tileHeight / 14);
 		
 		
-		s.rect(x, y, tileWidth/4, tileHeight/4);
+		s.rect(x, y, tileWidth/4f, tileHeight/4f);
 		s.pushStyle();
 //		s.noFill();
 //		s.stroke(0, 255, 255);

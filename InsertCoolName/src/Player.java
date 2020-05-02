@@ -16,7 +16,7 @@ public class Player extends Creature {
 	}
 
 	public void update(float ellapsedTime) {
-		
+		super.update(ellapsedTime);
 		// movement
 		velX = 0;
 		velY = 0;
@@ -48,13 +48,13 @@ public class Player extends Creature {
 		a += 30;
 	}
 
-	public void drawSelf(float x, float y, float tileWidth, float tileHeight, PApplet s) {
-		s.fill(255, 0, 0);
-		s.rect(x, y, tileWidth, tileHeight);
+	public void drawSelf(float x, float y, int tileWidth, int tileHeight, PApplet s) {
+		//s.fill(255, 0, 0);
+		//s.rect(x, y, tileWidth, tileHeight);
 		
 		if(currentSprite != null) {
 			PImage img = new PImage((java.awt.Image)currentSprite); 
-
+			img.resize((int)tileWidth, 0);
 			s.image(img, x, y);
 		}
 	}

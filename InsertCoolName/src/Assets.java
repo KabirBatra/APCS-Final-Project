@@ -7,7 +7,7 @@ import javax.imageio.ImageIO;
 public class Assets {
 	
 	GameHandler handler;
-	public static HashMap<String, BufferedImage> dict;
+	public static HashMap<String, BufferedImage> images;
 	public static HashMap<String, Map> maps;
 	
 	public static HashMap<String, SpriteSheet> spriteSheets;
@@ -15,25 +15,28 @@ public class Assets {
 
 	// should only run once
 	public Assets(GameHandler handler) {
-		dict = new HashMap<String, BufferedImage>();
+		images = new HashMap<String, BufferedImage>();
 		maps = new HashMap<String, Map>();
 		spriteSheets = new HashMap<String, SpriteSheet>();
 		
-		// images
-		dict.put("bigTestRoom", loadImage("bigroom.png"));
-		dict.put("littleTestRoom", loadImage("room.png"));
-		dict.put("mazeTest", loadImage("mediumMaze.png"));
-		dict.put("enemyRoomTest", loadImage("enemyRoomTest.png"));
-		//dict.put("playerSheet", loadImage("testSpriteSheet.png"));
 		
-		spriteSheets.put("playerSheet", new SpriteSheet(loadImage("testSpriteSheet.png")));
-
+		
+		
+		
+		// images
+		images.put("bigTestRoom", loadImage("bigroom.png"));
+		images.put("littleTestRoom", loadImage("room.png"));
+		images.put("mazeTest", loadImage("mediumMaze.png"));
+		images.put("enemyRoomTest", loadImage("enemyRoomTest.png"));
+		images.put("player", loadImage("testSpriteSheet.png"));
+		
+		spriteSheets.put("playerSheet", new SpriteSheet(images.get("player")));
 		
 		// maps
 		//maps.put("testRoom", new Map(getBufferedImage("bigTestRoom"), new SpriteSheet("testRoomSpriteSheet"), handler));
-		maps.put("testRoom", new Room1(handler));
-		maps.put("testRoom2", new Room2(handler));
-		maps.put("testRoom3", new Maze1(handler));
+		maps.put("testRoom", new Room1(handler, spriteSheets.get("playerSheet")));
+		maps.put("testRoom2", new Room2(handler, spriteSheets.get("playerSheet")));
+		maps.put("testRoom3", new Maze1(handler, spriteSheets.get("playerSheet")));
 		maps.put("testRoom4", new EnemyRoom(handler, spriteSheets.get("playerSheet")));
 		
 		
@@ -51,7 +54,7 @@ public class Assets {
 	}
 	
 	public static BufferedImage getBufferedImage(String name) {
-		return dict.get(name);
+		return images.get(name);
 	}
 	
 	public static Map getMap(String name) {

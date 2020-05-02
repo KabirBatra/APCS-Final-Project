@@ -18,7 +18,7 @@ public abstract class GameObject {
 	// method for animation purposes
 	public abstract void update(float ellapsedTime);
 	// draws itself
-	public abstract void drawSelf(float x, float y, float tileWidth, float tileHeight, PApplet s);
+	public abstract void drawSelf(float x, float y, int tileWidth, int tileHeight, PApplet s);
 	// when 2 game objects are touching
 	public abstract void onInteract(GameObject obj);
 	

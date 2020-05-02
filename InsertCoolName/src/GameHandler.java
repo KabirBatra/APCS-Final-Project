@@ -95,7 +95,7 @@ public class GameHandler {
 		
 	}
 
-	public void drawObjects(float offsetX, float offsetY, float tileWidth, float tileHeight) {
+	public void drawObjects(float offsetX, float offsetY, int tileWidth, int tileHeight) {
 		for (GameObject obj : objects) {
 			obj.drawSelf((obj.getPosX() - offsetX) * tileWidth, (obj.getPosY() - offsetY) * tileWidth, tileWidth,
 					tileHeight, s);
@@ -104,7 +104,7 @@ public class GameHandler {
 	}
 
 	public void drawMap(float offsetX, float offsetY, float tileOffsetX, float tileOffsetY, float visibleTilesX,
-			float visibleTilesY, float tileWidth, float tileHeight) {
+			float visibleTilesY, int tileWidth, int tileHeight) {
 		for (int x = -1; x < visibleTilesX + 1; x++) {
 			for (int y = -1; y < visibleTilesY + 1; y++) {
 				Type tile = currentMap.getTile(x + (int) offsetX, y + (int) offsetY);

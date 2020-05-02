@@ -23,7 +23,6 @@ public abstract class Map {
 	
 	public void create(BufferedImage mapImage, SpriteSheet ss) {
 		this.ss = ss;
-		System.out.println("loaded " + ss);
 		loadTiles(mapImage);
 	}
 	

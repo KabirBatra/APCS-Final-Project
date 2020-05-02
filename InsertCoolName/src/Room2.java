@@ -1,10 +1,9 @@
-import java.awt.image.BufferedImage;
 
 public class Room2 extends Map {
 
-	public Room2(GameHandler handler) {
+	public Room2(GameHandler handler, SpriteSheet ss) {
 		super(handler);
-		create(Assets.getBufferedImage("littleTestRoom"), null);
+		create(Assets.getBufferedImage("littleTestRoom"), ss);
 		setPlayerStartPos();
 	}
 

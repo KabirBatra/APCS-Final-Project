@@ -27,9 +27,11 @@ public abstract class Creature extends GameObject implements Movable {
 		state = AnimationState.STANDING;
 		timer = 0;
 		this.ss = ss;
+		health = 10;
+		maxHealth = 10;
 	}
 	
-	public void act(float ellapsedTime) {
+	public void update(float ellapsedTime) {
 		timer += ellapsedTime;
 		
 		if(timer >= 0.2) {
@@ -56,7 +58,7 @@ public abstract class Creature extends GameObject implements Movable {
 			facingDirection = Direction.NORTH;
 		
 		if(ss != null) {
-			currentSprite = ss.getSprite(0, 0);
+			currentSprite = ss.getSprite((int)(Math.random()*5), (int)(Math.random()*2));
 		}
 	}
 		

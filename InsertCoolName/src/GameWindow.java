@@ -6,8 +6,8 @@ public class GameWindow extends Window {
 	private GameHandler handler;
 	private float cameraX, cameraY;
 	
-	private int tileWidth = 60;
-	private int tileHeight = 60;
+	private int tileWidth = 64;
+	private int tileHeight = 64;
 
 	//integers that are repeatedly reassigned in the draw method:
 	private int visibleTilesX, visibleTilesY;
@@ -29,7 +29,7 @@ public class GameWindow extends Window {
 		player = handler.getPlayer();
 		cameraX = player.getPosX();
 		cameraY = player.getPosY();
-		System.out.println(handler.getPlayer());
+		System.out.println(handler.getPlayer() + " exists");
 	}
 	
 	public void draw() {
@@ -39,8 +39,8 @@ public class GameWindow extends Window {
 		
 		handler.tick(ellapsedTime);
 		
-		visibleTilesX = s.width/tileWidth;
-		visibleTilesY = s.height/tileHeight;
+		visibleTilesX = s.width/tileWidth+1;
+		visibleTilesY = s.height/tileHeight+1;
 
 		// smooth camera
 		cameraX -= (cameraX - player.getPosX()) * 0.07f;
