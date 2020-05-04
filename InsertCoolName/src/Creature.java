@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 public abstract class Creature extends GameObject implements Movable {
 		
 	protected float velX, velY;
-	protected float maxVel;
+	protected float maxSpeed;
 
 	protected int health;
 	protected int maxHealth;
@@ -83,5 +83,9 @@ public abstract class Creature extends GameObject implements Movable {
 	
 	public Rectangle2D.Double getBounds() {
 		return new Rectangle2D.Double(posX, posY, 1, 1);
+	}
+	
+	public float getMaxSpeed() {
+		return maxSpeed;
 	}
 }

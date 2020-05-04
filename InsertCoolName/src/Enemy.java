@@ -4,22 +4,89 @@ import processing.core.PApplet;
 public class Enemy extends Creature {
 
 	private GameHandler handler;
-	private float maxSpeed;
 	
-	public Enemy(float x, float y, float speed, GameHandler handler, String name, SpriteSheet ss) {
+	private boolean canShoot;
+
+	public Enemy(float x, float y, String name, GameHandler handler, SpriteSheet ss) {
 		super(x, y, name, ss);
 		this.handler = handler;
 		velX = 1;
 		velY = 1;
-		maxSpeed = speed;
+		//maxVel = speed; 
+		maxSpeed = 5; // speed should be predefined per class that extends enemy
+		canShoot = false;
 	}
 
 	public void update(float ellapsedTime) {
 		super.update(ellapsedTime);
 		//ai movement per tick
-		//if(ellapsedTime == 0)
-		velX = (int)(Math.random() * 15) - 7;
-		velY = (int)(Math.random() * 15) - 7;
+		//velX = (int)(Math.random() * 15) - 7;
+		//velY = (int)(Math.random() * 15) - 7;
+		
+		
+		// Must be called upon enemy object
+		Enemy npc = this;
+	
+		Player thePlayer = handler.getPlayer();
+		Enemy theEnemy = npc;
+		
+		float enemyMaxSpeed = theEnemy.getMaxSpeed();
+		
+		float playerX = thePlayer.getPosX();
+		float playerY = thePlayer.getPosY();
+		
+		float enemyX = theEnemy.getPosX();
+		float enemyY = theEnemy.getPosY();
+
+		float theDiffX = playerX - enemyX;
+		float theDiffY = playerY - enemyY;
+		float theDist = (float)(Math.sqrt(Math.pow((double)theDiffX, 2d) + Math.pow((double)theDiffY, 2d)));
+		
+		float theRatio = theDiffY / theDiffX;
+		float theAngle = (float)Math.atan((double)theRatio);
+		if (theDiffX < 0) {
+			theAngle += Math.PI ;
+		}
+		
+		
+		
+		// checking to see if there is clear line between enemy and player
+		float bulletX = enemyX;
+		float bulletY = enemyY;
+		int checkingX = (int)(enemyX);
+		int checkingY = (int)(enemyY);
+		int aproxPlayerX = (int)(playerX);
+		int aproxPlayerY = (int)(playerY);
+	
+		
+		//Must be close so the shots can actually hit
+		if (theDist < 10) {
+			while (!handler.getCurrentMap().isSolidTile(checkingX, checkingY)) {
+				if(checkingX == aproxPlayerX && checkingY == aproxPlayerY) {
+					//npc.shoot(handler.getSurface());
+					canShoot = true;
+					break;
+				}
+				bulletX += Math.cos(theAngle);
+				bulletY += Math.sin(theAngle);
+				checkingX = (int)(bulletX);
+				checkingY = (int)(bulletY);
+				
+			}
+		} 
+		else {
+			canShoot = false;
+		}
+		
+		// if there is a block in the way the enemy will try to move closer to the player
+		theEnemy.setVelX((float)(enemyMaxSpeed * Math.cos(theAngle)));
+		theEnemy.setVelX((float)(enemyMaxSpeed * Math.sin(theAngle)));
+	
+
+	}
+	
+	public boolean canShoot() {
+		return canShoot;
 	}
 
 	public void drawSelf(float x, float y, int tileWidth, int tileHeight, PApplet s) {
@@ -30,6 +97,7 @@ public class Enemy extends Creature {
 	public void onInteract(GameObject obj) {
 		
 	}
+	
 	public void shoot(PApplet s) {
 		Player closestPlayer = null;
 		float closestDistanceSquared = -1;
@@ -55,11 +123,7 @@ public class Enemy extends Creature {
 		} else {
 			angle = 0; // shoot in the direction moving (using enum's index?)
 		}
-		handler.addGameObject(new NormalBullet(handler.getPlayer().getPosX()+0.5f, handler.getPlayer().getPosY()+0.5f, angle, "308"));
-	}
-
-	public float getMaxSpeed() {
-		return maxSpeed;
+		handler.addGameObject(new NormalBullet(this.posX+0.5f, this.posY+0.5f, angle, "308"));
 	}
 
 }

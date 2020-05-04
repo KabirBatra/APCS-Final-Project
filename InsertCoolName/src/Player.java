@@ -10,7 +10,7 @@ public class Player extends Creature {
 	public Player(float x, float y, String name, SpriteSheet ss, GameHandler handler) {
 		super(x, y, name, ss);
 		this.handler = handler;
-		maxVel = 8f;
+		maxSpeed = 8f;
 	}
 
 	public void update(float ellapsedTime) {
@@ -19,21 +19,21 @@ public class Player extends Creature {
 		velX = 0;
 		velY = 0;
 		if(handler.getUp()) {
-			velY += -maxVel;
+			velY += -maxSpeed;
 		}
 		if(handler.getDown()) {
-			velY += maxVel;
+			velY += maxSpeed;
 		}
 		if(handler.getLeft()) {
-			velX += -maxVel;
+			velX += -maxSpeed;
 		}
 		if(handler.getRight()) {
-			velX += maxVel;
+			velX += maxSpeed;
 		}
 		
 		
 		// diagonal speed is still maxVel
-		if(Math.abs(velX) + Math.abs(velY) > maxVel) { //works same way as pythagorean theorem
+		if(Math.abs(velX) + Math.abs(velY) > maxSpeed) { //works same way as pythagorean theorem
 			float ratio = (float)Math.sqrt(2);
 			velX /= ratio;
 			velY /= ratio;

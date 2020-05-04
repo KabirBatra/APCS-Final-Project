@@ -110,7 +110,7 @@ public abstract class Map {
 		for(int x = 0; x < tiles.length; x++) {
 			for(int y = 0; y < tiles[0].length; y++) {
 				if(tiles[x][y] == Type.Enemy) {
-					handler.addGameObject(new Enemy(x, y, "regular enemy", ss));
+					handler.addGameObject(new Enemy(x, y, "regular enemy", handler, ss));
 				}
 			}
 		}

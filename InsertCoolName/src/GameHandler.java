@@ -58,13 +58,28 @@ public class GameHandler {
 		}
 		return null;
 	}
+	
+//	public PApplet getSurface() {
+//		return s;
+//	}
 
 	public void tick(float ellapsedTime) {
 		
-		LinkedList<GameObject> bulletsToRemove = new LinkedList<GameObject>();
+		LinkedList<Bullet> bulletsToRemove = new LinkedList<Bullet>();
+		LinkedList<Enemy> enemiesThatCanShoot = new LinkedList<Enemy>();
 
 		for (GameObject obj : objects) {
+			
 			obj.update(ellapsedTime);
+			
+			if(obj instanceof Enemy) {
+				Enemy temp = (Enemy)obj;
+				if(temp.canShoot()) {
+					enemiesThatCanShoot.add((Enemy)obj);
+				}
+			}
+			
+			
 			
 			// wall collisions
 			if(obj.solidVsWall) {
@@ -80,7 +95,7 @@ public class GameHandler {
 
 					// if collided
 					if(bulletCollisionsAndMovement(b, ellapsedTime)) {
-						bulletsToRemove.add(obj);
+						bulletsToRemove.add((Bullet)obj);
 					}
 				}
 			}
@@ -89,11 +104,18 @@ public class GameHandler {
 				// do dynamic collisions here
 			}
 			
+			
+			
+			
 		}
 		
 		for(GameObject destroyedBullet : bulletsToRemove) {
 			objects.remove(destroyedBullet);
 		}
+		for(Enemy enemy : enemiesThatCanShoot) {
+			enemy.shoot(s);
+		}
+		
 		
 	}
 
@@ -145,8 +167,6 @@ public class GameHandler {
 	public boolean getRight() {
 		return right;
 	}
-
-
 
 	public void keyPressed() {
 		if (s.keyCode == PConstants.UP || s.key == 'w' || s.key == 'W') {
@@ -295,69 +315,6 @@ public class GameHandler {
 		
 		b.setPos(newPosX, newPosY);
 		return false;
-	}
-	// Must be called upon enemy object
-	public void enemyAI(Enemy npc, float ellapsedTime) {
-		Player thePlayer = getPlayer();
-		Enemy theEnemy = npc;
-		
-		float enemyMaxSpeed = theEnemy.getMaxSpeed();
-		
-		float playerX = thePlayer.getPosX();
-		float playerY = thePlayer.getPosY();
-		
-		float enemyX = theEnemy.getPosX();
-		float enemyY = theEnemy.getPosY();
-
-		float theDiffX = playerX - enemyX;
-		float theDiffY = playerY - enemyY;
-		float theDist = (float)(Math.sqrt(Math.pow((double)theDiffX, 2d) + Math.pow((double)theDiffY, 2d)));
-		
-		float theRatio = theDiffY / theDiffX;
-		float theAngle = (float)Math.atan((double)theRatio);
-		if (theDiffX < 0) {
-			theAngle += Math.PI ;
-		}
-		
-		
-		
-		// checking to see if there is clear line between enemy and player
-		float bulletX = enemyX;
-		float bulletY = enemyY;
-		int checkingX = (int)(enemyX);
-		int checkingY = (int)(enemyY);
-		int aproxPlayerX = (int)(playerX);
-		int aproxPlayerY = (int)(playerY);
-	
-		
-		//Must be close so the shots can actually hit
-		if (theDist < 10) {
-		while (!currentMap.isSolidTile(checkingX, checkingY)) {
-			if(checkingX == aproxPlayerX && checkingY == aproxPlayerY) {
-			npc.shoot(s);
-			break;
-			}
-			bulletX += Math.cos(theAngle);
-			bulletY += Math.sin(theAngle);
-			checkingX = (int)(bulletX);
-			checkingY = (int)(bulletY);
-			
-		}
-		}
-		
-		// if there is a block in the way the enemy will try to move closer to the player
-		
-		theEnemy.setVelX((float)(enemyMaxSpeed * Math.cos(theAngle)));
-		theEnemy.setVelX((float)(enemyMaxSpeed * Math.sin(theAngle)));
-
-		
-		
-		
-		
-		
-		
-		
-		
 	}
 
 
