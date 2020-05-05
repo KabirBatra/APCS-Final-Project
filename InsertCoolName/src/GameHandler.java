@@ -48,7 +48,7 @@ public class GameHandler {
 	
 	public void addGameObject(GameObject obj) {
 		objects.add(obj);
-		System.out.println("added a game object of " + obj.getClass());
+		//System.out.println("added a game object of " + obj.getClass());
 	}
 
 	public Player getPlayer() {
@@ -71,16 +71,7 @@ public class GameHandler {
 		for (GameObject obj : objects) {
 			
 			obj.update(ellapsedTime);
-			
-			if(obj instanceof Enemy) {
-				Enemy temp = (Enemy)obj;
-				if(temp.canShoot()) {
-					enemiesThatCanShoot.add((Enemy)obj);
-				}
-			}
-			
-			
-			
+
 			// wall collisions
 			if(obj.solidVsWall) {
 				
@@ -105,7 +96,12 @@ public class GameHandler {
 			}
 			
 			
-			
+			if(obj instanceof Enemy) {
+				Enemy temp = (Enemy)obj;
+				if(temp.canShoot()) {
+					enemiesThatCanShoot.add((Enemy)obj);
+				}
+			}
 			
 		}
 		
@@ -129,8 +125,8 @@ public class GameHandler {
 
 	public void drawMap(float offsetX, float offsetY, float tileOffsetX, float tileOffsetY, float visibleTilesX,
 			float visibleTilesY, int tileWidth, int tileHeight) {
-		for (int x = -1; x < visibleTilesX + 1; x++) {
-			for (int y = -1; y < visibleTilesY + 1; y++) {
+		for (int x = -1; x < visibleTilesX + 2; x++) {
+			for (int y = -1; y < visibleTilesY + 2; y++) {
 				Type tile = currentMap.getTile(x + (int) offsetX, y + (int) offsetY);
 
 //				s.image(img, a, b);

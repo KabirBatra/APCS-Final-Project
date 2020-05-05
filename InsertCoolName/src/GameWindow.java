@@ -21,7 +21,8 @@ public class GameWindow extends Window {
 		super(surface);
 		handler = new GameHandler(surface);
 		new Assets(handler); // initializes all of the assets and creates gameObjects
-		handler.setMap("testRoom", null);
+		handler.setMap("testRoom4", null);
+		
 	}
 	
 	public void setup() {
@@ -39,8 +40,8 @@ public class GameWindow extends Window {
 		
 		handler.tick(ellapsedTime);
 		
-		visibleTilesX = s.width/tileWidth+1;
-		visibleTilesY = s.height/tileHeight+1;
+		visibleTilesX = s.width/tileWidth;
+		visibleTilesY = s.height/tileHeight;
 
 		// smooth camera
 		cameraX -= (cameraX - player.getPosX()) * 0.07f;
