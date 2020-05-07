@@ -31,5 +31,9 @@ public abstract class Bullet extends GameObject implements Movable {
 	public void setVelY(float velY) {
 		this.velY = velY;
 	}
+	
+	public void onInteract(GameObject obj) {
+		
+	}
 
 }

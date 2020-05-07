@@ -92,7 +92,19 @@ public class GameHandler {
 			}
 			
 			if(obj.solidVsGameObject) {
-				// do dynamic collisions here
+				for(GameObject obj2 : objects) {
+					if(obj == obj2) {
+						continue;
+					}
+					// if the object is solid, they should not overlap 
+					// can overlap (the teleporter etc)
+					if(obj == getPlayer()) {
+						
+					}
+					obj.onInteract(obj2);
+					
+					
+				}
 			}
 			
 			
@@ -102,9 +114,10 @@ public class GameHandler {
 					enemiesThatCanShoot.add((Enemy)obj);
 				}
 			}
-			
 		}
 		
+		
+		// destroy the bullets at the end of the loop
 		for(GameObject destroyedBullet : bulletsToRemove) {
 			objects.remove(destroyedBullet);
 		}
