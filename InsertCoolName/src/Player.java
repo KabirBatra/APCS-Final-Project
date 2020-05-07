@@ -11,6 +11,8 @@ public class Player extends Creature {
 		super(x, y, name, ss);
 		this.handler = handler;
 		maxSpeed = 8f;
+		maxHealth = 100;
+		health = 100;
 	}
 
 	public void update(float ellapsedTime) {
@@ -65,7 +67,7 @@ public class Player extends Creature {
 		} else {
 			angle = 0; // shoot in the direction moving (using enum's index?)
 		}
-		handler.addGameObject(new NormalBullet(handler.getPlayer().getPosX()+0.5f, handler.getPlayer().getPosY()+0.5f, angle, "308"));
+		handler.addGameObject(new NormalBullet(this.posX+0.5f, this.posY+0.5f, angle, this, "308"));
 	}
 
 	public void drawSelf(float x, float y, int tileWidth, int tileHeight, PApplet s) {

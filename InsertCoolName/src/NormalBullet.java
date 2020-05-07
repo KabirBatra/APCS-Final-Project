@@ -1,4 +1,3 @@
-import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 
 import processing.core.PApplet;
@@ -9,8 +8,8 @@ public class NormalBullet extends Bullet {
 	protected static float damage = 10;
 	
 	
-	public NormalBullet(float x, float y, float angle, String name) {
-		super(x, y, angle, speed, name);
+	public NormalBullet(float x, float y, float angle, GameObject shooter, String name) {
+		super(x, y, angle, speed, shooter, name);
 	
 	}
 

@@ -63,7 +63,7 @@ public class GameWindow extends Window {
 
 		handler.drawMap(offsetX, offsetY, tileOffsetX, tileOffsetY, visibleTilesX, visibleTilesY, tileWidth, tileHeight);
 		handler.drawObjects(offsetX, offsetY, tileWidth, tileHeight);
-
+		handler.displayStats();
 		
 	}
 	

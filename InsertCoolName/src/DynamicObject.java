@@ -1,5 +1,6 @@
+import java.awt.geom.Rectangle2D;
 
-public interface Movable {
+public interface DynamicObject {
 	public float getVelX();
 	
 	public float getVelY();
@@ -17,4 +18,6 @@ public interface Movable {
 	public void setPosY(float posY);
 	
 	public void setPos(float posX, float posY);
+	
+	public Rectangle2D getBounds();
 }

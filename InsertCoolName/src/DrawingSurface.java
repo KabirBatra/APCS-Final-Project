@@ -36,7 +36,7 @@ public class DrawingSurface extends PApplet {
 	
 	public void setup() {
 		surface.setResizable(true);
-		surface.setTitle("CoolNameForGame");
+		surface.setTitle("REVENGE OF THE TOLIET PAPER");
 		surface.setLocation(0, 0);
 		fill(255);
 		noStroke();

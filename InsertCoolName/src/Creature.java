@@ -1,7 +1,7 @@
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
-public abstract class Creature extends GameObject implements Movable {
+public abstract class Creature extends GameObject implements DynamicObject {
 		
 	protected float velX, velY;
 	protected float maxSpeed;
