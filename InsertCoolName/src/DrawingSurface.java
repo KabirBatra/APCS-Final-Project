@@ -6,7 +6,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import processing.core.PApplet;
-
+/**
+ * This is the drawing surface that handles all the drawing and the ui!
+ * @author kaie
+ *
+ */
 public class DrawingSurface extends PApplet {
 
 	private WindowHandler wh;
@@ -24,16 +28,22 @@ public class DrawingSurface extends PApplet {
 	else 
 		System.out.println("BYE");
 	}
-	
+	/**
+	 * This creates the window
+	 */
 	public DrawingSurface() {
 		wh = new WindowHandler(this);
 		wh.addWindow(new GameWindow(this));
 	}
-	
+	/**
+	 * This applies the setting
+	 */
 	public void settings() {
 		size(600,600);
 	}
-	
+	/**
+	 * this is for the setup of the window
+	 */
 	public void setup() {
 		surface.setResizable(true);
 		surface.setTitle("REVENGE OF THE TOLIET PAPER");
@@ -42,16 +52,22 @@ public class DrawingSurface extends PApplet {
 		noStroke();
 		wh.getCurrentWindow().setup();
 	}
-	
+	/**
+	 * this draws the window
+	 */
 	public void draw() {
 		//background(0);
 		wh.getCurrentWindow().draw();
 	}
-	
+	/**
+	 * this pulls in keyboard pressed input
+	 */
 	public void keyPressed() {
 		wh.getCurrentWindow().keyPressed();
 	}
-	
+	/**
+	 * this pulls in keyboard released input
+	 */
 	public void keyReleased() {
 		wh.getCurrentWindow().keyReleased();
 	}

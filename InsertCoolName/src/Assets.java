@@ -3,7 +3,11 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
-
+/**
+ * This class deals with the images used in the game
+ * @author kaie & kabir
+ *
+ */
 public class Assets {
 	
 	GameHandler handler;

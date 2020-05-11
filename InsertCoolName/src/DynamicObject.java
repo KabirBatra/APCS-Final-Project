@@ -1,10 +1,20 @@
 import java.awt.geom.Rectangle2D;
 
 public interface DynamicObject {
+	/**
+	 * This gets the x Velocity
+	 * @return velX
+	 */
 	public float getVelX();
-	
+	/**
+	 * This gets the y Velocity
+	 * @return velY
+	 */
 	public float getVelY();
-
+	/**
+	 * This sets the x Velocity
+	 * @param velX must be within the range of the y 
+	 */
 	public void setVelX(float velX);
 
 	public void setVelY(float velY);
