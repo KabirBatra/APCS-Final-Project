@@ -14,6 +14,11 @@ public class Assets {
 
 
 	// should only run once
+	/**
+	 * This will create all the sprites that 
+	 * will be used within the game and handle all the images
+	 * @param handler Must be part of the game handler because the game handler are the objects
+	 */
 	public Assets(GameHandler handler) {
 		images = new HashMap<String, BufferedImage>();
 		maps = new HashMap<String, Map>();
@@ -53,14 +58,26 @@ public class Assets {
 		return image;
 	}
 	
+	/**
+	 * This gets the image of the sprite from the assets folder
+	 * @param name HAS TO BE THE ADDRESS TO THE PNG TO BE USED
+	 * @return BufferedImage
+	 */
 	public static BufferedImage getBufferedImage(String name) {
 		return images.get(name);
 	}
-	
+	/**
+	 * This method returns the map PNG as a map object
+	 * @param name
+	 * @return
+	 */
 	public static Map getMap(String name) {
 		return maps.get(name);
 	}
-	
+	/**
+	 * This method pulls the sprite image from the asset folder
+	 * @param name the pathway to the PNG image
+	 */
 	public static SpriteSheet getSpriteSheet(String name) {
 		return spriteSheets.get(name);
 	}
