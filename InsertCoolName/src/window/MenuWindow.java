@@ -1,6 +1,10 @@
 package window;
 import processing.core.PApplet;
 
+/*
+ * The Main Menu of the game
+ * @author Kaie Chen
+ */
 public class MenuWindow extends Window {
 
 	public MenuWindow(PApplet surface) {

@@ -1,9 +1,5 @@
 package running;
 
-//import javax.swing.JFrame;
-//import javax.swing.JOptionPane;
-//import javax.swing.JPanel;
-
 import processing.core.PApplet;
 import window.GameWindow;
 import window.MenuWindow;
@@ -21,23 +17,17 @@ public class DrawingSurface extends PApplet {
 	 */
 	public static void main(String[] args) {
 		System.out.println("hello world");
-		PApplet.main("DrawingSurface");
-		
-//	int result =  JOptionPane.showConfirmDialog(null, "Play Game?", "REVENGE OF THE TOLIET PAPER", JOptionPane.YES_NO_OPTION);
-//	      
-//	if (result == JOptionPane.YES_OPTION)
-//		
-//	else 
-//		System.out.println("BYE");
+		PApplet.main("running.DrawingSurface");
 	}
+	
 	/**
 	 * Creates a WindowHandler and adds all the windows to it
 	 */
 	public DrawingSurface() {
-		wh = new WindowHandler(this);
-		wh.addWindow(new GameWindow(this));
-		wh.addWindow(new MenuWindow(this));
-		wh.switchWindow(1);
+		wh = new WindowHandler();
+		wh.addWindow("game", new GameWindow(this));
+		wh.addWindow("menu", new MenuWindow(this));
+		wh.setCurrentWindow("menu");
 	}
 	
 	/**
@@ -76,11 +66,11 @@ public class DrawingSurface extends PApplet {
 		wh.getCurrentWindow().keyPressed();
 		
 		if(key == '1') {
-			wh.switchWindow(1);
+			wh.setCurrentWindow("menu");
 			wh.getCurrentWindow().setup();
 		}
 		if(key == '0') {
-			wh.switchWindow(0);
+			wh.setCurrentWindow("game");
 			wh.getCurrentWindow().setup();
 		}
 	}

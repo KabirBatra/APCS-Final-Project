@@ -14,6 +14,11 @@ import gameobject.Type;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
+/*
+ * The class that controls and maintains nearly everything in the game.
+ * Updates, collisions, controls, the GameObjects, and the current map are all stored here.
+ * @author Kabir Batra
+ */
 public class GameHandler {
 
 	private PApplet s;
@@ -32,6 +37,10 @@ public class GameHandler {
 	private float newPosX, newPosY;
 	private static final float BORDER_OFFSET_FOR_CREATURES = 0.1F; // values from 0.00001 - 0.1
 
+	/*
+	 * Creates the objects list and sets all of the current keys pressed to false. 
+	 * @param surface the PApplet for drawing things like the objects and the map
+	 */
 	public GameHandler(PApplet surface) {
 		s = surface;
 		objects = new LinkedList<GameObject>();
@@ -42,12 +51,16 @@ public class GameHandler {
 		right = false;
 	}
 
-	public void setMap(String name, Player p) {
+	/*
+	 * Sets the current map to mapName and uses the current player if it already exists.
+	 * @param mapName The map to switch to.
+	 */
+	public void setMap(String mapName) {
 		if (currentMap != null) {
 			objects.clear();
 		}
-		currentMap = Assets.getMap(name);
-		currentMap.populateGameObjects(p);
+		currentMap = Assets.getMap(mapName);
+		currentMap.populateGameObjects(getPlayer());
 		
 		//playerSpriteSheet = Assets.getSpriteSheet("playerSheet");
 	}
@@ -61,6 +74,9 @@ public class GameHandler {
 		//System.out.println("added a game object of " + obj.getClass());
 	}
 
+	/*
+	 * @returns the current player; returns null if the player has not been created yet
+	 */
 	public Player getPlayer() {
 		for (GameObject obj : objects) {
 			if (obj instanceof Player)
@@ -68,11 +84,17 @@ public class GameHandler {
 		}
 		return null;
 	}
-	
-//	public PApplet getSurface() {
-//		return s;
-//	}
 
+	/*
+	 * The update method.
+	 * This method is called every frame and calls the update 
+	 * method on every object. Then, it calculates collisions and 
+	 * determines which Bullets should be removed from the list of 
+	 * objects. Finally, it moves each object via its respective
+	 * velocity. 
+	 * @param ellapsedTime The delta time after each frame used to 
+	 * make velocities smooth and constant even when frames are slow.
+	 */
 	public void tick(float ellapsedTime) {
 		
 		LinkedList<Bullet> bulletsToRemove = new LinkedList<Bullet>();
@@ -165,6 +187,15 @@ public class GameHandler {
 		
 	}
 
+	/*
+	 * Draws all of the GameObjects onto the screen. 
+	 * @param offsetX The offset between the top-left of the screen and the 0th tile
+	 * in the x direction.
+	 * @param offsetY The offset between the top-left of the screen and the 0th tile
+	 * in the x direction.
+	 * @param tileWidth The number of pixels in the width of a tile.
+	 * @param tileHeight The number of pixels in the height of a tile.
+	 */
 	public void drawObjects(float offsetX, float offsetY, int tileWidth, int tileHeight) {
 		for (GameObject obj : objects) {
 			obj.drawSelf((obj.getPosX() - offsetX) * tileWidth, (obj.getPosY() - offsetY) * tileWidth, tileWidth,
@@ -173,8 +204,23 @@ public class GameHandler {
 		}
 	}
 
-	public void drawMap(float offsetX, float offsetY, float tileOffsetX, float tileOffsetY, float visibleTilesX,
-			float visibleTilesY, int tileWidth, int tileHeight) {
+	/*
+	 * Draws all of the tiles of the current map onto the screen.
+	 * @param offsetX The offset between the top-left of the screen and the 0th tile
+	 * in the x direction.
+	 * @param offsetY The offset between the top-left of the screen and the 0th tile
+	 * in the y direction.
+	 * @param tileOffsetX The fraction of the tile that is visible on the left-most 
+	 * column of the screen.
+	 * @param tileOffsetY The fraction of the tile that is visible on the top-most 
+	 * row of the screen.
+	 * @visibleTilesX The number of tiles visible on the screen in the x direction.
+	 * @visibleTilesY The number of tiles visible on the screen in the y direction.
+	 * @param tileWidth The number of pixels in the width of a tile.
+	 * @param tileHeight The number of pixels in the height of a tile.
+	 */
+	public void drawMap(float offsetX, float offsetY, float tileOffsetX, float tileOffsetY, 
+			float visibleTilesX, float visibleTilesY, int tileWidth, int tileHeight) {
 		for (int x = -1; x < visibleTilesX + 2; x++) {
 			for (int y = -1; y < visibleTilesY + 2; y++) {
 				Type tile = currentMap.getTile(x + (int) offsetX, y + (int) offsetY);
@@ -198,27 +244,46 @@ public class GameHandler {
 		}
 	}
 	
+	/*
+	 * Displays the players statistics like health.
+	 */
 	public void displayStats() {
 		s.fill(255, 0, 0);
 		s.text("HP: " + getPlayer().getHealth() + "/" + getPlayer().getMaxHealth(), 20, 20);
 	}
 
+	/*
+	 * @return whether the up key is pressed or not.
+	 */
 	public boolean getUp() {
 		return up;
 	}
 
+	/*
+	 * @return whether the down key is pressed or not.
+	 */
 	public boolean getDown() {
 		return down;
 	}
 
+	/*
+	 * @return whether the left key is pressed or not.
+	 */
 	public boolean getLeft() {
 		return left;
 	}
 
+	/*
+	 * @return whether the right key is pressed or not.
+	 */
 	public boolean getRight() {
 		return right;
 	}
 
+	/*
+	 * Sets the booleans for whether keys for movement have been pressed.
+	 * The movement keys are the arrow keys and WASD. 
+	 */
 	public void keyPressed() {
 		if (s.keyCode == PConstants.UP || s.key == 'w' || s.key == 'W') {
 			up = true;
@@ -241,19 +306,23 @@ public class GameHandler {
 			
 		} 
 		else if (s.key == 'f' || s.key == 'F') {
-			setMap("testRoom4", getPlayer());
+			setMap("testRoom4");
 			
 		} 
 		else if (s.key == 'r' || s.key == 'R') {
-			setMap("testRoom", getPlayer());
+			setMap("testRoom");
 			
 		} 
 		else if (s.key == 'm' || s.key == 'M') {
-			setMap("testRoom2", getPlayer());
+			setMap("testRoom2");
 		}
 		
 	}
 
+	/*
+	 * Sets the booleans for whether keys for movement have been released.
+	 * The movement keys are the arrow keys and WASD. 
+	 */
 	public void keyReleased() {
 		if (s.keyCode == PConstants.UP || s.key == 'w' || s.key == 'W') {
 			up = false;
@@ -274,6 +343,13 @@ public class GameHandler {
 
 	}
 	
+	/*
+	 * @param cr The creature being checked for a collision with a wall
+	 * @param ellapsedTime Used to make velocity calculations smooth at different frame rates.
+	 * @return a boolean array representing whether a collision occurred in the x and/or y direction.
+	 * The returned array at index 0 tells if there was a collision in the X direction and 
+	 * the returned array at index 1 tells if there was a collision in the Y direction.
+	 */
 	public boolean[] creatureVsWall(Creature cr, float ellapsedTime) {
 		// movement/collisions
 		newPosX = cr.getVelX() * ellapsedTime + cr.getPosX();
@@ -337,8 +413,11 @@ public class GameHandler {
 	
 	
 	
-	
-	//true if there is a collision
+	/*
+	 * @param b The Bullet being checked for a collision with a wall
+	 * @param ellapsedTime Used to make velocity calculations smooth at different frame rates.
+	 * @return Whether the bullet collided with a wall or not
+	 */
 	public boolean bulletVsWall(Bullet b, float ellapsedTime) {
 		// movement/collisions
 		newPosX = b.getVelX() * ellapsedTime + b.getPosX();
@@ -379,13 +458,19 @@ public class GameHandler {
 		}
 		
 		//no collision
-		
-//		b.setPos(newPosX, newPosY);
 		return false;
 	}
 	
+	/*
+	 * @param obj1 The first object being checked for a collision with the the second object
+	 * @param obj2 The second object being checked for a collision with the the first object
+	 * @param ellapsedTime Used to make velocity calculations smooth at different frame rates.
+	 * @return a boolean array representing whether a collision occurred in the x and/or y direction.
+	 * The returned array at index 0 tells if there was a collision in the X direction and 
+	 * the returned array at index 1 tells if there was a collision in the Y direction.
+	 */
 	public boolean[] creatureVsCreature(Creature obj1, Creature obj2, float ellapsedTime) {		
-		
+		//change this method to return just a boolean because interact() should handle knockback
 		if(!obj1.getBounds().intersects(obj2.getBounds())) {
 			return new boolean[] {false, false};
 		}

@@ -13,7 +13,7 @@ import assets.map.Room2;
 import running.GameHandler;
 /**
  * This singleton class contains all of the assets 
- * of the project including images, spritesheets, and maps
+ * of the project including images, SpriteSheets, and maps
  * @author Kabir Batra
  *
  */
@@ -61,7 +61,7 @@ public class Assets {
 	private BufferedImage loadImage(String path) {
 		BufferedImage image = null;
 		try {
-			image = ImageIO.read(getClass().getResource(path));
+			image = ImageIO.read(getClass().getClassLoader().getResource(path));
 		} catch (IOException e) {
 			System.out.println("image load unsuccessful");
 			e.printStackTrace();
@@ -70,24 +70,22 @@ public class Assets {
 	}
 	
 	/**
-	 * This gets the image of the sprite from the assets folder
-	 * @param name HAS TO BE THE ADDRESS TO THE PNG TO BE USED
-	 * @return BufferedImage
+	 * @param name A string representing the name of an image defined in the Assets constructor
+	 * @return BufferedImage The image with that name; returns null if the image does not exist
 	 */
 	public static BufferedImage getBufferedImage(String name) {
 		return images.get(name);
 	}
 	/**
-	 * This method returns the map PNG as a map object
-	 * @param name
-	 * @return
+	 * @param name A string representing the name of a map defined in the Assets constructor
+	 * @return Map The map with that name; returns null if the map does not exist
 	 */
 	public static Map getMap(String name) {
 		return maps.get(name);
 	}
 	/**
-	 * This method pulls the sprite image from the asset folder
-	 * @param name the pathway to the PNG image
+	 * @param name A string representing the name of a SpriteSheet defined in the Assets constructor
+	 * @return SpriteSheet The SpriteSheet with that name; returns null if the SpriteSheet does not exist
 	 */
 	public static SpriteSheet getSpriteSheet(String name) {
 		return spriteSheets.get(name);

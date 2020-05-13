@@ -3,6 +3,10 @@ import java.awt.geom.Rectangle2D;
 
 import processing.core.PApplet;
 
+/*
+ * The super class for all objects in the game.
+ * @author Kabir Batra
+ */
 public abstract class GameObject {
 	
 	protected float posX, posY;
