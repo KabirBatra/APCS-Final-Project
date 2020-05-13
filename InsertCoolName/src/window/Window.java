@@ -1,3 +1,4 @@
+package window;
 import processing.core.PApplet;
 
 public abstract class Window {

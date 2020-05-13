@@ -1,9 +1,12 @@
+package running;
 
 //import javax.swing.JFrame;
 //import javax.swing.JOptionPane;
 //import javax.swing.JPanel;
 
 import processing.core.PApplet;
+import window.GameWindow;
+import window.MenuWindow;
 /**
  * This is the main method of the project that inherits Processing's PApplet
  * @author Kabir Batra
@@ -20,7 +23,7 @@ public class DrawingSurface extends PApplet {
 		System.out.println("hello world");
 		PApplet.main("DrawingSurface");
 		
-//	 int result =  JOptionPane.showConfirmDialog(null, "Play Game?", "REVENGE OF THE TOLIET PAPER", JOptionPane.YES_NO_OPTION);
+//	int result =  JOptionPane.showConfirmDialog(null, "Play Game?", "REVENGE OF THE TOLIET PAPER", JOptionPane.YES_NO_OPTION);
 //	      
 //	if (result == JOptionPane.YES_OPTION)
 //		
@@ -62,14 +65,7 @@ public class DrawingSurface extends PApplet {
 	public void draw() {
 		//background(0);
 		wh.getCurrentWindow().draw();
-		if(key == '1') {
-			wh.switchWindow(1);
-			wh.getCurrentWindow().setup();
-		}
-		if(key == '0') {
-			wh.switchWindow(0);
-			wh.getCurrentWindow().setup();
-		}
+		
 	}
 	
 	
@@ -78,6 +74,15 @@ public class DrawingSurface extends PApplet {
 	 */
 	public void keyPressed() {
 		wh.getCurrentWindow().keyPressed();
+		
+		if(key == '1') {
+			wh.switchWindow(1);
+			wh.getCurrentWindow().setup();
+		}
+		if(key == '0') {
+			wh.switchWindow(0);
+			wh.getCurrentWindow().setup();
+		}
 	}
 	
 	

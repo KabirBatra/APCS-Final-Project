@@ -1,3 +1,4 @@
+package window;
 import processing.core.PApplet;
 
 public class MenuWindow extends Window {

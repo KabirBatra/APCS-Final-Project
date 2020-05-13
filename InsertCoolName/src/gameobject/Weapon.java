@@ -1,3 +1,4 @@
+package gameobject;
 import java.awt.geom.Rectangle2D.Double;
 
 import processing.core.PApplet;

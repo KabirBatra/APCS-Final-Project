@@ -1,6 +1,16 @@
+package running;
 import java.awt.geom.Rectangle2D;
 import java.util.LinkedList;
 
+import assets.Assets;
+import assets.map.Map;
+import gameobject.Bullet;
+import gameobject.Creature;
+import gameobject.DynamicObject;
+import gameobject.Enemy;
+import gameobject.GameObject;
+import gameobject.Player;
+import gameobject.Type;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
@@ -79,7 +89,7 @@ public class GameHandler {
 			hasCollidedY = false;
 
 			// wall collisions
-			if(obj.solidVsWall) {
+			if(obj.isSolidVsWall()) {
 				
 				if (obj instanceof Creature) {
 					Creature cr = (Creature)obj;
@@ -100,14 +110,14 @@ public class GameHandler {
 				}
 			}
 			
-			if(obj.solidVsGameObject) {
+			if(obj.isSolidVsGameObject()) {
 				for(GameObject obj2 : objects) {
 					if(obj == obj2) {
 						continue;
 					}
 					// if the object is solid, they should not overlap 
 					//insert code for moving object aside (using rectangle from obj2)
-					if(obj2.solidVsGameObject) {
+					if(obj2.isSolidVsGameObject()) {
 						if(obj instanceof Creature && obj2 instanceof Creature) {
 							boolean temp[] = creatureVsCreature((Creature)obj, (Creature)obj2, ellapsedTime);
 							if(temp[0]) hasCollidedX = true;
@@ -190,7 +200,7 @@ public class GameHandler {
 	
 	public void displayStats() {
 		s.fill(255, 0, 0);
-		s.text("HP: " + getPlayer().health + "/" + getPlayer().maxHealth, 20, 20);
+		s.text("HP: " + getPlayer().getHealth() + "/" + getPlayer().getMaxHealth(), 20, 20);
 	}
 
 	public boolean getUp() {

@@ -1,5 +1,8 @@
+package gameobject;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+
+import assets.SpriteSheet;
 /**
  *  This is the class that manages all the characters that are in the game!
  * @author kaie & kabir
@@ -97,6 +100,28 @@ public abstract class Creature extends GameObject implements DynamicObject {
 	public void setVelY(float velY) {
 		this.velY = velY;
 	}
+	
+	
+	public int getHealth() {
+		return health;
+	}
+	
+	
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	
+	public int getMaxHealth() {
+		return maxHealth;
+	}
+
+	
+	public void setMaxHealth(int maxHealth) {
+		this.maxHealth = maxHealth;
+	}
+	
+	
 	/**
 	 * Gets the spritesheet of this creature!
 	 * @param ss MUST be A SpriteSheet

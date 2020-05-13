@@ -1,7 +1,10 @@
+package gameobject;
 
 
+import assets.SpriteSheet;
 import processing.core.PApplet;
 import processing.core.PImage;
+import running.GameHandler;
 
 public class Player extends Creature {
 	

@@ -1,7 +1,14 @@
+package assets.map;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+
+import assets.SpriteSheet;
+import gameobject.Enemy;
+import gameobject.Player;
+import gameobject.Type;
+import running.GameHandler;
 
 public abstract class Map {
 	

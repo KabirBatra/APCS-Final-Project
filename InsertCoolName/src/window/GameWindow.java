@@ -1,5 +1,9 @@
+package window;
 
+import assets.Assets;
+import gameobject.GameObject;
 import processing.core.PApplet;
+import running.GameHandler;
 
 public class GameWindow extends Window {
 	

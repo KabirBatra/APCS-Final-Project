@@ -1,3 +1,4 @@
+package gameobject;
 
 public enum Type {
 	None, 

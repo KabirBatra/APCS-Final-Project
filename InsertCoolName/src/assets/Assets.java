@@ -1,8 +1,16 @@
+package assets;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
+
+import assets.map.EnemyRoom;
+import assets.map.Map;
+import assets.map.Maze1;
+import assets.map.Room1;
+import assets.map.Room2;
+import running.GameHandler;
 /**
  * This singleton class contains all of the assets 
  * of the project including images, spritesheets, and maps

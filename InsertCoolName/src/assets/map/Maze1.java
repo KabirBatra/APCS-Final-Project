@@ -1,3 +1,8 @@
+package assets.map;
+import assets.Assets;
+import assets.SpriteSheet;
+import gameobject.Player;
+import running.GameHandler;
 
 public class Maze1 extends Map {
 

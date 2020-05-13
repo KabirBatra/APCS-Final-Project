@@ -1,5 +1,8 @@
+package gameobject;
 
+import assets.SpriteSheet;
 import processing.core.PApplet;
+import running.GameHandler;
 
 public class Enemy extends Creature {
 

@@ -1,3 +1,4 @@
+package gameobject;
 
 /**
  * this class creates the bullet object that works with the players and objects

@@ -1,3 +1,4 @@
+package gameobject;
 import java.awt.geom.Rectangle2D;
 
 import processing.core.PApplet;
@@ -46,6 +47,14 @@ public abstract class GameObject {
 	
 	public String toString() {
 		return name;
+	}
+	
+	public boolean isSolidVsWall() {
+		return solidVsWall;
+	}
+	
+	public boolean isSolidVsGameObject() {
+		return solidVsGameObject;
 	}
 
 
