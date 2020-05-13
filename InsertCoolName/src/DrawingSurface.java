@@ -1,72 +1,88 @@
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+//import javax.swing.JFrame;
+//import javax.swing.JOptionPane;
+//import javax.swing.JPanel;
 
 import processing.core.PApplet;
 /**
- * This is the drawing surface that handles all the drawing and the ui!
- * @author kaie
- *
+ * This is the main method of the project that inherits Processing's PApplet
+ * @author Kabir Batra
  */
 public class DrawingSurface extends PApplet {
 
 	private WindowHandler wh;
 	
+	/*
+	 * Starts running the Processing Applet
+	 * @param args not used
+	 */
 	public static void main(String[] args) {
 		System.out.println("hello world");
-		
-		JFrame frame = new JFrame();
-	      JPanel panel = new JPanel();
-
-	 int result =  JOptionPane.showConfirmDialog(null, "Play Game?", "REVENGE OF THE TOLIET PAPER", JOptionPane.YES_NO_OPTION);
-	      
-	if (result == JOptionPane.YES_OPTION)
 		PApplet.main("DrawingSurface");
-	else 
-		System.out.println("BYE");
+		
+//	 int result =  JOptionPane.showConfirmDialog(null, "Play Game?", "REVENGE OF THE TOLIET PAPER", JOptionPane.YES_NO_OPTION);
+//	      
+//	if (result == JOptionPane.YES_OPTION)
+//		
+//	else 
+//		System.out.println("BYE");
 	}
 	/**
-	 * This creates the window
+	 * Creates a WindowHandler and adds all the windows to it
 	 */
 	public DrawingSurface() {
 		wh = new WindowHandler(this);
 		wh.addWindow(new GameWindow(this));
+		wh.addWindow(new MenuWindow(this));
+		wh.switchWindow(1);
 	}
+	
 	/**
-	 * This applies the setting
+	 * Settings of the Processing PApplet
 	 */
 	public void settings() {
 		size(600,600);
 	}
+	
+	
 	/**
-	 * this is for the setup of the window
+	 * Calls the setup method of the current window in the WindowHandler
 	 */
 	public void setup() {
 		surface.setResizable(true);
 		surface.setTitle("REVENGE OF THE TOLIET PAPER");
 		surface.setLocation(0, 0);
-		fill(255);
-		noStroke();
 		wh.getCurrentWindow().setup();
 	}
+	
+	
 	/**
-	 * this draws the window
+	 * Draws the current window of the WindowHandler
 	 */
 	public void draw() {
 		//background(0);
 		wh.getCurrentWindow().draw();
+		if(key == '1') {
+			wh.switchWindow(1);
+			wh.getCurrentWindow().setup();
+		}
+		if(key == '0') {
+			wh.switchWindow(0);
+			wh.getCurrentWindow().setup();
+		}
 	}
+	
+	
 	/**
-	 * this pulls in keyboard pressed input
+	 * Calls the keyPressed method of the current window
 	 */
 	public void keyPressed() {
 		wh.getCurrentWindow().keyPressed();
 	}
+	
+	
 	/**
-	 * this pulls in keyboard released input
+	 * Calls the keyReleased method of the current window
 	 */
 	public void keyReleased() {
 		wh.getCurrentWindow().keyReleased();

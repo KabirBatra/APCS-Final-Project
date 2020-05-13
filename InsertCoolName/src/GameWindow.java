@@ -26,6 +26,8 @@ public class GameWindow extends Window {
 	}
 	
 	public void setup() {
+		s.fill(255);
+		s.noStroke();
 		
 		player = handler.getPlayer();
 		cameraX = player.getPosX();

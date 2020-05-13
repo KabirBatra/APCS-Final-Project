@@ -1,4 +1,4 @@
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import processing.core.PApplet;
 
@@ -7,14 +7,14 @@ public class WindowHandler {
 	public static final int GAME_WINDOW = 0;
 	
 	private PApplet s;
-	private LinkedList<Window> windows;
+	private ArrayList<Window> windows;
 	
 	private int currentWindow;
 
 
 	public WindowHandler(PApplet surface) {
 		s = surface;
-		windows = new LinkedList<Window>();
+		windows = new ArrayList<Window>();
 		currentWindow = 0;
 
 	}

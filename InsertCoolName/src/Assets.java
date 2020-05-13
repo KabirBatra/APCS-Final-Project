@@ -4,8 +4,9 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 /**
- * This class deals with the images used in the game
- * @author kaie & kabir
+ * This singleton class contains all of the assets 
+ * of the project including images, spritesheets, and maps
+ * @author Kabir Batra
  *
  */
 public class Assets {
@@ -17,11 +18,9 @@ public class Assets {
 	public static HashMap<String, SpriteSheet> spriteSheets;
 
 
-	// should only run once
 	/**
-	 * This will create all the sprites that 
-	 * will be used within the game and handle all the images
-	 * @param handler Must be part of the game handler because the game handler are the objects
+	 * Initializes all of the assets by grabbing them from the assets folder
+	 * @param handler is used for creating new maps
 	 */
 	public Assets(GameHandler handler) {
 		images = new HashMap<String, BufferedImage>();
