@@ -3,6 +3,9 @@ import java.awt.geom.Rectangle2D;
 
 import processing.core.PApplet;
 
+/*
+ * The standard bullet in the game
+ */
 public class NormalBullet extends Bullet {
 	
 	protected static float speed = 13f;

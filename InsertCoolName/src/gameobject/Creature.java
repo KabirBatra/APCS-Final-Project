@@ -27,7 +27,7 @@ public abstract class Creature extends GameObject implements DynamicObject {
 /**
  * This creates a creature in the game!	
  * @param x The x location of this creature
- * @param y The y locattion of this creature
+ * @param y The y location of this creature
  * @param name The name of this creature!
  * @param ss the sprite that this image inherits!
  */
@@ -44,7 +44,7 @@ public abstract class Creature extends GameObject implements DynamicObject {
 	}
 	
 	/**
-	 * This method updates the creature's stats such as walking direction and health!
+	 * This method updates the creature's animations based on the walking direction
 	 */
 	public void update(float ellapsedTime) {
 		timer += ellapsedTime;
@@ -76,9 +76,9 @@ public abstract class Creature extends GameObject implements DynamicObject {
 			currentSprite = ss.getSprite(4,1);
 		}
 	}
-		/**
-		 * getter for x velocity
-		 */
+	/**
+	 * getter for x velocity
+	 */
 	public float getVelX() {
 		return velX;
 	}
@@ -129,9 +129,7 @@ public abstract class Creature extends GameObject implements DynamicObject {
 	public void setSpriteSheet(SpriteSheet ss) {
 		this.ss = ss;
 	}
-	/**
-	 * This returns a rectangle2d object with the position of the creature!
-	 */
+
 	public Rectangle2D.Double getBounds() {
 		return new Rectangle2D.Double(posX, posY, 1, 1);
 	}

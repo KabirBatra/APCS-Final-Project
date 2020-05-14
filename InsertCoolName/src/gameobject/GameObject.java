@@ -20,11 +20,25 @@ public abstract class GameObject {
 	}
 
 	
-	// method for animation purposes
+	/*
+	 * Updates the state of the object 
+	 * ex. changes the sprite as part of the animation.
+	 */
 	public abstract void update(float ellapsedTime);
-	// draws itself
+	
+	/*
+	 * Draws the object using the Processing PApplet
+	 * @param x The X position in terms of tiles
+	 * @param y The Y position in terms of tiles
+	 * @param tileWidth The width of each tile
+	 * @param tileHeight The height of each tile
+	 */
 	public abstract void drawSelf(float x, float y, int tileWidth, int tileHeight, PApplet s);
-	// when 2 game objects are touching
+	
+	/*
+	 * Handles the interation between two GameObjects
+	 * ex. knockback or teleportation
+	 */
 	public abstract void onInteract(GameObject obj);
 	
 	public float getPosX() {
@@ -53,15 +67,23 @@ public abstract class GameObject {
 		return name;
 	}
 	
+	/*
+	 * @return whether the object should collide with walls or not 
+	 */
 	public boolean isSolidVsWall() {
 		return solidVsWall;
 	}
 	
+	/*
+	 * @return whether the object should collide with other GameObjects or not
+	 */
 	public boolean isSolidVsGameObject() {
 		return solidVsGameObject;
 	}
 
-
+	/*
+	 * @return a rectangle that represents the boundary of the object
+	 */
 	public abstract Rectangle2D.Double getBounds();
 	
 }

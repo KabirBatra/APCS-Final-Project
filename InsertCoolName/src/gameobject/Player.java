@@ -6,10 +6,17 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import running.GameHandler;
 
+/*
+ * Represents the controllable Player of the game
+ * @author Kabir Batra
+ */
 public class Player extends Creature {
 	
 	private GameHandler handler;
-		
+	
+	/*
+	 * sets health and speed to defaults
+	 */
 	public Player(float x, float y, String name, SpriteSheet ss, GameHandler handler) {
 		super(x, y, name, ss);
 		this.handler = handler;
@@ -18,6 +25,10 @@ public class Player extends Creature {
 		health = 100;
 	}
 
+	/*
+	 * Updates the velocity of the player depending on the state of keys 
+	 * in the handler
+	 */
 	public void update(float ellapsedTime) {
 		super.update(ellapsedTime);
 		// movement
@@ -38,13 +49,16 @@ public class Player extends Creature {
 		
 		
 		// diagonal speed is still maxVel
-		if(Math.abs(velX) + Math.abs(velY) > maxSpeed) { //works same way as pythagorean theorem
+		if(Math.abs(velX) + Math.abs(velY) > maxSpeed) {
 			float ratio = (float)Math.sqrt(2);
 			velX /= ratio;
 			velY /= ratio;
 		}
 	}
 	
+	/*
+	 * Creates a bullet game object at the player's position
+	 */
 	public void shoot(PApplet s) {
 		Enemy closestEnemy = null;
 		float closestDistanceSquared = -1;
@@ -73,6 +87,9 @@ public class Player extends Creature {
 		handler.addGameObject(new NormalBullet(this.posX+0.5f, this.posY+0.5f, angle, this, "308"));
 	}
 
+	/*
+	 * Draws the player using the current sprite
+	 */
 	public void drawSelf(float x, float y, int tileWidth, int tileHeight, PApplet s) {
 		//s.fill(255, 0, 0);
 		//s.rect(x, y, tileWidth, tileHeight);

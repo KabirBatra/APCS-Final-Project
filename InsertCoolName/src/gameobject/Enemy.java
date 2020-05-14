@@ -4,11 +4,15 @@ import assets.SpriteSheet;
 import processing.core.PApplet;
 import running.GameHandler;
 
+/*
+ * Represents an enemy in the game
+ * @author Kaie Chen and Kabir Batra
+ */
 public class Enemy extends Creature {
 
 	private GameHandler handler;
 
-	private boolean canShoot;
+	private boolean isShooting;
 	public Enemy(float x, float y, String name, GameHandler handler, SpriteSheet ss) {
 		super(x, y, name, ss);
 		this.handler = handler;
@@ -16,35 +20,34 @@ public class Enemy extends Creature {
 		velY = 1;
 		// maxVel = speed;
 		maxSpeed = 5; // speed should be predefined per class that extends enemy
-		canShoot = false;
+		isShooting = false;
 	}
 
+	/*
+	 * Moves the enemy using the player's position
+	 */
 	public void update(float ellapsedTime) {
 		super.update(ellapsedTime);
 		// ai movement per tick
 		// velX = (int)(Math.random() * 15) - 7;
 		// velY = (int)(Math.random() * 15) - 7;
 
-		// Must be called upon enemy object
-		Enemy npc = this;
 
 		Player thePlayer = handler.getPlayer();
-		Enemy theEnemy = npc;
 
-		float enemyMaxSpeed = theEnemy.getMaxSpeed();
+		float enemyMaxSpeed = this.getMaxSpeed();
 
 		float playerX = thePlayer.getPosX();
 		float playerY = thePlayer.getPosY();
 
-		float enemyX = theEnemy.getPosX();
-		float enemyY = theEnemy.getPosY();
+		float enemyX = this.getPosX();
+		float enemyY = this.getPosY();
 
 		float theDiffX = playerX - enemyX;
 		float theDiffY = playerY - enemyY;
 		float theDist = (float) (Math.sqrt(Math.pow((double) theDiffX, 2d) + Math.pow((double) theDiffY, 2d)));
 
-		float theRatio = theDiffY / theDiffX;
-		float theAngle = (float) Math.atan((double) theRatio);
+		float theAngle = (float) Math.atan(theDiffY / (double)theDiffX);
 		if (theDiffX < 0) {
 			theAngle += Math.PI;
 		}
@@ -62,12 +65,12 @@ public class Enemy extends Creature {
 		while (!handler.getCurrentMap().isSolidTile(checkingX, checkingY)) {
 			if (checkingX == aproxPlayerX && checkingY == aproxPlayerY && theDist < 10) {
 				// npc.shoot(handler.getSurface());
-				canShoot = true;
+				isShooting = true;
 				checkingX = (int) enemyX;
 				checkingY = (int) enemyY;
 				break;
 			}
-			canShoot = false;
+			isShooting = false;
 			bulletX += Math.cos(theAngle);
 			bulletY += Math.sin(theAngle);
 			checkingX = (int) (bulletX);
@@ -84,29 +87,39 @@ public class Enemy extends Creature {
 
 		} else {
 
-			theEnemy.setVelX((float) (enemyMaxSpeed * Math.cos(theAngle)));
-			theEnemy.setVelY((float) (enemyMaxSpeed * Math.sin(theAngle)));
+			this.setVelX((float) (enemyMaxSpeed * Math.cos(theAngle)));
+			this.setVelY((float) (enemyMaxSpeed * Math.sin(theAngle)));
 			// System.out.println("this shouldn't print if it is success success!");
 
 		}
 
 	}
 
-
-
-	public boolean canShoot() {
-		return canShoot;
+	/*
+	 * @return whether the enemy is in the state of shooting or not. 
+	 */
+	public boolean isShooting() {
+		return isShooting;
 	}
 
+	/*
+	 * Draws the enemy as a green square
+	 */
 	public void drawSelf(float x, float y, int tileWidth, int tileHeight, PApplet s) {
 		s.fill(0, 255, 0);
 		s.rect(x, y, tileWidth, tileHeight);
 	}
-
+	
+	/*
+	 * Called when a player or bullet collides with the enemy. Does knock-back
+	 */
 	public void onInteract(GameObject obj) {
 
 	}
 
+	/*
+	 * Creates a bullet object travelling in the direction of the player.
+	 */
 	public void shoot(PApplet s) {
 		Player closestPlayer = null;
 		float closestDistanceSquared = -1;

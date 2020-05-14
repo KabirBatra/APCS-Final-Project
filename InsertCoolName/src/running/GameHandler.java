@@ -170,7 +170,7 @@ public class GameHandler {
 			
 			if(obj instanceof Enemy) {
 				Enemy temp = (Enemy)obj;
-				if(temp.canShoot()) {
+				if(temp.isShooting()) {
 					enemiesThatCanShoot.add((Enemy)obj);
 				}
 			}

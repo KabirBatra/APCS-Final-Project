@@ -2,7 +2,7 @@ package gameobject;
 
 /**
  * this class creates the bullet object that works with the players and objects
- * @author kaie & kabir
+ * @author Kaie & Kabir
  *
  */
 public abstract class Bullet extends GameObject implements DynamicObject {

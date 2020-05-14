@@ -3,6 +3,9 @@ import java.awt.geom.Rectangle2D.Double;
 
 import processing.core.PApplet;
 
+/*
+ * @author Kaie Chen
+ */
 public class Weapon extends GameObject{
 
 	public Weapon(float x, float y, String name) {
