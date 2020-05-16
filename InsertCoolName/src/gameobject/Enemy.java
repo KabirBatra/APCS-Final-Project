@@ -121,6 +121,11 @@ public class Enemy extends Creature {
 	 * Creates a bullet object travelling in the direction of the player.
 	 */
 	public void shoot(PApplet s) {
+		//add code so that shooting doesnt happen 24/7
+		if(true)
+			return;
+		
+		
 		Player closestPlayer = null;
 		float closestDistanceSquared = -1;
 		float distanceSquared;

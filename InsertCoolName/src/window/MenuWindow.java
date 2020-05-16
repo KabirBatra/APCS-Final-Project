@@ -2,6 +2,7 @@ package window;
 
 import processing.core.PApplet;
 import processing.core.PFont;
+import running.WindowHandler;
 
 /*
  * The Main Menu of the game
@@ -9,8 +10,8 @@ import processing.core.PFont;
  */
 public class MenuWindow extends Window {
 
-	public MenuWindow(PApplet surface) {
-		super(surface);
+	public MenuWindow(WindowHandler wh, PApplet surface) {
+		super(wh, surface);
 	}
 
 	PFont zigBlack;
@@ -105,6 +106,8 @@ public class MenuWindow extends Window {
 			System.out.println("LETS A GOOOO");
 
 			// START GAME
+			wh.setCurrentWindow("game");
+			wh.getCurrentWindow().setup();
 
 		}
 		if (s.mousePressed && s.mouseButton == s.LEFT && overButton2) {

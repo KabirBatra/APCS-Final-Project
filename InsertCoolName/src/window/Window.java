@@ -1,5 +1,6 @@
 package window;
 import processing.core.PApplet;
+import running.WindowHandler;
 
 /*
  * The super class of all windows. Contains a setup and draw method just 
@@ -8,10 +9,12 @@ import processing.core.PApplet;
  */
 public abstract class Window {
 	
+	protected WindowHandler wh;
 	protected PApplet s;
+
 	
-	public Window(PApplet surface) {
-		//this.handler = handler;
+	public Window(WindowHandler wh, PApplet surface) {
+		this.wh = wh;
 		this.s = surface;
 	}
 	public abstract void setup();	

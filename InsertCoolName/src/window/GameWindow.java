@@ -4,6 +4,7 @@ import assets.Assets;
 import gameobject.GameObject;
 import processing.core.PApplet;
 import running.GameHandler;
+import running.WindowHandler;
 
 /*
  * Represents the window of running the game. Uses the GameHandle to do most of the work. 
@@ -30,8 +31,8 @@ public class GameWindow extends Window {
 	 * Instantiates the Assets class and stores a reference to the Processing PApplet 
 	 * for to draw things.
 	 */
-	public GameWindow(PApplet surface) {
-		super(surface);
+	public GameWindow(WindowHandler wh, PApplet surface) {
+		super(wh, surface);
 		handler = new GameHandler(surface);
 		new Assets(handler); // initializes all of the assets and creates gameObjects
 		handler.setMap("testRoom4");
