@@ -17,6 +17,7 @@ public abstract class Creature extends GameObject implements DynamicObject {
 	protected int maxHealth;
 	
 	protected float timer; // for animations
+	protected int graphicState; // either 0 or 1
 	protected SpriteSheet ss;
 	protected BufferedImage currentSprite;
 
@@ -49,8 +50,11 @@ public abstract class Creature extends GameObject implements DynamicObject {
 	public void update(float ellapsedTime) {
 		timer += ellapsedTime;
 		
+		//every 0.2 seconds
 		if(timer >= 0.2) {
 			timer -= 0.2;
+			graphicState++;
+			graphicState %= 2;
 		}
 		
 		if(health <= 0) {
@@ -73,7 +77,35 @@ public abstract class Creature extends GameObject implements DynamicObject {
 			facingDirection = Direction.NORTH;
 		
 		if(ss != null) {
-			currentSprite = ss.getSprite(4,1);
+			if(state == AnimationState.DEAD) {
+				currentSprite = ss.getSprite(3,1);
+			}
+			else if(state == AnimationState.STANDING) {
+				currentSprite = ss.getSprite(4,1);
+			}
+			else { //if moving
+				
+				switch(facingDirection) {
+				case SOUTH:
+					currentSprite = ss.getSprite(0,graphicState);
+					break;
+				case EAST:
+					currentSprite = ss.getSprite(1,graphicState);
+					break; 
+				case NORTH:
+					currentSprite = ss.getSprite(2,graphicState);
+					break; 
+				case WEST:
+					currentSprite = ss.getSprite(3,graphicState);
+					break; 
+				
+				}
+				
+				
+			}
+			
+			
+			
 		}
 	}
 	/**
