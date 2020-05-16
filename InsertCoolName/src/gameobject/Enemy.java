@@ -146,6 +146,13 @@ public class Enemy extends Creature {
 			angle = 0; // shoot in the direction moving (using enum's index?)
 		}
 		handler.addGameObject(new NormalBullet(this.posX + 0.5f, this.posY + 0.5f, angle, this, "308"));
+		
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
