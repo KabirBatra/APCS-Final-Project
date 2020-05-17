@@ -1,5 +1,6 @@
 package gameobject;
 import java.awt.geom.Rectangle2D;
+import java.util.TimerTask;
 
 import processing.core.PApplet;
 
@@ -7,7 +8,7 @@ import processing.core.PApplet;
  * The super class for all objects in the game.
  * @author Kabir Batra
  */
-public abstract class GameObject {
+public abstract class GameObject extends TimerTask{
 	
 	protected float posX, posY;
 	protected String name;
