@@ -61,7 +61,7 @@ public abstract class Creature extends GameObject implements DynamicObject {
 		if(timer >= 0.1) {
 			timer -= 0.1;
 			ticks++;
-			graphicState++;
+			if(ticks % 2 == 0) graphicState++;
 			graphicState %= 2;
 		}
 		

@@ -47,7 +47,7 @@ public class Enemy extends Creature {
 			isShooting = false;
 			return; // dont do anything if dead
 		}
-
+		
 		Player thePlayer = handler.getPlayer();
 
 		float enemyMaxSpeed = this.getMaxSpeed();
@@ -60,7 +60,7 @@ public class Enemy extends Creature {
 
 		float theDiffX = playerX - enemyX;
 		float theDiffY = playerY - enemyY;
-		float theDist = (float) (Math.sqrt(Math.pow((double) theDiffX, 2d) + Math.pow((double) theDiffY, 2d)));
+		float theDist = (float) (Math.sqrt(theDiffX * theDiffX + theDiffY * theDiffY));
 
 		float theAngle = (float) Math.atan(theDiffY / (double) theDiffX);
 		if (theDiffX < 0) {
@@ -76,13 +76,16 @@ public class Enemy extends Creature {
 		int aproxPlayerY = (int) (playerY);
 
 		// Must be close so the shots can actually hit
-
+		canMoveX = false;
+		canMoveY = false;
 		while (!handler.getCurrentMap().isSolidTile(checkingX, checkingY)) {
+			System.out.println(theDist);
 			if (checkingX == aproxPlayerX && checkingY == aproxPlayerY && theDist < 10) {
-				// npc.shoot(handler.getSurface());
 				isShooting = true;
 				checkingX = (int) enemyX;
 				checkingY = (int) enemyY;
+				canMoveX = true;
+				canMoveY = true;
 				break;
 			}
 			isShooting = false;

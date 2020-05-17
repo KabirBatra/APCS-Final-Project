@@ -141,7 +141,6 @@ public class GameHandler {
 								//creatureVsCreature((Creature) obj2, (Creature) obj, newPos);
 								obj2.onInteract(obj);
 								//obj.onInteract(obj2);
-
 							}
 
 							// creature bullet
@@ -477,6 +476,7 @@ public class GameHandler {
 		Rectangle2D r2 = obj1.getBounds();
 
 		// x direction
+		//DO NOT DELETE THIS
 		if (newPos.x < (obj2.getPosX() + r2.getWidth()) && (newPos.x + r1.getWidth()) > obj2.getPosX()
 				&& obj1.getPosY() < (obj2.getPosY() + r2.getHeight())
 				&& (obj1.getPosY() + r1.getHeight()) > obj2.getPosY()) {
@@ -491,12 +491,14 @@ public class GameHandler {
 		if (newPos.y < (obj2.getPosY() + r2.getHeight()) && (newPos.y + r1.getHeight()) > obj2.getPosY()
 				&& obj1.getPosX() < (obj2.getPosX() + r2.getWidth())
 				&& (obj1.getPosX() + r1.getWidth()) > obj2.getPosX()) {
-			if (obj1.getVelX() < 0)
+			if (obj1.getVelY() < 0)
 				newPos.y = obj2.getPosY() + (float) r2.getHeight();
-			else if (obj1.getVelX() > 0)
+			else if (obj1.getVelY() > 0)
 				newPos.y = obj2.getPosY() - (float) r2.getHeight();
 			obj1.setVelY(0);
 		}
+
+		
 		
 	}
 

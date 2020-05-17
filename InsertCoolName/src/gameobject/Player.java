@@ -24,8 +24,8 @@ public class Player extends Creature {
 		super(x, y, name, ss);
 		this.handler = handler;
 		maxSpeed = 8f;
-		maxHealth = 100;
-		health = 100;
+		maxHealth = 1000;
+		health = 10000;
 	}
 
 	/*
@@ -67,7 +67,7 @@ public class Player extends Creature {
 		float closestDistanceSquared = -1;
 		float distanceSquared;
 		for(GameObject obj : handler.objects) {
-			if(obj instanceof Enemy) {
+			if(obj instanceof Enemy && !((Enemy) obj).isDead()) {
 				
 				distanceSquared = (posX - obj.posX)*(posX - obj.posX) + (posY - obj.posY)*(posY - obj.posY);
 				
