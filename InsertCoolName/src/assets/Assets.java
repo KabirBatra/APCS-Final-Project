@@ -45,8 +45,12 @@ public class Assets {
 		images.put("mazeTest", loadImage("mediumMaze.png"));
 		images.put("enemyRoomTest", loadImage("enemyRoomTest.png"));
 		images.put("player", loadImage("testSpriteSheetUpdate.png"));
+		images.put("slime", loadImage("slimeSheet.png"));
+
 		
 		spriteSheets.put("playerSheet", new SpriteSheet(images.get("player")));
+		spriteSheets.put("slimeSheet", new SpriteSheet(images.get("slime")));
+
 		
 		// maps
 		//maps.put("testRoom", new Map(getBufferedImage("bigTestRoom"), new SpriteSheet("testRoomSpriteSheet"), handler));

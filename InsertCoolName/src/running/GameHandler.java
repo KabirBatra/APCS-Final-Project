@@ -3,6 +3,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.LinkedList;
 
 import assets.Assets;
+import assets.SpriteSheet;
 import assets.map.Map;
 import gameobject.Bullet;
 import gameobject.Creature;
@@ -226,7 +227,7 @@ public class GameHandler {
 				Type tile = currentMap.getTile(x + (int) offsetX, y + (int) offsetY);
 
 //				s.image(img, a, b);
-
+				SpriteSheet mapSheet = currentMap.getSpriteSheet();
 				if (tile == Type.Wall) {
 					s.fill(0, 0, 255);
 				} 

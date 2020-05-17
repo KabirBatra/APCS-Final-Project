@@ -2,6 +2,7 @@ package gameobject;
 
 import assets.SpriteSheet;
 import processing.core.PApplet;
+import processing.core.PImage;
 import running.GameHandler;
 
 /*
@@ -106,8 +107,12 @@ public class Enemy extends Creature {
 	 * Draws the enemy as a green square
 	 */
 	public void drawSelf(float x, float y, int tileWidth, int tileHeight, PApplet s) {
-		s.fill(0, 255, 0);
-		s.rect(x, y, tileWidth, tileHeight);
+//		s.fill(0, 255, 0);
+//		s.rect(x, y, tileWidth, tileHeight);
+		if(currentSprite != null) {
+			PImage img = new PImage((java.awt.Image)currentSprite); 
+			s.image(img, x, y, tileWidth, tileHeight);
+		}
 	}
 	
 	/*
