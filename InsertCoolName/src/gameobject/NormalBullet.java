@@ -48,4 +48,10 @@ public class NormalBullet extends Bullet {
 		return new Rectangle2D.Double(posX, posY, 1f/4, 1f/4);
 	}
 
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

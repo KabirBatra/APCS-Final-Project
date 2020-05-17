@@ -103,4 +103,10 @@ public class Player extends Creature {
 	public void onInteract(GameObject obj) {
 		
 	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
 }
