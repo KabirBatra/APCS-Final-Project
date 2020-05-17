@@ -48,10 +48,9 @@ public class Assets {
 		images.put("slime", loadImage("slimeSheet.png"));
 
 		
-	//	images.put("player", loadImage("testSpriteSheetUpdate.png"));
-		images.put("player", loadImage("testSpriteSheet.png"));
-	
 		spriteSheets.put("playerSheet", new SpriteSheet(images.get("player")));
+		spriteSheets.put("slimeSheet", new SpriteSheet(images.get("sli")));
+
 		
 		// maps
 		//maps.put("testRoom", new Map(getBufferedImage("bigTestRoom"), new SpriteSheet("testRoomSpriteSheet"), handler));
@@ -96,3 +95,4 @@ public class Assets {
 		return spriteSheets.get(name);
 	}
 }
+
