@@ -44,11 +44,14 @@ public class Assets {
 		images.put("player", loadImage("testSpriteSheetUpdate.png"));
 		images.put("slime", loadImage("slimeSheet.png"));
 		images.put("tiles", loadImage("tileSheet.png"));
-
+		images.put("roll", loadImage("roll.png"));
+		images.put("normalBullet", loadImage("spinningRoll.png"));
+		
 		
 		spriteSheets.put("playerSheet", new SpriteSheet(images.get("player")));
 		spriteSheets.put("slimeSheet", new SpriteSheet(images.get("slime")));
 		spriteSheets.put("tileSheet", new SpriteSheet(images.get("tiles")));
+		spriteSheets.put("normalBulletSheet", new SpriteSheet(images.get("normalBullet")));
 		
 		// maps
 		//maps.put("testRoom", new Map(getBufferedImage("bigTestRoom"), new SpriteSheet("testRoomSpriteSheet"), handler));

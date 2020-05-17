@@ -18,6 +18,7 @@ public abstract class Creature extends GameObject implements DynamicObject {
 	
 	protected float timer; // for animations
 	protected int graphicState; // either 0 or 1
+	protected int ticks; // increases every 0.1 seconds
 	protected SpriteSheet ss;
 	protected BufferedImage currentSprite;
 
@@ -50,9 +51,10 @@ public abstract class Creature extends GameObject implements DynamicObject {
 	public void update(float ellapsedTime) {
 		timer += ellapsedTime;
 		
-		//every 0.2 seconds
-		if(timer >= 0.2) {
-			timer -= 0.2;
+		//every 0.1 seconds
+		if(timer >= 0.1) {
+			timer -= 0.1;
+			ticks++;
 			graphicState++;
 			graphicState %= 2;
 		}
