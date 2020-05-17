@@ -62,8 +62,7 @@ public class GameHandler {
 		}
 		currentMap = Assets.getMap(mapName);
 		currentMap.populateGameObjects(temp);
-
-		getPlayer().setSpriteSheet(Assets.getSpriteSheet("playerSheet"));
+		
 	}
 
 	public Map getCurrentMap() {
@@ -96,11 +95,15 @@ public class GameHandler {
 	 * smooth and constant even when frames are slow.
 	 */
 	public void tick(float ellapsedTime) {
+		
+
 
 		LinkedList<Bullet> bulletsToRemove = new LinkedList<Bullet>();
 		LinkedList<Enemy> enemiesThatCanShoot = new LinkedList<Enemy>();
 
 		PVector newPos = new PVector();
+		
+		boolean allEnemiesDead = true; //set to false if found enemy that is alive
 
 		for (GameObject obj : objects) {
 
@@ -162,8 +165,13 @@ public class GameHandler {
 					if (temp.isShooting()) {
 						enemiesThatCanShoot.add((Enemy) obj);
 					}
+					
+					if(!temp.isDead()) {
+						allEnemiesDead = false;
+					}
 				}
 			}
+
 		}
 		// after looping through all of the objects
 		for (GameObject destroyedBullet : bulletsToRemove) {
@@ -172,7 +180,14 @@ public class GameHandler {
 
 		for (Enemy enemy : enemiesThatCanShoot) {
 			enemy.shoot();
-
+		}
+		
+		if(allEnemiesDead) {
+			if(currentMap.startNextWave())
+				System.out.println("THE NEXT WAVE HAS STARTED AND ENEMIES ARE BACK!");
+			else {
+				System.out.println("THE WAVES ARE OVER AND YOU WIN");
+			}
 		}
 	}
 
@@ -193,8 +208,10 @@ public class GameHandler {
 		for (GameObject obj : objects) {
 			obj.drawSelf((obj.getPosX() - offsetX) * tileWidth, (obj.getPosY() - offsetY) * tileWidth, tileWidth,
 					tileHeight, s);
-
 		}
+		Player p = getPlayer();
+		p.drawSelf((getPlayer().getPosX() - offsetX) * tileWidth, (p.getPosY() - offsetY) * tileWidth, tileWidth,
+				tileHeight, s);
 	}
 
 	/*
@@ -313,6 +330,8 @@ public class GameHandler {
 
 		} else if (s.key == 'm' || s.key == 'M') {
 			setMap("testRoom2");
+		} else if(s.key == 'b' || s.key == 'B') {
+			
 		}
 
 	}
@@ -450,7 +469,7 @@ public class GameHandler {
 			return;
 		}
 		
-		if(obj1.getState() == Creature.AnimationState.DEAD || obj2.getState() == Creature.AnimationState.DEAD) {
+		if(obj1.isDead() || obj2.isDead()) {
 			return;
 		}
 

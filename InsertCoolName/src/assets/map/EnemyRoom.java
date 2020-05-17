@@ -10,6 +10,8 @@ public class EnemyRoom extends Map {
 		super(handler);
 		create(Assets.getBufferedImage("enemyRoomTest"), ss);
 		setPlayerStartPos();
+		currentWave = 1;
+		numberOfWaves = 3;
 	}
 
 	public void populateGameObjects(Player p) {

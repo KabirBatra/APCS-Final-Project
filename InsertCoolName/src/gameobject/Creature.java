@@ -92,6 +92,7 @@ public abstract class Creature extends GameObject implements DynamicObject {
 			}
 			else if(state == AnimationState.STANDING) {
 				currentSprite = ss.getSprite(4,1);
+				
 			}
 			else { //if moving
 				
@@ -188,8 +189,8 @@ public abstract class Creature extends GameObject implements DynamicObject {
 		System.out.println(healthPoints);
 	}
 	
-	public AnimationState getState() {
-		return state;
+	public boolean isDead() {
+		return state == AnimationState.DEAD;
 	}
 
 }

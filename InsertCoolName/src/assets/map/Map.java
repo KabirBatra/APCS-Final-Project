@@ -26,8 +26,11 @@ public abstract class Map {
 	protected int width;
 	protected int height;
 	
-	protected int playerStartPosX = 0;
-	protected int playerStartPosY = 0;
+	protected int currentWave;
+	protected int numberOfWaves;
+	
+	protected int playerStartPosX;
+	protected int playerStartPosY;
 
 	/*
 	 * Stores a reference to the GameHandler
@@ -35,6 +38,8 @@ public abstract class Map {
 	 */
 	public Map(GameHandler handler) {
 		this.handler = handler;
+		playerStartPosX = 0; // overridden by setPlayerStartPos()
+		playerStartPosY = 0;
 	}
 	
 	/*
@@ -143,16 +148,26 @@ public abstract class Map {
 	/*
 	 * Populates all of the GameObjects referenced in the tiles array
 	 * and uses the original Player object if it already exists.
+	 * Places the player at the predefined starting position.
 	 * @param p the Player object currently in the game; null if there is not player yet
 	 */
 	public void populateGameObjects(Player p) {
+		populateGameObjects(p, playerStartPosX, playerStartPosY);
+	}
+	
+	/*
+	 * Populates all of the GameObjects referenced in the tiles array
+	 * and uses the original Player object if it already exists.
+	 * @param p the Player object currently in the game; null if there is not player yet
+	 * @param playerPosX x position to place the player
+	 * @param playerPosY y position to place the player
+	 */
+	public void populateGameObjects(Player p, float playerPosX, float playerPosY) {
 		if(p != null) {
-			p.setPos(playerStartPosX, playerStartPosY);
-			p.setSpriteSheet(ss);
+			p.setPos(playerPosX, playerPosY);
 			handler.addGameObject(p);
-
 		} else {
-			handler.addGameObject(new Player(playerStartPosX, playerStartPosY, "player", handler));
+			handler.addGameObject(new Player(playerPosX, playerPosY, "player", handler));
 		}
 		
 		for(int x = 0; x < tiles.length; x++) {
@@ -163,5 +178,21 @@ public abstract class Map {
 			}
 		}
 	}
+
+	/*
+	 * Starts the next wave of enemies if there are more waves
+	 * @returns false if there are no more waves
+	 */
+	public boolean startNextWave() {
+		if(currentWave > numberOfWaves)
+			return false;
+		currentWave++;
+		System.out.println("staring wave " + currentWave + "!");
+		Player temp = handler.getPlayer();
+		handler.objects.clear();
+		populateGameObjects(temp, temp.getPosX(), temp.getPosY());
+		return true;
+	}
+	
 	
 }

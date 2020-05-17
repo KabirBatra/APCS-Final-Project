@@ -53,7 +53,6 @@ public class DrawingSurface extends PApplet {
 	 * Draws the current window of the WindowHandler
 	 */
 	public void draw() {
-		//background(0);
 		wh.getCurrentWindow().draw();
 		
 	}
@@ -64,15 +63,6 @@ public class DrawingSurface extends PApplet {
 	 */
 	public void keyPressed() {
 		wh.getCurrentWindow().keyPressed();
-		
-		if(key == '1') {
-			wh.setCurrentWindow("menu");
-			wh.getCurrentWindow().setup();
-		}
-		if(key == '0') {
-			wh.setCurrentWindow("game");
-			wh.getCurrentWindow().setup();
-		}
 	}
 	
 	

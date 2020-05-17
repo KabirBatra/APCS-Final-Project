@@ -24,8 +24,8 @@ public class GameWindow extends Window {
 	private float offsetX, offsetY, tileOffsetX, tileOffsetY;
 	private GameObject player;
 	
-	private float ellapsedTime = 0;
-	private int previousTime = 0;
+	private float ellapsedTime;
+	private int previousTime;
 	
 	/*
 	 * Instantiates the Assets class and stores a reference to the Processing PApplet 
@@ -58,6 +58,7 @@ public class GameWindow extends Window {
 	 */
 	public void draw() {
 		s.background(0);
+		if(previousTime == 0) previousTime = s.millis();
 		ellapsedTime = (s.millis() - previousTime)/1000f;
 		previousTime = s.millis();
 		
