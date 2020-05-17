@@ -16,6 +16,8 @@ import running.WindowHandler;
  */
 public class MenuWindow extends Window {
 
+	private static PImage toiletPaper;
+	
 	public MenuWindow(WindowHandler wh, PApplet surface) {
 		super(wh, surface);
 	}
@@ -23,6 +25,15 @@ public class MenuWindow extends Window {
 	PFont zigBlack;
 
 	public void setup() {
+		
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(getClass().getClassLoader().getResource("toiletPaper.png"));
+		} catch (IOException e) {
+			System.out.println("image load unsuccessful");
+			e.printStackTrace();
+		}
+		toiletPaper = new PImage((java.awt.Image)img);
 
 		s.background(0);
 		s.fill(0);
@@ -43,34 +54,27 @@ public class MenuWindow extends Window {
 
 
 //		this is the toliet paper
-		s.fill(255);
-
-		s.stroke(0);
-		s.ellipse(width / 2, height / 2 + 80, width / 6, height / 12);
-
-		s.noStroke();
-		s.rect(width / 2 - 50, height / 2, width / 6, height / 7.5f);
-
-		s.stroke(0);
-		s.ellipse(width / 2, height / 2, width / 6, height / 12);
-
-		s.stroke(128, 108, 81);
-		s.fill(173, 135, 98);
-		s.ellipse(width / 2, height / 2, width / 24, height / 50);
-		
-		// attempt to draw toilet paper image (kinda works)
-//		BufferedImage toiletPaper = null;
-//		try {
-//			toiletPaper = ImageIO.read(getClass().getClassLoader().getResource("toiletPaper.png"));
-//		} catch (IOException e) {
-//			System.out.println("image load unsuccessful");
-//			e.printStackTrace();
-//		}
-//		PImage img = new PImage((java.awt.Image)toiletPaper);
-//		float imgWidth = img.width/10;
-//		float imgHeight = img.height/10;
+//		s.fill(255);
+//
+//		s.stroke(0);
+//		s.ellipse(width / 2, height / 2 + 80, width / 6, height / 12);
+//
+//		s.noStroke();
+//		s.rect(width / 2 - 50, height / 2, width / 6, height / 7.5f);
+//
+//		s.stroke(0);
+//		s.ellipse(width / 2, height / 2, width / 6, height / 12);
+//
+//		s.stroke(128, 108, 81);
+//		s.fill(173, 135, 98);
+//		s.ellipse(width / 2, height / 2, width / 24, height / 50);
 //		
-//		s.image(img, width/2 - imgWidth/2, height/2 - imgHeight/2, imgWidth, imgHeight);
+		// attempt to draw toilet paper image 
+
+		float imgWidth = toiletPaper.width/10;
+		float imgHeight = toiletPaper.height/10;
+		
+		s.image(toiletPaper, width/2 - imgWidth/2, height/2 - imgHeight/2, imgWidth, imgHeight);
 		
 		
 		s.fill(173, 0, 0);
