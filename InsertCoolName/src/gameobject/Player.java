@@ -26,7 +26,6 @@ public class Player extends Creature {
 		maxSpeed = 8f;
 		maxHealth = 100;
 		health = 100;
-		//if(ss == null) ss = Assets.getSpriteSheet("playerSheet");
 	}
 
 	/*

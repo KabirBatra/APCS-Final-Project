@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import assets.SpriteSheet;
 /**
  *  This is the class that manages all the characters that are in the game!
- * @author kaie & kabir
+ * @author Kaie & Kabir
  *
  */
 public abstract class Creature extends GameObject implements DynamicObject {

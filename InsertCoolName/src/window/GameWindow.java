@@ -34,7 +34,7 @@ public class GameWindow extends Window {
 	public GameWindow(WindowHandler wh, PApplet surface) {
 		super(wh, surface);
 		handler = new GameHandler(surface);
-		new Assets(handler); // initializes all of the assets and creates gameObjects
+		new Assets(handler); // initializes all of the assets
 		handler.setMap("testRoom4");
 		
 	}

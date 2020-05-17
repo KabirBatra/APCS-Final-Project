@@ -1,11 +1,5 @@
 package gameobject;
 
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 import assets.Assets;
 import assets.SpriteSheet;
 import processing.core.PApplet;
@@ -35,7 +29,6 @@ public class Enemy extends Creature {
 		maxSpeed = 5; // speed should be predefined per class that extends enemy
 		isShooting = false;
 		maximumCoolDown = fireRate;
-		//if(ss == null) ss = Assets.getSpriteSheet("slimeSheet");
 	}
 
 	/*

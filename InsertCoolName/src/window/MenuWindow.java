@@ -1,7 +1,13 @@
 package window;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import processing.core.PApplet;
 import processing.core.PFont;
+import processing.core.PImage;
 import running.WindowHandler;
 
 /*
@@ -19,7 +25,7 @@ public class MenuWindow extends Window {
 	public void setup() {
 
 		s.background(0);
-		s.fill(0, 255, 180);
+		s.fill(0);
 		s.noStroke();
 
 		zigBlack = s.createFont("Ziggurat-Black", 32);
@@ -35,9 +41,8 @@ public class MenuWindow extends Window {
 		width = s.width;
 		height = s.height;
 
-		// System.out.println(width + " " + height);
 
-		// this is the toliet paper
+//		this is the toliet paper
 		s.fill(255);
 
 		s.stroke(0);
@@ -52,7 +57,22 @@ public class MenuWindow extends Window {
 		s.stroke(128, 108, 81);
 		s.fill(173, 135, 98);
 		s.ellipse(width / 2, height / 2, width / 24, height / 50);
-
+		
+		// attempt to draw toilet paper image (kinda works)
+//		BufferedImage toiletPaper = null;
+//		try {
+//			toiletPaper = ImageIO.read(getClass().getClassLoader().getResource("toiletPaper.png"));
+//		} catch (IOException e) {
+//			System.out.println("image load unsuccessful");
+//			e.printStackTrace();
+//		}
+//		PImage img = new PImage((java.awt.Image)toiletPaper);
+//		float imgWidth = img.width/10;
+//		float imgHeight = img.height/10;
+//		
+//		s.image(img, width/2 - imgWidth/2, height/2 - imgHeight/2, imgWidth, imgHeight);
+		
+		
 		s.fill(173, 0, 0);
 		s.textAlign(s.CENTER);
 		s.textSize(50);
