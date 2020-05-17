@@ -2,11 +2,6 @@ package running;
 
 import java.awt.geom.Rectangle2D;
 import java.util.LinkedList;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import assets.Assets;
 import assets.SpriteSheet;
@@ -24,7 +19,7 @@ import processing.core.PConstants;
 /*
  * The class that controls and maintains nearly everything in the game.
  * Updates, collisions, controls, the GameObjects, and the current map are all stored here.
- * @author Kabir Batra & Kaie Chen
+ * @author Kabir Batra 
  */
 public class GameHandler {
 
