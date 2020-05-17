@@ -3,6 +3,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import assets.SpriteSheet;
+import gameobject.Creature.AnimationState;
 /**
  *  This is the class that manages all the characters that are in the game!
  * @author Kaie & Kabir
@@ -23,7 +24,7 @@ public abstract class Creature extends GameObject implements DynamicObject {
 	protected BufferedImage currentSprite;
 
 	protected enum Direction {NORTH, SOUTH, EAST, WEST};
-	protected enum AnimationState {STANDING, WALKING, DEAD};
+	public enum AnimationState {STANDING, WALKING, DEAD};
 	protected Direction facingDirection;
 	protected AnimationState state;
 /**
@@ -49,6 +50,11 @@ public abstract class Creature extends GameObject implements DynamicObject {
 	 * This method updates the creature's animations based on the walking direction
 	 */
 	public void update(float ellapsedTime) {
+		if(state == AnimationState.DEAD) {
+			velX = 0;
+			velY = 0;
+			return;
+		}
 		timer += ellapsedTime;
 		
 		//every 0.1 seconds
@@ -82,7 +88,7 @@ public abstract class Creature extends GameObject implements DynamicObject {
 		
 		if(ss != null) {
 			if(state == AnimationState.DEAD) {
-				currentSprite = ss.getSprite(3,1);
+				currentSprite = ss.getSprite(4,0);
 			}
 			else if(state == AnimationState.STANDING) {
 				currentSprite = ss.getSprite(4,1);
@@ -176,4 +182,14 @@ public abstract class Creature extends GameObject implements DynamicObject {
 	public float getMaxSpeed() {
 		return maxSpeed;
 	}
+	
+	public void deltaHealth(int healthPoints) {
+		health += healthPoints;
+		System.out.println(healthPoints);
+	}
+	
+	public AnimationState getState() {
+		return state;
+	}
+
 }

@@ -19,6 +19,9 @@ public class Enemy extends Creature {
 	private boolean isShooting;
 	private int coolDown = 0;
 	private int maximumCoolDown;
+	
+	private boolean canMoveX = true;
+	private boolean canMoveY = true;
 
 	public Enemy(float x, float y, int fireRate, String name, GameHandler handler) {
 		super(x, y, name, ss);
@@ -26,23 +29,24 @@ public class Enemy extends Creature {
 		velX = 1;
 		velY = 1;
 		// maxVel = speed;
-		maxSpeed = 5; // speed should be predefined per class that extends enemy
+		maxSpeed = 3; // speed should be predefined per class that extends enemy
 		isShooting = false;
 		maximumCoolDown = fireRate;
+		health = 50;
+		maxHealth = 50;
 	}
 
 	/*
 	 * Moves the enemy using the player's position
 	 */
-
-	private boolean canMoveX = true;
-	private boolean canMoveY = true;
-
 	public void update(float ellapsedTime) {
 		super.update(ellapsedTime);
 		// ai movement per tick
-		// velX = (int)(Math.random() * 15) - 7;
-		// velY = (int)(Math.random() * 15) - 7;
+		
+		if(state == AnimationState.DEAD) {
+			isShooting = false;
+			return; // dont do anything if dead
+		}
 
 		Player thePlayer = handler.getPlayer();
 
@@ -132,23 +136,36 @@ public class Enemy extends Creature {
 		if(currentSprite != null) {
 			PImage img = new PImage((java.awt.Image)currentSprite); 
 			s.image(img, x, y, tileWidth, tileHeight);
+			s.fill(255,0,0);
+			s.rect(x, y, tileWidth, 10);
+			s.fill(0,255,0);
+			s.rect(x, y, tileWidth * (float)health/maxHealth, 10);
 		}
 	}
 
 	/*
 	 * Called when a player or bullet collides with the enemy. Does knock-back
 	 */
-	public void onInteract(GameObject obj) {
-
+	public boolean onInteract(GameObject obj) {
+		if(obj instanceof Player && state != AnimationState.DEAD) {
+			attack((Player)obj); // shouldnt attack if dead
+			return true;
+		}
+		if(obj instanceof Bullet && state != AnimationState.DEAD) {
+			//take knock back 
+//			velX *= -1; // temporary code
+//			velY *= -1;
+			return true;
+		}
+		return false;
 	}
 
 	/*
-	 * Creates a bullet object travelling in the direction of the player.
+	 * Creates a bullet object traveling in the direction of the player.
 	 */
 	private float angle;
 
 	public void shoot() {
-		// add code so that shooting doesnt happen 24/7
 
 		Player closestPlayer = null;
 		float closestDistanceSquared = -1;
@@ -182,6 +199,10 @@ public class Enemy extends Creature {
 			coolDown++;
 		}
 
+	}
+	
+	public void attack(Player p) {
+		p.deltaHealth(-5);
 	}
 
 

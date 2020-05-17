@@ -4,19 +4,13 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
-import assets.Assets;
-import assets.SpriteSheet;
+import assets.*;
 import assets.map.Map;
-import gameobject.Bullet;
-import gameobject.Creature;
-import gameobject.DynamicObject;
-import gameobject.Enemy;
-import gameobject.GameObject;
-import gameobject.Player;
-import gameobject.Type;
+import gameobject.*;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
+import processing.core.PVector;
 
 /*
  * The class that controls and maintains nearly everything in the game.
@@ -38,7 +32,6 @@ public class GameHandler {
 	private boolean left;
 	private boolean right;
 
-	private float newPosX, newPosY;
 	private static final float BORDER_OFFSET_FOR_CREATURES = 0.1F; // values from 0.00001 - 0.1
 
 	/*
@@ -107,90 +100,72 @@ public class GameHandler {
 		LinkedList<Bullet> bulletsToRemove = new LinkedList<Bullet>();
 		LinkedList<Enemy> enemiesThatCanShoot = new LinkedList<Enemy>();
 
-		boolean hasCollidedX;
-		boolean hasCollidedY;
+		PVector newPos = new PVector();
 
 		for (GameObject obj : objects) {
 
 			obj.update(ellapsedTime);
 
-			hasCollidedX = false;
-			hasCollidedY = false;
-
-			// wall collisions
-			if (obj.isSolidVsWall()) {
+			
+			if(obj instanceof DynamicObject) {
+				DynamicObject obj1 = (DynamicObject)obj;
+				newPos.x = obj1.getPosX() + obj1.getVelX() * ellapsedTime;
+				newPos.y = obj1.getPosY() + obj1.getVelY() * ellapsedTime;
 
 				if (obj instanceof Creature) {
 					Creature cr = (Creature) obj;
-					boolean[] temp = creatureVsWall(cr, ellapsedTime);
-					if (temp[0])
-						hasCollidedX = true;
-					if (temp[1])
-						hasCollidedY = true;
-				}
+					creatureVsWall(cr, newPos);
 
+				}
+				
 				else if (obj instanceof Bullet) {
 					Bullet b = (Bullet) obj;
-
-					// if collided
-					if (bulletVsWall(b, ellapsedTime)) {
+					if (bulletVsWall(b, newPos)) {
 						bulletsToRemove.add((Bullet) obj);
-						hasCollidedX = true;
-						hasCollidedY = true;
 					}
 				}
-			}
-
-			if (obj.isSolidVsGameObject()) {
-				for (GameObject obj2 : objects) {
-					if (obj == obj2) {
-						continue;
-					}
-					// if the object is solid, they should not overlap
-					// insert code for moving object aside (using rectangle from obj2)
-					if (obj2.isSolidVsGameObject()) {
-						if (obj instanceof Creature && obj2 instanceof Creature) {
-							boolean temp[] = creatureVsCreature((Creature) obj, (Creature) obj2, ellapsedTime);
-
-							if (temp[0])
-								hasCollidedX = true;
-							if (temp[1])
-								hasCollidedY = true;
-
+				
+				
+				if (obj.isSolidVsGameObject()) {
+					for (GameObject obj2 : objects) {
+						if (obj == obj2) {
+							continue;
 						}
-						// if its a bullet
+						if (obj2.isSolidVsGameObject() && obj1.getBounds().intersects(obj2.getBounds())) {
+							//creature creature
+							if (obj instanceof Creature && obj2 instanceof Creature) {
+								creatureVsCreature((Creature) obj, (Creature) obj2, newPos);
+								//creatureVsCreature((Creature) obj2, (Creature) obj, newPos);
+								obj2.onInteract(obj);
+								//obj.onInteract(obj2);
 
+							}
+
+							// creature bullet
+							else if(obj instanceof Creature && obj2 instanceof Bullet) {
+								if(obj2.onInteract(obj))
+									if(bulletsToRemove.indexOf(obj2) == -1) bulletsToRemove.add((Bullet)obj2);
+							}
+							// bullet bullet
+							else if(obj instanceof Bullet && obj2 instanceof Bullet) {
+								if(bulletsToRemove.indexOf(obj) == -1) bulletsToRemove.add((Bullet)obj);
+								if(bulletsToRemove.indexOf(obj2) == -1) bulletsToRemove.add((Bullet)obj2);
+							}
+						}
+						// if not solid vs gameobject here
 					}
-
-					// can overlap (the teleporter etc)
-					if (obj == getPlayer()) {
-						// if object is chest or teleporter or sign etc
+				}
+				obj.setPos(newPos.x, newPos.y);
+				
+				if (obj instanceof Enemy) {
+					Enemy temp = (Enemy) obj;
+					if (temp.isShooting()) {
+						enemiesThatCanShoot.add((Enemy) obj);
 					}
-
 				}
 			}
-
-			if ((obj instanceof DynamicObject) && !hasCollidedX) {
-				DynamicObject m = (DynamicObject) obj;
-				m.setPosX(m.getVelX() * ellapsedTime + m.getPosX());
-
-			}
-			if ((obj instanceof DynamicObject) && !hasCollidedY) {
-				DynamicObject m = (DynamicObject) obj;
-				m.setPosY(m.getVelY() * ellapsedTime + m.getPosY());
-
-			}
-
-			if (obj instanceof Enemy) {
-				Enemy temp = (Enemy) obj;
-				if (temp.isShooting()) {
-					enemiesThatCanShoot.add((Enemy) obj);
-				}
-			}
-
 		}
-
-		// destroy the bullets at the end of the loop
+		// after looping through all of the objects
 		for (GameObject destroyedBullet : bulletsToRemove) {
 			objects.remove(destroyedBullet);
 		}
@@ -278,6 +253,7 @@ public class GameHandler {
 	 */
 	public void displayStats() {
 		s.fill(255, 0, 0);
+		s.textAlign(s.CORNER);
 		s.text("HP: " + getPlayer().getHealth() + "/" + getPlayer().getMaxHealth(), 20, 20);
 	}
 
@@ -363,87 +339,66 @@ public class GameHandler {
 	}
 
 	/*
+	 * Changes the value of the parameter newPos based on whether a collision occurred or not
+	 * 
 	 * @param cr The creature being checked for a collision with a wall
 	 * 
-	 * @param ellapsedTime Used to make velocity calculations smooth at different
-	 * frame rates.
+	 * @param newPos The new position of the creature that is being collision checked
 	 * 
-	 * @return a boolean array representing whether a collision occurred in the x
-	 * and/or y direction. The returned array at index 0 tells if there was a
-	 * collision in the X direction and the returned array at index 1 tells if there
-	 * was a collision in the Y direction.
 	 */
-	public boolean[] creatureVsWall(Creature cr, float ellapsedTime) {
+	public void creatureVsWall(Creature cr, PVector newPos) {
 		// movement/collisions
-		newPosX = cr.getVelX() * ellapsedTime + cr.getPosX();
-		newPosY = cr.getVelY() * ellapsedTime + cr.getPosY();
-		boolean hasCollidedX = false;
-		boolean hasCollidedY = false;
 
-		if (newPosX < 0) {
-			newPosX = 0;
-			hasCollidedX = true;
+		if (newPos.x < 0) {
+			newPos.x = 0;
 		}
-		if (newPosY < 0) {
-			newPosY = 0;
-			hasCollidedY = true;
+		if (newPos.y < 0) {
+			newPos.y = 0;
 		}
 
 		// x direction
-		if (cr.getVelX() < 0 && (currentMap.isSolidTile((int) newPosX,
+		if (cr.getVelX() < 0 && (currentMap.isSolidTile((int) newPos.x,
 				(int) (cr.getPosY() + BORDER_OFFSET_FOR_CREATURES))
-				|| currentMap.isSolidTile((int) newPosX, (int) (cr.getPosY() + 1 - BORDER_OFFSET_FOR_CREATURES)))) {
+				|| currentMap.isSolidTile((int) newPos.x, (int) (cr.getPosY() + 1 - BORDER_OFFSET_FOR_CREATURES)))) {
 			cr.setVelX(0);
-			newPosX = (int) newPosX + 1;
-			hasCollidedX = true;
+			newPos.x = (int) newPos.x + 1;
 
-		} else if (cr.getVelX() > 0 && (currentMap.isSolidTile((int) newPosX + 1,
+		} else if (cr.getVelX() > 0 && (currentMap.isSolidTile((int) newPos.x + 1,
 				(int) (cr.getPosY() + BORDER_OFFSET_FOR_CREATURES))
-				|| currentMap.isSolidTile((int) newPosX + 1, (int) (cr.getPosY() + 1 - BORDER_OFFSET_FOR_CREATURES)))) {
+				|| currentMap.isSolidTile((int) newPos.x + 1, (int) (cr.getPosY() + 1 - BORDER_OFFSET_FOR_CREATURES)))) {
 			cr.setVelX(0);
-			newPosX = (int) newPosX;
-			hasCollidedX = true;
+			newPos.x = (int) newPos.x;
 
 		}
 
 		// y dir
 		if (cr.getVelY() < 0 && (currentMap.isSolidTile((int) (cr.getPosX() + BORDER_OFFSET_FOR_CREATURES),
-				(int) newPosY)
-				|| currentMap.isSolidTile((int) (cr.getPosX() + 1 - BORDER_OFFSET_FOR_CREATURES), (int) newPosY))) {
+				(int) newPos.y)
+				|| currentMap.isSolidTile((int) (cr.getPosX() + 1 - BORDER_OFFSET_FOR_CREATURES), (int) newPos.y))) {
 			cr.setVelY(0);
-			newPosY = (int) newPosY + 1;
-			hasCollidedY = true;
+			newPos.y = (int) newPos.y + 1;
 
 		} else if (cr.getVelY() > 0 && (currentMap.isSolidTile((int) (cr.getPosX() + BORDER_OFFSET_FOR_CREATURES),
-				(int) newPosY + 1)
-				|| currentMap.isSolidTile((int) (cr.getPosX() + 1 - BORDER_OFFSET_FOR_CREATURES), (int) newPosY + 1))) {
+				(int) newPos.y + 1)
+				|| currentMap.isSolidTile((int) (cr.getPosX() + 1 - BORDER_OFFSET_FOR_CREATURES), (int) newPos.y + 1))) {
 			cr.setVelY(0);
-			newPosY = (int) newPosY;
-			hasCollidedY = true;
+			newPos.y = (int) newPos.y;
 
 		}
-		if (hasCollidedX)
-			cr.setPosX(newPosX);
-		if (hasCollidedY)
-			cr.setPosY(newPosY);
 
-		return new boolean[] { hasCollidedX, hasCollidedY };
 	}
 
 	/*
 	 * @param b The Bullet being checked for a collision with a wall
 	 * 
-	 * @param ellapsedTime Used to make velocity calculations smooth at different
-	 * frame rates.
+	 * @param newPos The new position of the bullet that is being collision checked
 	 * 
 	 * @return Whether the bullet collided with a wall or not
 	 */
-	public boolean bulletVsWall(Bullet b, float ellapsedTime) {
+	public boolean bulletVsWall(Bullet b, PVector newPos) {
 		// movement/collisions
-		newPosX = b.getVelX() * ellapsedTime + b.getPosX();
-		newPosY = b.getVelY() * ellapsedTime + b.getPosY();
-
-		if (newPosX < 0 || newPosY < 0)
+		
+		if (newPos.x < 0 || newPos.y < 0)
 			return true;
 
 		Rectangle2D.Double bounds = b.getBounds(); // old position
@@ -456,20 +411,20 @@ public class GameHandler {
 		// bounds.height;
 
 		// x direction
-		if (b.getVelX() < 0 && (currentMap.isSolidTile((int) newPosX, (int) y)
-				|| currentMap.isSolidTile((int) newPosX, (int) (y + height)))) {
+		if (b.getVelX() < 0 && (currentMap.isSolidTile((int) newPos.x, (int) y)
+				|| currentMap.isSolidTile((int) newPos.x, (int) (y + height)))) {
 			return true;
-		} else if (b.getVelX() > 0 && (currentMap.isSolidTile((int) (newPosX + width), (int) y)
-				|| currentMap.isSolidTile((int) (newPosX + width), (int) (y + height)))) {
+		} else if (b.getVelX() > 0 && (currentMap.isSolidTile((int) (newPos.x + width), (int) y)
+				|| currentMap.isSolidTile((int) (newPos.x + width), (int) (y + height)))) {
 			return true;
 		}
 
 		// y dir
-		if (b.getVelY() < 0 && (currentMap.isSolidTile((int) (x), (int) newPosY)
-				|| currentMap.isSolidTile((int) (x + width), (int) newPosY))) {
+		if (b.getVelY() < 0 && (currentMap.isSolidTile((int) (x), (int) newPos.y)
+				|| currentMap.isSolidTile((int) (x + width), (int) newPos.y))) {
 			return true;
-		} else if (b.getVelY() > 0 && (currentMap.isSolidTile((int) (x), (int) (newPosY + height))
-				|| currentMap.isSolidTile((int) (x + width), (int) (newPosY + height)))) {
+		} else if (b.getVelY() > 0 && (currentMap.isSolidTile((int) (x), (int) (newPos.y + height))
+				|| currentMap.isSolidTile((int) (x + width), (int) (newPos.y + height)))) {
 			return true;
 		}
 
@@ -478,95 +433,52 @@ public class GameHandler {
 	}
 
 	/*
+	 * Changes the value of the parameter newPos based on whether a collision occurred or not
+	 * 
 	 * @param obj1 The first object being checked for a collision with the the
 	 * second object
 	 * 
 	 * @param obj2 The second object being checked for a collision with the the
 	 * first object
 	 * 
-	 * @param ellapsedTime Used to make velocity calculations smooth at different
-	 * frame rates.
-	 * 
-	 * @return a boolean array representing whether a collision occurred in the x
-	 * and/or y direction. The returned array at index 0 tells if there was a
-	 * collision in the X direction and the returned array at index 1 tells if there
-	 * was a collision in the Y direction.
+	 * @param newPos The new position of the bullet that is being collision checked
 	 */
-	public boolean[] creatureVsCreature(Creature obj1, Creature obj2, float ellapsedTime) {
-		// change this method to return just a boolean because interact() should handle
-		// knockback
-		if (!obj1.getBounds().intersects(obj2.getBounds())) {
-			return new boolean[] { false, false };
-		}
+	public void creatureVsCreature(Creature obj1, Creature obj2, PVector newPos) {
 
-		boolean hasCollidedX = false;
-		boolean hasCollidedY = false;
-		newPosX = obj1.getVelX() * ellapsedTime + obj1.getPosX();
-		newPosY = obj1.getVelY() * ellapsedTime + obj1.getPosY();
+		if (!obj1.getBounds().intersects(obj2.getBounds())) {
+			System.out.println("this should not have happened");
+			return;
+		}
+		
+		if(obj1.getState() == Creature.AnimationState.DEAD || obj2.getState() == Creature.AnimationState.DEAD) {
+			return;
+		}
 
 		Rectangle2D r1 = obj1.getBounds();
 		Rectangle2D r2 = obj1.getBounds();
 
 		// x direction
-		if (newPosX < (obj2.getPosX() + r2.getWidth()) && (newPosX + r1.getWidth()) > obj2.getPosX()
+		if (newPos.x < (obj2.getPosX() + r2.getWidth()) && (newPos.x + r1.getWidth()) > obj2.getPosX()
 				&& obj1.getPosY() < (obj2.getPosY() + r2.getHeight())
 				&& (obj1.getPosY() + r1.getHeight()) > obj2.getPosY()) {
-			hasCollidedX = true;
 			if (obj1.getVelX() < 0)
-				newPosX = obj2.getPosX() + (float) r2.getWidth();
+				newPos.x = obj2.getPosX() + (float) r2.getWidth();
 			else if (obj1.getVelX() > 0)
-				newPosX = obj2.getPosX() - (float) r2.getWidth();
+				newPos.x = obj2.getPosX() - (float) r2.getWidth();
 			obj1.setVelX(0);
 		}
 
 		// y direction
-		if (newPosY < (obj2.getPosY() + r2.getHeight()) && (newPosY + r1.getHeight()) > obj2.getPosY()
+		if (newPos.y < (obj2.getPosY() + r2.getHeight()) && (newPos.y + r1.getHeight()) > obj2.getPosY()
 				&& obj1.getPosX() < (obj2.getPosX() + r2.getWidth())
 				&& (obj1.getPosX() + r1.getWidth()) > obj2.getPosX()) {
-			hasCollidedX = true;
 			if (obj1.getVelX() < 0)
-				newPosY = obj2.getPosY() + (float) r2.getHeight();
+				newPos.y = obj2.getPosY() + (float) r2.getHeight();
 			else if (obj1.getVelX() > 0)
-				newPosY = obj2.getPosY() - (float) r2.getHeight();
+				newPos.y = obj2.getPosY() - (float) r2.getHeight();
 			obj1.setVelY(0);
 		}
-
-		/*
-		 * 
-		 * if (obj1.getVelX() < 0 && (currentMap.isSolidTile((int) newPosX, (int)
-		 * (obj1.getPosY() + BORDER_OFFSET_FOR_CREATURES)) ||
-		 * currentMap.isSolidTile((int) newPosX, (int) (obj1.getPosY() + 1 -
-		 * BORDER_OFFSET_FOR_CREATURES)))) { obj1.setVelX(0); newPosX = (int) newPosX +
-		 * 1; hasCollidedX = true;
-		 * 
-		 * } else if (obj1.getVelX() > 0 && (currentMap.isSolidTile((int) newPosX + 1,
-		 * (int) (obj1.getPosY() + BORDER_OFFSET_FOR_CREATURES)) ||
-		 * currentMap.isSolidTile((int) newPosX + 1, (int) (obj1.getPosY() + 1 -
-		 * BORDER_OFFSET_FOR_CREATURES)))) { obj1.setVelX(0); newPosX = (int) newPosX;
-		 * hasCollidedX = true;
-		 * 
-		 * }
-		 * 
-		 * // y dir if (obj1.getVelY() < 0 && (currentMap.isSolidTile( (int)
-		 * (obj1.getPosX() + BORDER_OFFSET_FOR_CREATURES), (int) newPosY) ||
-		 * currentMap.isSolidTile( (int) (obj1.getPosX() + 1 -
-		 * BORDER_OFFSET_FOR_CREATURES), (int) newPosY))) { obj1.setVelY(0); newPosY =
-		 * (int) newPosY + 1; hasCollidedY = true;
-		 * 
-		 * } else if (obj1.getVelY() > 0 && (currentMap.isSolidTile( (int)
-		 * (obj1.getPosX() + BORDER_OFFSET_FOR_CREATURES), (int) newPosY + 1) ||
-		 * currentMap.isSolidTile( (int) (obj1.getPosX() + 1 -
-		 * BORDER_OFFSET_FOR_CREATURES), (int) newPosY + 1))) { obj1.setVelY(0); newPosY
-		 * = (int) newPosY; hasCollidedY = true;
-		 * 
-		 * }
-		 */
-		if (hasCollidedX)
-			obj1.setPosX(newPosX);
-		if (hasCollidedY)
-			obj1.setPosY(newPosY);
-
-		return new boolean[] { hasCollidedX, hasCollidedY };
+		
 	}
 
 }

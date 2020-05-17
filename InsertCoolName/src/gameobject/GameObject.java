@@ -39,7 +39,7 @@ public abstract class GameObject {
 	 * Handles the interation between two GameObjects
 	 * ex. knockback or teleportation
 	 */
-	public abstract void onInteract(GameObject obj);
+	public abstract boolean onInteract(GameObject obj);
 	
 	public float getPosX() {
 		return posX;

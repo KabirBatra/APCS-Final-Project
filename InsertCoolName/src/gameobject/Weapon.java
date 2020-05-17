@@ -26,9 +26,9 @@ public class Weapon extends GameObject{
 	}
 
 	@Override
-	public void onInteract(GameObject obj) {
+	public boolean onInteract(GameObject obj) {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 
 	@Override

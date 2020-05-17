@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 import assets.Assets;
 import assets.SpriteSheet;
+import gameobject.Creature.AnimationState;
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -48,8 +49,16 @@ public class NormalBullet extends Bullet {
 
 	}
 
-	public void onInteract(GameObject obj) {
-
+	public boolean onInteract(GameObject obj) {
+		if(obj instanceof Creature && obj != shotBy && ((Creature) obj).state != AnimationState.DEAD) {
+			attack( (Creature)obj );
+			return true;
+		}
+		return false;
+	}
+	
+	public void attack(Creature cr) {
+		cr.deltaHealth(-10);
 	}
 
 	public Rectangle2D.Double getBounds() {

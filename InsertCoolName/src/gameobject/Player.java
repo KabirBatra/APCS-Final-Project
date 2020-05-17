@@ -103,8 +103,14 @@ public class Player extends Creature {
 		}
 	}
 
-	public void onInteract(GameObject obj) {
-		
+	public boolean onInteract(GameObject obj) {
+		if(obj instanceof Enemy || obj instanceof Bullet) {
+			//take knock back 
+//			velX *= -1; // temporary code
+//			velY *= -1;
+			return true;
+		}
+		return false;
 	}
 
 }

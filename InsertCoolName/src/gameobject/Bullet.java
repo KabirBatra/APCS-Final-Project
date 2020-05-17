@@ -27,35 +27,23 @@ public abstract class Bullet extends GameObject implements DynamicObject {
 		shotBy = shooter;
 		
 	}
-	/**
-	 * This is a getter for the x velocity of the bullet
-	 */
+
 	public float getVelX() {
 		return velX;
 	}
-	/**
-	 * this is a getter for the y velocity of the bullet
-	 */
+
 	public float getVelY() {
 		return velY;
 	}
-	/**
-	 * This is a setter for the x velocity of the bullet
-	 */
+
 	public void setVelX(float velX) {
 		this.velX = velX;
 	}
-	/**
-	 * This is a setter for the y velocity of the bullet
-	 */
+
 	public void setVelY(float velY) {
 		this.velY = velY;
 	}
-	/**
-	 * This method would work with other game objects
-	 */
-	public void onInteract(GameObject obj) {
-		
-	}
+	
+	public abstract void attack(Creature cr);
 
 }
