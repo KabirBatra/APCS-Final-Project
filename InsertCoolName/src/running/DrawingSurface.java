@@ -34,7 +34,7 @@ public class DrawingSurface extends PApplet {
 	 * Settings of the Processing PApplet
 	 */
 	public void settings() {
-		size(600,600);
+		size(64*11,64*11);
 	}
 	
 	

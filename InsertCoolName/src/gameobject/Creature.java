@@ -67,14 +67,16 @@ public abstract class Creature extends GameObject implements DynamicObject {
 			state = AnimationState.WALKING;
 		}
 		
-		if(velX > 0)
-			facingDirection = Direction.WEST;
-		if(velX < 0)
-			facingDirection = Direction.EAST;
 		if(velY > 0)
 			facingDirection = Direction.SOUTH;
 		if(velY < 0)
 			facingDirection = Direction.NORTH;
+		// west and east have precedence
+		if(velX > 0) 
+			facingDirection = Direction.WEST;
+		if(velX < 0)
+			facingDirection = Direction.EAST;
+		
 		
 		if(ss != null) {
 			if(state == AnimationState.DEAD) {

@@ -6,6 +6,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import assets.Assets;
 import assets.SpriteSheet;
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -16,6 +17,8 @@ import running.GameHandler;
  * @author Kaie Chen and Kabir Batra
  */
 public class Enemy extends Creature {
+	
+	private static SpriteSheet ss = Assets.getSpriteSheet("slimeSheet");
 
 	private GameHandler handler;
 
@@ -23,7 +26,7 @@ public class Enemy extends Creature {
 	private int coolDown = 0;
 	private int maximumCoolDown;
 
-	public Enemy(float x, float y, int fireRate, String name, GameHandler handler, SpriteSheet ss) {
+	public Enemy(float x, float y, int fireRate, String name, GameHandler handler) {
 		super(x, y, name, ss);
 		this.handler = handler;
 		velX = 1;
@@ -32,6 +35,7 @@ public class Enemy extends Creature {
 		maxSpeed = 5; // speed should be predefined per class that extends enemy
 		isShooting = false;
 		maximumCoolDown = fireRate;
+		//if(ss == null) ss = Assets.getSpriteSheet("slimeSheet");
 	}
 
 	/*

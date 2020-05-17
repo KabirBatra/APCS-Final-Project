@@ -1,6 +1,7 @@
 package running;
 
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
 import assets.Assets;
@@ -15,6 +16,7 @@ import gameobject.Player;
 import gameobject.Type;
 import processing.core.PApplet;
 import processing.core.PConstants;
+import processing.core.PImage;
 
 /*
  * The class that controls and maintains nearly everything in the game.
@@ -61,13 +63,14 @@ public class GameHandler {
 	 * @param mapName The map to switch to.
 	 */
 	public void setMap(String mapName) {
+		Player temp = getPlayer();
 		if (currentMap != null) {
 			objects.clear();
 		}
 		currentMap = Assets.getMap(mapName);
-		currentMap.populateGameObjects(getPlayer());
+		currentMap.populateGameObjects(temp);
 
-		// playerSpriteSheet = Assets.getSpriteSheet("playerSheet");
+		getPlayer().setSpriteSheet(Assets.getSpriteSheet("playerSheet"));
 	}
 
 	public Map getCurrentMap() {
@@ -76,7 +79,6 @@ public class GameHandler {
 
 	public void addGameObject(GameObject obj) {
 		objects.add(obj);
-		// System.out.println("added a game object of " + obj.getClass());
 	}
 
 	/*
@@ -245,22 +247,28 @@ public class GameHandler {
 	 */
 	public void drawMap(float offsetX, float offsetY, float tileOffsetX, float tileOffsetY, float visibleTilesX,
 			float visibleTilesY, int tileWidth, int tileHeight) {
-		for (int x = -1; x < visibleTilesX + 2; x++) {
-			for (int y = -1; y < visibleTilesY + 2; y++) {
+		for (int x = -1; x < visibleTilesX + 1; x++) {
+			for (int y = -1; y < visibleTilesY + 1; y++) {
 				Type tile = currentMap.getTile(x + (int) offsetX, y + (int) offsetY);
 
 //				s.image(img, a, b);
 				SpriteSheet mapSheet = currentMap.getSpriteSheet();
+				BufferedImage currentSprite = null;
 				if (tile == Type.Wall) {
-					s.fill(0, 0, 255);
-				} else if (tile == Type.None) {
-					s.fill(0);
-				} else if (tile == Type.Floor || tile == Type.Enemy || tile == Type.Player) {
-					s.fill(255);
-				} else {
-					s.fill(51); // error color
+					currentSprite = mapSheet.getSprite(0, 0);
+					//s.fill(0, 0, 255);
+				} 
+				else if (tile == Type.Floor || tile == Type.Enemy || tile == Type.Player) {
+					//s.fill(255);
+					currentSprite = mapSheet.getSprite(1, 0);
+				} 
+				else { // if its Type.None (doesnt exist)
+					//s.fill(51); 
+					currentSprite = mapSheet.getSprite(2,0);
 				}
-				s.rect(x * tileWidth - tileOffsetX, y * tileHeight - tileOffsetY, tileWidth + 1f, tileHeight + 1f);
+				//s.rect(x * tileWidth - tileOffsetX, y * tileHeight - tileOffsetY, tileWidth + 1f, tileHeight + 1f);
+				
+				s.image(new PImage((java.awt.Image)currentSprite), x * tileWidth - tileOffsetX, y * tileHeight - tileOffsetY, tileWidth + 1f, tileHeight + 1f);
 			}
 		}
 	}

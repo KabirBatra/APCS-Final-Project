@@ -1,6 +1,7 @@
 package gameobject;
 
 
+import assets.Assets;
 import assets.SpriteSheet;
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -12,17 +13,20 @@ import running.GameHandler;
  */
 public class Player extends Creature {
 	
+	private static SpriteSheet ss = Assets.getSpriteSheet("playerSheet");
+
 	private GameHandler handler;
 	
 	/*
 	 * sets health and speed to defaults
 	 */
-	public Player(float x, float y, String name, SpriteSheet ss, GameHandler handler) {
+	public Player(float x, float y, String name, GameHandler handler) {
 		super(x, y, name, ss);
 		this.handler = handler;
 		maxSpeed = 8f;
 		maxHealth = 100;
 		health = 100;
+		//if(ss == null) ss = Assets.getSpriteSheet("playerSheet");
 	}
 
 	/*

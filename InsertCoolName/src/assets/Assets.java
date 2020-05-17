@@ -35,10 +35,7 @@ public class Assets {
 		maps = new HashMap<String, Map>();
 		spriteSheets = new HashMap<String, SpriteSheet>();
 		
-		
-		
-		
-		
+
 		// images
 		images.put("bigTestRoom", loadImage("bigroom.png"));
 		images.put("littleTestRoom", loadImage("room.png"));
@@ -46,18 +43,19 @@ public class Assets {
 		images.put("enemyRoomTest", loadImage("enemyRoomTest.png"));
 		images.put("player", loadImage("testSpriteSheetUpdate.png"));
 		images.put("slime", loadImage("slimeSheet.png"));
+		images.put("tiles", loadImage("tileSheet.png"));
 
 		
 		spriteSheets.put("playerSheet", new SpriteSheet(images.get("player")));
-		spriteSheets.put("slimeSheet", new SpriteSheet(images.get("sli")));
-
+		spriteSheets.put("slimeSheet", new SpriteSheet(images.get("slime")));
+		spriteSheets.put("tileSheet", new SpriteSheet(images.get("tiles")));
 		
 		// maps
 		//maps.put("testRoom", new Map(getBufferedImage("bigTestRoom"), new SpriteSheet("testRoomSpriteSheet"), handler));
-		maps.put("testRoom", new Room1(handler, spriteSheets.get("playerSheet")));
-		maps.put("testRoom2", new Room2(handler, spriteSheets.get("playerSheet")));
-		maps.put("testRoom3", new Maze1(handler, spriteSheets.get("playerSheet")));
-		maps.put("testRoom4", new EnemyRoom(handler, spriteSheets.get("playerSheet")));
+		maps.put("testRoom", new Room1(handler, spriteSheets.get("tileSheet")));
+		maps.put("testRoom2", new Room2(handler, spriteSheets.get("tileSheet")));
+		maps.put("testRoom3", new Maze1(handler, spriteSheets.get("tileSheet")));
+		maps.put("testRoom4", new EnemyRoom(handler, spriteSheets.get("tileSheet")));
 		
 		
 	}
