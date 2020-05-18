@@ -41,7 +41,7 @@ public class Assets {
 		images.put("littleTestRoom", loadImage("room.png"));
 		images.put("mazeTest", loadImage("mediumMaze.png"));
 		images.put("enemyRoomTest", loadImage("basicMap.png"));
-		images.put("player", loadImage("testSpriteSheetUpdate.png"));
+		images.put("player", loadImage("playerSheet.png"));
 		images.put("slime", loadImage("slimeSheet.png"));
 		images.put("tiles", loadImage("tileSheet.png"));
 		images.put("roll", loadImage("roll.png"));
