@@ -134,17 +134,17 @@ public class GameHandler {
 						if (obj == obj2) {
 							continue;
 						}
-						if (obj2.isSolidVsGameObject() && obj1.getBounds().intersects(obj2.getBounds())) {
 							//creature creature
-							if (obj instanceof Creature && obj2 instanceof Creature) {
-								creatureVsCreature((Creature) obj, (Creature) obj2, newPos);
-								//creatureVsCreature((Creature) obj2, (Creature) obj, newPos);
+						if (obj instanceof Creature && obj2 instanceof Creature) {
+							if(creatureVsCreature((Creature) obj, (Creature) obj2, newPos))
 								obj2.onInteract(obj);
-								//obj.onInteract(obj2);
-							}
+								
+							//obj.onInteract(obj2);
+						}
 
+						if(obj.getBounds().intersects(obj2.getBounds())) {
 							// creature bullet
-							else if(obj instanceof Creature && obj2 instanceof Bullet) {
+							if(obj instanceof Creature && obj2 instanceof Bullet) {
 								if(obj2.onInteract(obj))
 									if(bulletsToRemove.indexOf(obj2) == -1) bulletsToRemove.add((Bullet)obj2);
 							}
@@ -154,9 +154,9 @@ public class GameHandler {
 								if(bulletsToRemove.indexOf(obj2) == -1) bulletsToRemove.add((Bullet)obj2);
 							}
 						}
-						// if not solid vs gameobject here
 					}
 				}
+				// if not solid vs gameobject here
 				obj.setPos(newPos.x, newPos.y);
 				
 				if (obj instanceof Enemy) {
@@ -460,17 +460,15 @@ public class GameHandler {
 	 * first object
 	 * 
 	 * @param newPos The new position of the bullet that is being collision checked
+	 * @return true if there was a collision
 	 */
-	public void creatureVsCreature(Creature obj1, Creature obj2, PVector newPos) {
-
-		if (!obj1.getBounds().intersects(obj2.getBounds())) {
-			System.out.println("this should not have happened");
-			return;
-		}
+	public boolean creatureVsCreature(Creature obj1, Creature obj2, PVector newPos) {
 		
 		if(obj1.isDead() || obj2.isDead()) {
-			return;
+			return false;
 		}
+		
+		boolean collisionOccurred = false;
 
 		Rectangle2D r1 = obj1.getBounds();
 		Rectangle2D r2 = obj1.getBounds();
@@ -485,6 +483,7 @@ public class GameHandler {
 			else if (obj1.getVelX() > 0)
 				newPos.x = obj2.getPosX() - (float) r2.getWidth();
 			obj1.setVelX(0);
+			collisionOccurred = true;
 		}
 
 		// y direction
@@ -496,7 +495,9 @@ public class GameHandler {
 			else if (obj1.getVelY() > 0)
 				newPos.y = obj2.getPosY() - (float) r2.getHeight();
 			obj1.setVelY(0);
+			collisionOccurred = true;
 		}
+		return collisionOccurred;
 
 		
 		

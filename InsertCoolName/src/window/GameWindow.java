@@ -35,7 +35,7 @@ public class GameWindow extends Window {
 		super(wh, surface);
 		handler = new GameHandler(surface);
 		new Assets(handler); // initializes all of the assets
-		handler.setMap("testRoom4");
+		handler.setMap("Level1");
 		
 	}
 	
