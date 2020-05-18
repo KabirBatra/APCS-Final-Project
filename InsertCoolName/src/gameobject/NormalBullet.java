@@ -16,7 +16,7 @@ public class NormalBullet extends Bullet {
 	private static SpriteSheet ss = Assets.getSpriteSheet("normalBulletSheet");
 	
 	protected static float speed = 13f;
-	protected static float damage = 10;
+	protected static int damage = 10;
 	private BufferedImage currentSprite;
 	
 	private float timer;
@@ -51,6 +51,7 @@ public class NormalBullet extends Bullet {
 
 	public boolean onInteract(GameObject obj) {
 		if(obj instanceof Creature && obj != shotBy && ((Creature) obj).state != AnimationState.DEAD) {
+			
 			attack( (Creature)obj );
 			return true;
 		}
@@ -58,7 +59,7 @@ public class NormalBullet extends Bullet {
 	}
 	
 	public void attack(Creature cr) {
-		cr.deltaHealth(-10);
+		cr.deltaHealth(-damage);
 	}
 
 	public Rectangle2D.Double getBounds() {
