@@ -15,7 +15,7 @@ import processing.core.PVector;
 /*
  * The class that controls and maintains nearly everything in the game.
  * Updates, collisions, controls, the GameObjects, and the current map are all stored here.
- * @author Kabir Batra 
+ * @author Kabir Batra & Kaie Chen
  */
 public class GameHandler {
 
@@ -31,6 +31,7 @@ public class GameHandler {
 	private boolean down;
 	private boolean left;
 	private boolean right;
+	private static boolean pause;
 
 	private static final float BORDER_OFFSET_FOR_CREATURES = 0.1F; // values from 0.00001 - 0.1
 
@@ -62,7 +63,7 @@ public class GameHandler {
 		}
 		currentMap = Assets.getMap(mapName);
 		currentMap.populateGameObjects(temp);
-		
+
 	}
 
 	public Map getCurrentMap() {
@@ -95,82 +96,126 @@ public class GameHandler {
 	 * smooth and constant even when frames are slow.
 	 */
 	public void tick(float ellapsedTime) {
-		
 
+//		System.out.println("                  " + ellapsedTime);
 
 		LinkedList<Bullet> bulletsToRemove = new LinkedList<Bullet>();
 		LinkedList<Enemy> enemiesThatCanShoot = new LinkedList<Enemy>();
 
-		PVector newPos = new PVector();
-		
-		boolean allEnemiesDead = true; //set to false if found enemy that is alive
+		// This needs to be a property of every single object
+
+		boolean allEnemiesDead = true; // set to false if found enemy that is alive
 
 		for (GameObject obj : objects) {
 
 			obj.update(ellapsedTime);
 
-			
-			if(obj instanceof DynamicObject) {
-				DynamicObject obj1 = (DynamicObject)obj;
-				newPos.x = obj1.getPosX() + obj1.getVelX() * ellapsedTime;
-				newPos.y = obj1.getPosY() + obj1.getVelY() * ellapsedTime;
+			if (obj instanceof DynamicObject) {
+				DynamicObject obj1 = (DynamicObject) obj;
+
+				double newPosx = obj1.getPosX() + obj1.getVelX() * ellapsedTime;
+				double newPosy = obj1.getPosY() + obj1.getVelY() * ellapsedTime;
+
+				// System.out.println(newPosx + " " + newPosy);
+
+				obj.setNextPos(newPosx, newPosy);
 
 				if (obj instanceof Creature) {
 					Creature cr = (Creature) obj;
-					creatureVsWall(cr, newPos);
-
+					creatureVsWall(cr, obj.getNextPos());
 				}
-				
+
 				else if (obj instanceof Bullet) {
 					Bullet b = (Bullet) obj;
-					if (bulletVsWall(b, newPos)) {
+					if (bulletVsWall(b, obj.getNextPos())) {
 						bulletsToRemove.add((Bullet) obj);
 					}
 				}
-				
-				
-				if (obj.isSolidVsGameObject()) {
-					for (GameObject obj2 : objects) {
-						if (obj == obj2) {
-							continue;
-						}
-						if (obj2.isSolidVsGameObject() && obj1.getBounds().intersects(obj2.getBounds())) {
-							//creature creature
-							if (obj instanceof Creature && obj2 instanceof Creature) {
-								creatureVsCreature((Creature) obj, (Creature) obj2, newPos);
-								//creatureVsCreature((Creature) obj2, (Creature) obj, newPos);
-								obj2.onInteract(obj);
-								//obj.onInteract(obj2);
-							}
 
-							// creature bullet
-							else if(obj instanceof Creature && obj2 instanceof Bullet) {
-								if(obj2.onInteract(obj))
-									if(bulletsToRemove.indexOf(obj2) == -1) bulletsToRemove.add((Bullet)obj2);
-							}
-							// bullet bullet
-							else if(obj instanceof Bullet && obj2 instanceof Bullet) {
-								if(bulletsToRemove.indexOf(obj) == -1) bulletsToRemove.add((Bullet)obj);
-								if(bulletsToRemove.indexOf(obj2) == -1) bulletsToRemove.add((Bullet)obj2);
-							}
-						}
-						// if not solid vs gameobject here
-					}
-				}
-				obj.setPos(newPos.x, newPos.y);
-				
 				if (obj instanceof Enemy) {
 					Enemy temp = (Enemy) obj;
 					if (temp.isShooting()) {
 						enemiesThatCanShoot.add((Enemy) obj);
 					}
-					
-					if(!temp.isDead()) {
+
+					if (!temp.isDead()) {
 						allEnemiesDead = false;
 					}
 				}
 			}
 
+		}
+
+		for (GameObject obj : objects) {
+
+			if (obj instanceof DynamicObject) {
+				DynamicObject obj1 = (DynamicObject) obj;
+
+				if (obj.isSolidVsGameObject()) {
+					for (GameObject obj2 : objects) {
+						if (obj == obj2) {
+							continue;
+						}
+						if (obj instanceof Creature && obj2 instanceof Creature) {
+
+							// obj.setNextPos(newPos.x, newPos.y);
+
+							creatureVsCreature((Creature) obj, (Creature) obj2, ellapsedTime);
+							if (obj2.isSolidVsGameObject() && obj1.getBounds().intersects(obj2.getBounds())) {
+								creatureVsWall((Creature) obj, obj.getNextPos());
+								creatureVsWall((Creature) obj2, obj2.getNextPos());
+
+								// creatureVsCreature((Creature) obj2, (Creature) obj, newPos);
+								obj2.onInteract(obj);
+							}
+							// obj.onInteract(obj2);
+						} else {
+
+							if (obj2.isSolidVsGameObject() && obj1.getBounds().intersects(obj2.getBounds())) {
+								// creature creature
+
+								// creature bullet
+								if (obj instanceof Creature && obj2 instanceof Bullet) {
+									if (obj2.onInteract(obj))
+										if (bulletsToRemove.indexOf(obj2) == -1)
+											bulletsToRemove.add((Bullet) obj2);
+								}
+								// bullet bullet
+								else if (obj instanceof Bullet && obj2 instanceof Bullet) {
+									if (bulletsToRemove.indexOf(obj) == -1)
+										bulletsToRemove.add((Bullet) obj);
+									if (bulletsToRemove.indexOf(obj2) == -1)
+										bulletsToRemove.add((Bullet) obj2);
+								}
+							}
+							// if not solid vs gameobject here
+						}
+					}
+				}
+			}
+		}
+		for (GameObject obj : objects) {
+			if (obj instanceof DynamicObject) {
+
+				DynamicObject obj1 = (DynamicObject) obj;
+
+				if (obj instanceof Enemy) {
+					Enemy temp = (Enemy) obj;
+					if (!temp.isDead())
+						System.out.println(obj1.getPosX() + " X Enemy Position Y " + obj1.getPosY());
+					System.out.println(
+							obj1.getVelX() * ellapsedTime + " X Enemy Velocity Y " + obj1.getVelY() * ellapsedTime);
+				}
+				if (obj instanceof Player) {
+					System.out.println(obj1.getPosX() + " X Player Position Y " + obj1.getPosY());
+					System.out.println(
+							obj1.getVelX() * ellapsedTime + " X Player Velocity Y " + obj1.getVelY() * ellapsedTime);
+				}
+				obj.setPos(obj1.getPosX() + obj1.getVelX() * ellapsedTime,
+						obj1.getPosY() + obj1.getVelY() * ellapsedTime);
+				
+				System.out.println("OBJECT FINAL POSITION: x "+ obj.getPosX() + "    y" + obj.getPosY());
+			}
 		}
 		// after looping through all of the objects
 		for (GameObject destroyedBullet : bulletsToRemove) {
@@ -180,9 +225,9 @@ public class GameHandler {
 		for (Enemy enemy : enemiesThatCanShoot) {
 			enemy.shoot();
 		}
-		
-		if(allEnemiesDead) {
-			if(currentMap.startNextWave())
+
+		if (allEnemiesDead) {
+			if (currentMap.startNextWave())
 				System.out.println("THE NEXT WAVE HAS STARTED AND ENEMIES ARE BACK!");
 			else {
 				System.out.println("THE WAVES ARE OVER AND YOU WIN");
@@ -247,19 +292,19 @@ public class GameHandler {
 				BufferedImage currentSprite = null;
 				if (tile == Type.Wall) {
 					currentSprite = mapSheet.getSprite(0, 0);
-					//s.fill(0, 0, 255);
-				} 
-				else if (tile == Type.Floor || tile == Type.Enemy || tile == Type.Player) {
-					//s.fill(255);
+					// s.fill(0, 0, 255);
+				} else if (tile == Type.Floor || tile == Type.Enemy || tile == Type.Player) {
+					// s.fill(255);
 					currentSprite = mapSheet.getSprite(1, 0);
-				} 
-				else { // if its Type.None (doesnt exist)
-					//s.fill(51); 
-					currentSprite = mapSheet.getSprite(2,0);
+				} else { // if its Type.None (doesnt exist)
+							// s.fill(51);
+					currentSprite = mapSheet.getSprite(2, 0);
 				}
-				//s.rect(x * tileWidth - tileOffsetX, y * tileHeight - tileOffsetY, tileWidth + 1f, tileHeight + 1f);
-				
-				s.image(new PImage((java.awt.Image)currentSprite), x * tileWidth - tileOffsetX, y * tileHeight - tileOffsetY, tileWidth + 1f, tileHeight + 1f);
+				// s.rect(x * tileWidth - tileOffsetX, y * tileHeight - tileOffsetY, tileWidth +
+				// 1f, tileHeight + 1f);
+
+				s.image(new PImage((java.awt.Image) currentSprite), x * tileWidth - tileOffsetX,
+						y * tileHeight - tileOffsetY, tileWidth + 1f, tileHeight + 1f);
 			}
 		}
 	}
@@ -329,8 +374,8 @@ public class GameHandler {
 
 		} else if (s.key == 'm' || s.key == 'M') {
 			setMap("testRoom2");
-		} else if(s.key == 'b' || s.key == 'B') {
-			
+		} else if (s.key == 'b' || s.key == 'B') {
+
 		}
 
 	}
@@ -352,16 +397,34 @@ public class GameHandler {
 		} else if (s.keyCode == PConstants.RIGHT || s.key == 'd' || s.key == 'D') {
 			right = false;
 
+		} else if (s.key == 'b' || s.key == 'B') {
+			setMap("Level1");
+		} else if (s.key == 'p' || s.key == 'P') {
+			if (getPause()) {
+				setPause(false);
+
+				DrawingSurface.getWindowHandler().setCurrentWindow("pause");
+				// aaa s.noLoop();
+			}
+
+			else {
+				setPause(true);
+
+				DrawingSurface.getWindowHandler().setCurrentWindow("game");
+				// s.loop();
+			}
 		}
 
 	}
 
 	/*
-	 * Changes the value of the parameter newPos based on whether a collision occurred or not
+	 * Changes the value of the parameter newPos based on whether a collision
+	 * occurred or not
 	 * 
 	 * @param cr The creature being checked for a collision with a wall
 	 * 
-	 * @param newPos The new position of the creature that is being collision checked
+	 * @param newPos The new position of the creature that is being collision
+	 * checked
 	 * 
 	 */
 	public void creatureVsWall(Creature cr, PVector newPos) {
@@ -381,9 +444,10 @@ public class GameHandler {
 			cr.setVelX(0);
 			newPos.x = (int) newPos.x + 1;
 
-		} else if (cr.getVelX() > 0 && (currentMap.isSolidTile((int) newPos.x + 1,
-				(int) (cr.getPosY() + BORDER_OFFSET_FOR_CREATURES))
-				|| currentMap.isSolidTile((int) newPos.x + 1, (int) (cr.getPosY() + 1 - BORDER_OFFSET_FOR_CREATURES)))) {
+		} else if (cr.getVelX() > 0
+				&& (currentMap.isSolidTile((int) newPos.x + 1, (int) (cr.getPosY() + BORDER_OFFSET_FOR_CREATURES))
+						|| currentMap.isSolidTile((int) newPos.x + 1,
+								(int) (cr.getPosY() + 1 - BORDER_OFFSET_FOR_CREATURES)))) {
 			cr.setVelX(0);
 			newPos.x = (int) newPos.x;
 
@@ -396,9 +460,10 @@ public class GameHandler {
 			cr.setVelY(0);
 			newPos.y = (int) newPos.y + 1;
 
-		} else if (cr.getVelY() > 0 && (currentMap.isSolidTile((int) (cr.getPosX() + BORDER_OFFSET_FOR_CREATURES),
-				(int) newPos.y + 1)
-				|| currentMap.isSolidTile((int) (cr.getPosX() + 1 - BORDER_OFFSET_FOR_CREATURES), (int) newPos.y + 1))) {
+		} else if (cr.getVelY() > 0
+				&& (currentMap.isSolidTile((int) (cr.getPosX() + BORDER_OFFSET_FOR_CREATURES), (int) newPos.y + 1)
+						|| currentMap.isSolidTile((int) (cr.getPosX() + 1 - BORDER_OFFSET_FOR_CREATURES),
+								(int) newPos.y + 1))) {
 			cr.setVelY(0);
 			newPos.y = (int) newPos.y;
 
@@ -415,7 +480,7 @@ public class GameHandler {
 	 */
 	public boolean bulletVsWall(Bullet b, PVector newPos) {
 		// movement/collisions
-		
+
 		if (newPos.x < 0 || newPos.y < 0)
 			return true;
 
@@ -451,7 +516,8 @@ public class GameHandler {
 	}
 
 	/*
-	 * Changes the value of the parameter newPos based on whether a collision occurred or not
+	 * Changes the value of the parameter newPos based on whether a collision
+	 * occurred or not
 	 * 
 	 * @param obj1 The first object being checked for a collision with the the
 	 * second object
@@ -461,45 +527,98 @@ public class GameHandler {
 	 * 
 	 * @param newPos The new position of the bullet that is being collision checked
 	 */
-	public void creatureVsCreature(Creature obj1, Creature obj2, PVector newPos) {
+	public void creatureVsCreature(Creature obj1, Creature obj2, float ellapsedTime) {
 
-		if (!obj1.getBounds().intersects(obj2.getBounds())) {
-			System.out.println("this should not have happened");
-			return;
-		}
-		
-		if(obj1.isDead() || obj2.isDead()) {
+		// if (!obj1.getBounds().intersects(obj2.getBounds())) {
+		// System.out.println("this should not have happened");
+		// return;
+		// }
+
+		if (obj1.isDead() || obj2.isDead()) {
 			return;
 		}
 
 		Rectangle2D r1 = obj1.getBounds();
 		Rectangle2D r2 = obj1.getBounds();
 
+		double newPosx = obj1.getNextPos().x;
+		double newPosy = obj1.getNextPos().y;
+		double newPos2x = obj2.getNextPos().x;
+		double newPos2y = obj2.getNextPos().y;
 		// x direction
-		//DO NOT DELETE THIS
-		if (newPos.x < (obj2.getPosX() + r2.getWidth()) && (newPos.x + r1.getWidth()) > obj2.getPosX()
-				&& obj1.getPosY() < (obj2.getPosY() + r2.getHeight())
-				&& (obj1.getPosY() + r1.getHeight()) > obj2.getPosY()) {
-			if (obj1.getVelX() < 0)
-				newPos.x = obj2.getPosX() + (float) r2.getWidth();
-			else if (obj1.getVelX() > 0)
-				newPos.x = obj2.getPosX() - (float) r2.getWidth();
-			obj1.setVelX(0);
-		}
+		// DO NOT DELETE THIS
 
-		// y direction
-		if (newPos.y < (obj2.getPosY() + r2.getHeight()) && (newPos.y + r1.getHeight()) > obj2.getPosY()
-				&& obj1.getPosX() < (obj2.getPosX() + r2.getWidth())
-				&& (obj1.getPosX() + r1.getWidth()) > obj2.getPosX()) {
-			if (obj1.getVelY() < 0)
-				newPos.y = obj2.getPosY() + (float) r2.getHeight();
-			else if (obj1.getVelY() > 0)
-				newPos.y = obj2.getPosY() - (float) r2.getHeight();
-			obj1.setVelY(0);
-		}
+		double deltaX = newPosx - newPos2x;
+		double deltaY = newPosy - newPos2y;
+		double currentDeltaX = obj1.getPosX() - obj2.getPosX();
+		double currentDeltaY = obj1.getPosY() - obj2.getPosY();
+		System.out.println("Delta x " + deltaX + " delta y " + deltaY + " newPosy " + newPosy + " newPos2y " + newPos2y);
+		
 
-		
-		
+		if (Math.abs(deltaX) > (r1.getWidth() + .1) || Math.abs(deltaY) > (r1.getHeight() + .1)) {
+
+			System.out.println("Far Away");
+
+		} else {
+			if ((Math.abs(currentDeltaY) >= r1.getHeight())) {
+				if (currentDeltaY > 0) {
+					// obj1.getNextPos().y = obj1.getPosY();
+
+					// newPos2.y = obj2.getPosX();
+					// obj2.setVelY(0);
+					obj1.setVelY(0);
+					System.out.println("top");
+				} else {
+					// obj1.getNextPos().y = obj1.getPosY();
+					obj1.setVelY(0);
+					// obj2.setVelY(0);
+					System.out.println("bottom");
+				}
+			} else {
+				if (currentDeltaX > 0) {
+					// newPos.x = obj1.getPosX();
+					obj1.setVelX(0);
+					System.out.println("right");
+				} else {
+					// newPos.x = obj1.getPosX();
+					obj1.setVelX(0);
+					System.out.println("left");
+				}
+			}
+
+		}
+		/*
+		 * if ((newPos.x - (obj2.getPosX() + r2.getWidth()) + .4f) < .4f || ((newPos.x +
+		 * r1.getWidth() + .4f) - obj2.getPosX()) < .4f && newPos.y < (obj2.getPosY() +
+		 * r2.getHeight()) && (newPos.y + r1.getHeight()) > obj2.getPosY()) {
+		 * 
+		 * newPos.x = obj1.getPosX(); System.out.println("hello"); obj1.setVelX(0);
+		 * 
+		 * }
+		 * 
+		 * if (((newPos.y - (obj2.getPosY() + r2.getHeight())) + .4f) < .4f || (newPos.y
+		 * + r1.getHeight() + .4f) - obj2.getPosY() < .4f && obj1.getPosX() + .7f <
+		 * (obj2.getPosX() + r2.getWidth()) && (obj1.getPosX() + r1.getWidth() - .7f) >
+		 * obj2.getPosX())
+		 * 
+		 * {
+		 * 
+		 * newPos.y = obj1.getPosY();
+		 * 
+		 * System.out.println("Goodbye"); obj1.setVelY(0);
+		 * 
+		 * }
+		 * 
+		 */
+
+	}
+
+	public static boolean getPause() {
+		return pause;
+	}
+
+	public static void setPause(boolean pause) {
+		pause = pause;
 	}
 
 }
