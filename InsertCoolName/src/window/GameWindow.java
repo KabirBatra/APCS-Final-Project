@@ -45,7 +45,7 @@ public class GameWindow extends Window {
 	public void setup() {
 		s.fill(255);
 		s.noStroke();
-		
+		previousTime = 0;
 		player = handler.getPlayer();
 		cameraX = player.getPosX();
 		cameraY = player.getPosY();
@@ -68,8 +68,8 @@ public class GameWindow extends Window {
 		visibleTilesY = s.height/tileHeight;
 
 		// smooth camera
-		cameraX -= (cameraX - player.getPosX()) * 0.07f;
-		cameraY -= (cameraY - player.getPosY()) * 0.07f;
+		cameraX -= (cameraX - player.getPosX()) * 0.1f;
+		cameraY -= (cameraY - player.getPosY()) * 0.1f;
 				
 		// distance from camera to topLeft
 		offsetX = cameraX - visibleTilesX/2f;
@@ -90,7 +90,7 @@ public class GameWindow extends Window {
 		handler.displayStats();
 		
 	}
-	
+		
 	/**
 	 * Calls the keyPressed method of the GameHandler
 	 */
