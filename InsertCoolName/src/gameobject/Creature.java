@@ -66,7 +66,9 @@ public abstract class Creature extends GameObject implements DynamicObject {
 		}
 		
 		if(health <= 0) {
+			health = 0;
 			state = AnimationState.DEAD;
+			return;
 		}
 		else if(velX == 0 && velY == 0) {
 			state = AnimationState.STANDING;

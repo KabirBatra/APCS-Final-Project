@@ -24,8 +24,8 @@ public class Player extends Creature {
 		super(x, y, name, ss);
 		this.handler = handler;
 		maxSpeed = 8f;
-		maxHealth = 1000;
-		health = 10000;
+		maxHealth = 200;
+		health = 200;
 	}
 
 	/*
