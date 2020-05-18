@@ -617,8 +617,8 @@ public class GameHandler {
 		return pause;
 	}
 
-	public static void setPause(boolean pause) {
-		pause = pause;
+	public static void setPause(boolean p) {
+		pause = p;
 	}
 
 }
