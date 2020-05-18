@@ -11,7 +11,6 @@ import processing.core.PVector;
 public abstract class GameObject {
 	
 	protected float posX, posY;
-	protected PVector newPos = new PVector();
 	protected String name;
 	protected boolean solidVsWall = true, solidVsGameObject = true;
 	
@@ -49,17 +48,7 @@ public abstract class GameObject {
 	
 	public float getPosY() {
 		return posY;
-	}
-	
-	public void setNextPos(double posX, double posY) {
-		newPos.x = (float) posX;
-		newPos.y = (float) posY;
-		
-	}
-	public PVector getNextPos() {
-		return newPos;
-	}
-	
+	}	
 	
 	public void setPos(float posX, float posY) {
 		this.posX = posX;
