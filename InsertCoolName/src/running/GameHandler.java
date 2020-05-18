@@ -15,7 +15,7 @@ import processing.core.PVector;
 /*
  * The class that controls and maintains nearly everything in the game.
  * Updates, collisions, controls, the GameObjects, and the current map are all stored here.
- * @author Kabir Batra 
+ * @author Kabir Batra and Kaie Chen
  */
 public class GameHandler {
 
@@ -31,6 +31,8 @@ public class GameHandler {
 	private boolean down;
 	private boolean left;
 	private boolean right;
+	
+	private static boolean pause;
 
 	private static final float BORDER_OFFSET_FOR_CREATURES = 0.1F; // values from 0.00001 - 0.1
 
@@ -47,6 +49,7 @@ public class GameHandler {
 		down = false;
 		left = false;
 		right = false;
+		pause = false;
 	}
 
 	/*
@@ -329,8 +332,10 @@ public class GameHandler {
 
 		} else if (s.key == 'm' || s.key == 'M') {
 			setMap("testRoom2");
-		} else if(s.key == 'b' || s.key == 'B') {
-			
+		} else if (s.key == 'b' || s.key == 'B') {
+			setMap("Level1");
+		} else if (s.key == 'p' || s.key == 'P') {
+			DrawingSurface.getWindowHandler().setCurrentWindow("pause");
 		}
 
 	}
@@ -498,9 +503,5 @@ public class GameHandler {
 			collisionOccurred = true;
 		}
 		return collisionOccurred;
-
-		
-		
 	}
-
 }
