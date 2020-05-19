@@ -1,8 +1,7 @@
 package running;
 
 import processing.core.PApplet;
-import window.GameWindow;
-import window.MenuWindow;
+import window.*;
 
 /**
  * This is the main method of the project that inherits Processing's PApplet
@@ -31,6 +30,8 @@ public class DrawingSurface extends PApplet {
 		wh.addWindow("game", new GameWindow(wh, this));
 		wh.addWindow("menu", new MenuWindow(wh, this));
 		wh.addWindow("pause", new MenuWindow(wh, this));
+		wh.addWindow("gameOver", new GameOverWindow(wh, this));
+
 		wh.setCurrentWindow("menu");
 	}
 

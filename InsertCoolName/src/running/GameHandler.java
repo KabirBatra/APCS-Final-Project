@@ -20,6 +20,7 @@ import processing.core.PVector;
 public class GameHandler {
 
 	private PApplet s;
+	private WindowHandler wh;
 
 	// so that player can access it and shoot toward nearest enemy
 	public LinkedList<GameObject> objects;
@@ -31,17 +32,17 @@ public class GameHandler {
 	private boolean down;
 	private boolean left;
 	private boolean right;
-	
-	private static boolean pause;
 
 	private static final float BORDER_OFFSET_FOR_CREATURES = 0.1F; // values from 0.00001 - 0.1
 
 	/*
 	 * Creates the objects list and sets all of the current keys pressed to false.
 	 * 
+	 * @param wh the WindowHandler for changing windows
 	 * @param surface the PApplet for drawing things like the objects and the map
 	 */
-	public GameHandler(PApplet surface) {
+	public GameHandler(WindowHandler wh, PApplet surface) {
+		this.wh = wh;
 		s = surface;
 		objects = new LinkedList<GameObject>();
 
@@ -49,7 +50,6 @@ public class GameHandler {
 		down = false;
 		left = false;
 		right = false;
-		pause = false;
 	}
 
 	/*
@@ -99,7 +99,9 @@ public class GameHandler {
 	 */
 	public void tick(float ellapsedTime) {
 		
-
+		if(getPlayer().getHealth() <= 0) {
+			wh.setCurrentWindow("gameOver");
+		}
 
 		LinkedList<Bullet> bulletsToRemove = new LinkedList<Bullet>();
 		LinkedList<Enemy> enemiesThatCanShoot = new LinkedList<Enemy>();

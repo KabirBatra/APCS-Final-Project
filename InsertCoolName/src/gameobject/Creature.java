@@ -6,7 +6,7 @@ import assets.SpriteSheet;
 import gameobject.Creature.AnimationState;
 /**
  *  This is the class that manages all the characters that are in the game!
- * @author Kaie & Kabir
+ * @author Kabir Batra and Kaie Chen
  *
  */
 public abstract class Creature extends GameObject implements DynamicObject {
@@ -68,7 +68,6 @@ public abstract class Creature extends GameObject implements DynamicObject {
 		if(health <= 0) {
 			health = 0;
 			state = AnimationState.DEAD;
-			return;
 		}
 		else if(velX == 0 && velY == 0) {
 			state = AnimationState.STANDING;
@@ -169,7 +168,7 @@ public abstract class Creature extends GameObject implements DynamicObject {
 	
 	/**
 	 * Gets the spritesheet of this creature!
-	 * @param ss MUST be A SpriteSheet
+	 * @param ss the sprite sheet for this creature
 	 */
 	public void setSpriteSheet(SpriteSheet ss) {
 		this.ss = ss;
@@ -179,8 +178,7 @@ public abstract class Creature extends GameObject implements DynamicObject {
 		return new Rectangle2D.Double(posX, posY, 1, 1);
 	}
 	/**
-	 * getter for max speed of this creature
-	 * @return
+	 * @return the maximum speed of this Creature
 	 */
 	public float getMaxSpeed() {
 		return maxSpeed;

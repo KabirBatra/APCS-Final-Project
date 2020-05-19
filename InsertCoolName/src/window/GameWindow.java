@@ -33,7 +33,7 @@ public class GameWindow extends Window {
 	 */
 	public GameWindow(WindowHandler wh, PApplet surface) {
 		super(wh, surface);
-		handler = new GameHandler(surface);
+		handler = new GameHandler(wh, surface);
 		new Assets(handler); // initializes all of the assets
 		handler.setMap("Level1");
 		

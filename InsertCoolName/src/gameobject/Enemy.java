@@ -144,6 +144,10 @@ public class Enemy extends Creature {
 			s.fill(0,255,0);
 			s.rect(x, y, tileWidth * (float)health/maxHealth, 10);
 		}
+		else {
+			s.fill(0);
+			s.rect(x, y, tileWidth, tileHeight);
+		}
 	}
 
 	/*
