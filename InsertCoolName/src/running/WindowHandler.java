@@ -16,10 +16,12 @@ public class WindowHandler {
 	private HashMap<String, Window> windows;
 	
 	private String currentWindow;
+	private boolean wasPaused;
 	
 	public WindowHandler() {
 		windows = new HashMap<String, Window>();
 		currentWindow = "";
+		wasPaused = false;
 
 	}
 	
@@ -47,6 +49,14 @@ public class WindowHandler {
 	 */
 	public void setCurrentWindow(String name) {
 		currentWindow = name;
+		if(name.equals("pause"))
+			wasPaused = true;
+	}
+	
+	public boolean wasPaused() {
+		boolean temp = wasPaused;
+		wasPaused = false;
+		return temp;
 	}
 
 }
