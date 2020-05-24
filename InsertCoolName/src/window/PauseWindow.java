@@ -71,10 +71,10 @@ public class PauseWindow extends Window {
 //		
 		// attempt to draw toilet paper image 
 
-		float imgWidth = toiletPaper.width/10;
-		float imgHeight = toiletPaper.height/10;
+//		float imgWidth = toiletPaper.width/10;
+//		float imgHeight = toiletPaper.height/10;
 		
-		s.image(toiletPaper, width/2 - imgWidth/2, height/2 - imgHeight/2, imgWidth, imgHeight);
+//		s.image(toiletPaper, width/2 - imgWidth/2, height/2 - imgHeight/2, imgWidth, imgHeight);
 		
 		
 		s.fill(173, 0, 0);
@@ -128,9 +128,9 @@ public class PauseWindow extends Window {
 		// be the solution
 		if (s.mousePressed && s.mouseButton == s.LEFT && overButton1) {
 			System.out.println("LETS A GOOOO");
-
+			
 			// Resume game
-		
+			wh.setCurrentWindow("game");
 
 		}
 		if (s.mousePressed && s.mouseButton == s.LEFT && overButton2) {

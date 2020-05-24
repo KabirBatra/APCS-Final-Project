@@ -79,6 +79,7 @@ public class InstructionWindow extends Window {
 		s.rect(width / 7, height * 2 / 7, width / 10, height / 10);
 		s.rect(width * 2 / 7, height * 2 / 7, width / 10, height / 10);
 		s.rect(width * 3 / 7, height * 2 / 7, width / 10, height / 10);
+		s.rect(width * 3 / 7, height  / 7, width / 10, height / 10);
 		s.rect(width / 9, height * 4 / 9, width / 2, height / 10);
 
 		// Text over Keys
@@ -88,13 +89,19 @@ public class InstructionWindow extends Window {
 		s.text("A", width / 7 + width / 20, height * 2 / 7 + height / 13);
 		s.text("S", width * 2 / 7 + width / 20, height * 2 / 7 + height / 13);
 		s.text("D", width * 3 / 7 + width / 20, height * 2 / 7 + height / 13);
+		s.text("P", width * 3 / 7 + width / 20, height / 7 + height / 13);
 		s.text("SPACE BAR", width / 9 + width / 4, (height * 4 / 9) + height / 13);
 
 		// Instructional text
 		s.textAlign(s.LEFT);
 		s.textSize(20);
 		s.fill(173, 0, 0);
-		s.text("W - move up \n A - move left \n S - move down \n D - move right \n Space bar - shoot a bullet \n    with autoaim!",
+		s.text("W - move up \n "
+				+ "A - move left \n "
+				+ "S - move down \n "
+				+ "D - move right \n "
+				+ "Space bar - shoot a bullet"
+				+ " \n    with autoaim! \n P  - pause/unpause",
 				width * 4 / 7 + width / 20, height / 7 + height / 13);
 		s.textAlign(s.CENTER);
 		s.fill(255);

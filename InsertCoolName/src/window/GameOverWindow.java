@@ -18,6 +18,7 @@ public class GameOverWindow extends Window {
 	
 		if (sec >= 18) 
 		{
+			s.noStroke();
 			s.fill(255,0,0);
 			s.background(0);
 			s.textAlign(s.CENTER);

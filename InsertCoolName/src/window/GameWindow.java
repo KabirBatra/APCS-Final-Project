@@ -31,6 +31,8 @@ public class GameWindow extends Window {
 
 	private float ellapsedTime;
 	private int previousTime;
+	
+
 
 	/*
 	 * Instantiates the Assets class and stores a reference to the Processing
@@ -40,7 +42,7 @@ public class GameWindow extends Window {
 		super(wh, surface);
 		handler = new GameHandler(wh, surface);
 		new Assets(handler); // initializes all of the assets
-		handler.setMap("Level0");
+		handler.setMap("easylevel");
 
 	}
 
@@ -48,6 +50,7 @@ public class GameWindow extends Window {
 	 * Initializes the camera position
 	 */
 	public void setup() {
+		s.textSize(20);
 		s.fill(255);
 		s.noStroke();
 		previousTime = 0;
@@ -62,6 +65,7 @@ public class GameWindow extends Window {
 	 * calculates values to display tiles properly
 	 */
 	public void draw() {
+		
 		s.background(0);
 		if (previousTime == 0)
 			previousTime = s.millis();
@@ -99,7 +103,13 @@ public class GameWindow extends Window {
 		handler.drawObjects(offsetX, offsetY, tileWidth, tileHeight);
 		handler.displayStats();
 
-	
+		if (handler.getTransition()) {
+			s.textSize(50);
+			s.textAlign(s.CENTER);
+			s.text("PREPARE FOR NEXT WAVE OR LEVEL", s.width/ 2, s.height/2);
+			s.textAlign(s.LEFT);
+			s.textSize(20);
+		}
 
 	}
 
@@ -109,6 +119,8 @@ public class GameWindow extends Window {
 	public void keyPressed() {
 		handler.keyPressed();
 	}
+	
+	
 
 	/**
 	 * Calls the keyReleased method of the GameHandler
@@ -116,5 +128,7 @@ public class GameWindow extends Window {
 	public void keyReleased() {
 		handler.keyReleased();
 	}
+	
+
 
 }

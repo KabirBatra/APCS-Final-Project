@@ -29,10 +29,9 @@ public class DrawingSurface extends PApplet {
 		wh = new WindowHandler();
 		wh.addWindow("game", new GameWindow(wh, this));
 		wh.addWindow("menu", new MenuWindow(wh, this));
-		wh.addWindow("pause", new MenuWindow(wh, this));
+		wh.addWindow("pause", new PauseWindow(wh, this));
 		wh.addWindow("gameOver", new GameOverWindow(wh, this));
 		wh.addWindow("instructions", new InstructionWindow(wh, this));
-	
 
 		wh.setCurrentWindow("menu");
 	}

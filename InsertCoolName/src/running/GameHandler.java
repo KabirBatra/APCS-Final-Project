@@ -35,6 +35,10 @@ public class GameHandler {
 	private boolean left;
 	private boolean right;
 
+	private int level = 0;
+	private boolean transition = false;
+	float frames = 0;
+
 	private static final float BORDER_OFFSET_FOR_CREATURES = 0.1F; // values from 0.00001 - 0.1
 
 	/**
@@ -100,112 +104,128 @@ public class GameHandler {
 	 *                     smooth and constant even when frames are slow.
 	 */
 	public void tick(float ellapsedTime) {
-		
-		if (getPlayer().getHealth() <= 0) {
+	
+			if (getPlayer().getHealth() <= 0) {
 
-			wh.setCurrentWindow("gameOver");
+				wh.setCurrentWindow("gameOver");
 
-		}
+			}
 
-		LinkedList<Bullet> bulletsToRemove = new LinkedList<Bullet>();
-		LinkedList<Enemy> enemiesThatCanShoot = new LinkedList<Enemy>();
+			LinkedList<Bullet> bulletsToRemove = new LinkedList<Bullet>();
+			LinkedList<Enemy> enemiesThatCanShoot = new LinkedList<Enemy>();
 
-		PVector newPos = new PVector();
+			PVector newPos = new PVector();
 
-		boolean allEnemiesDead = true; // set to false if found enemy that is alive
+			boolean allEnemiesDead = true; // set to false if found enemy that is alive
 
-		for (GameObject obj : objects) {
+			for (GameObject obj : objects) {
 
-			obj.update(ellapsedTime);
+				obj.update(ellapsedTime);
 
-			if (obj instanceof DynamicObject) {
-				DynamicObject obj1 = (DynamicObject) obj;
-				newPos.x = obj1.getPosX() + obj1.getVelX() * ellapsedTime;
-				newPos.y = obj1.getPosY() + obj1.getVelY() * ellapsedTime;
+				if (obj instanceof DynamicObject) {
+					DynamicObject obj1 = (DynamicObject) obj;
+					newPos.x = obj1.getPosX() + obj1.getVelX() * ellapsedTime;
+					newPos.y = obj1.getPosY() + obj1.getVelY() * ellapsedTime;
 
-				if (obj instanceof Creature) {
-					Creature cr = (Creature) obj;
-					creatureVsWall(cr, newPos);
+					if (obj instanceof Creature) {
+						Creature cr = (Creature) obj;
+						creatureVsWall(cr, newPos);
 
-				}
-
-				else if (obj instanceof Bullet) {
-					Bullet b = (Bullet) obj;
-					if (bulletVsWall(b, newPos)) {
-						bulletsToRemove.add((Bullet) obj);
 					}
-				}
 
-				if (obj.isSolidVsGameObject()) {
-					for (GameObject obj2 : objects) {
-						if (obj == obj2) {
-							continue;
+					else if (obj instanceof Bullet) {
+						Bullet b = (Bullet) obj;
+						if (bulletVsWall(b, newPos)) {
+							bulletsToRemove.add((Bullet) obj);
 						}
-						// creature creature
-						if (obj instanceof Creature && obj2 instanceof Creature) {
-							if (creatureVsCreature((Creature) obj, (Creature) obj2, newPos))
-								obj2.onInteract(obj);
+					}
 
-							// obj.onInteract(obj2);
-						}
+					if (obj.isSolidVsGameObject()) {
+						for (GameObject obj2 : objects) {
+							if (obj == obj2) {
+								continue;
+							}
+							// creature creature
+							if (obj instanceof Creature && obj2 instanceof Creature) {
+								if (creatureVsCreature((Creature) obj, (Creature) obj2, newPos))
+									obj2.onInteract(obj);
 
-						if (obj.getBounds().intersects(obj2.getBounds())) {
-							// creature bullet
-							if (obj instanceof Creature && obj2 instanceof Bullet) {
-								if (obj2.onInteract(obj))
+								// obj.onInteract(obj2);
+							}
+
+							if (obj.getBounds().intersects(obj2.getBounds())) {
+								// creature bullet
+								if (obj instanceof Creature && obj2 instanceof Bullet) {
+									if (obj2.onInteract(obj))
+										if (bulletsToRemove.indexOf(obj2) == -1)
+											bulletsToRemove.add((Bullet) obj2);
+								}
+								// bullet bullet
+								else if (obj instanceof Bullet && obj2 instanceof Bullet) {
+									if (bulletsToRemove.indexOf(obj) == -1)
+										bulletsToRemove.add((Bullet) obj);
 									if (bulletsToRemove.indexOf(obj2) == -1)
 										bulletsToRemove.add((Bullet) obj2);
-							}
-							// bullet bullet
-							else if (obj instanceof Bullet && obj2 instanceof Bullet) {
-								if (bulletsToRemove.indexOf(obj) == -1)
-									bulletsToRemove.add((Bullet) obj);
-								if (bulletsToRemove.indexOf(obj2) == -1)
-									bulletsToRemove.add((Bullet) obj2);
+								}
 							}
 						}
 					}
-				}
-				// if not solid vs gameobject here
-				obj.setPos(newPos.x, newPos.y);
+					// if not solid vs gameobject here
+					obj.setPos(newPos.x, newPos.y);
 
-				if (obj instanceof Enemy) {
-					Enemy temp = (Enemy) obj;
-					if (temp.isShooting()) {
-						enemiesThatCanShoot.add((Enemy) obj);
-					}
+					if (obj instanceof Enemy) {
+						Enemy temp = (Enemy) obj;
+						if (temp.isShooting()) {
+							enemiesThatCanShoot.add((Enemy) obj);
+						}
 
-					if (!temp.isDead()) {
-						allEnemiesDead = false;
+						if (!temp.isDead()) {
+							allEnemiesDead = false;
+						}
 					}
 				}
+
+			}
+			// after looping through all of the objects
+			for (GameObject destroyedBullet : bulletsToRemove) {
+				objects.remove(destroyedBullet);
 			}
 
-		}
-		// after looping through all of the objects
-		for (GameObject destroyedBullet : bulletsToRemove) {
-			objects.remove(destroyedBullet);
-		}
+			for (Enemy enemy : enemiesThatCanShoot) {
+				enemy.shoot();
+			}
 
-		for (Enemy enemy : enemiesThatCanShoot) {
-			enemy.shoot();
-		}
+			if (allEnemiesDead) {
+				transition = true;
 
-		if (allEnemiesDead) {
-			
-	
-			
-			
-			if (currentMap.startNextWave())
-				System.out.println("THE NEXT WAVE HAS STARTED AND ENEMIES ARE BACK!");
-			else {
-				System.out.println("THE WAVES ARE OVER AND YOU WIN");
+				if (frames / 60 > 2) {
+					transition = false;
+					if (currentMap.startNextWave())
+
+						System.out.println("THE NEXT WAVE HAS STARTED AND ENEMIES ARE BACK!");
+					else {
+						if (level == 0) {
+							getPlayer().setMaxHealth(600);
+							getPlayer().setHealth(600);
+						} else if (level > 1) {
+							getPlayer().setMaxHealth(600 * (level + 1));
+							getPlayer().setHealth(600 * (level + 1));
+						}
+						// System.out.println("THE WAVES ARE OVER AND YOU WIN");
+						setMap("Level" + level);
+						if (level < 3) {
+							level++;
+						}
+
+					}
+				} else {
+					frames++;
+					System.out.println(frames);
+
+				}
 			}
 		}
-
 	
-
-	}
 
 	/**
 	 * Draws all of the GameObjects onto the screen.
@@ -338,20 +358,20 @@ public class GameHandler {
 		} else if (s.key == ' ') {
 			getPlayer().shoot(s);
 
-		} else if (s.key == 'f' || s.key == 'F') {
-			setMap("testRoom4");
-
-		} else if (s.key == 'r' || s.key == 'R') {
-			setMap("testRoom");
-
-		} else if (s.key == 'm' || s.key == 'M') {
-			setMap("testRoom2");
-		} else if (s.key == 'b' || s.key == 'B') {
-			setMap("Level1");
 		} else if (s.key == 'p' || s.key == 'P') {
 			DrawingSurface.getWindowHandler().setCurrentWindow("pause");
 		}
-
+		/*
+		 * else if (s.key == 'f' || s.key == 'F') { setMap("testRoom4");
+		 * 
+		 * } else if (s.key == 'r' || s.key == 'R') { setMap("testRoom");
+		 * 
+		 * } else if (s.key == 'm' || s.key == 'M') { setMap("testRoom2"); } else if
+		 * (s.key == 'b' || s.key == 'B') { setMap("Level1"); }
+		 * 
+		 * 
+		 * 
+		 */
 	}
 
 	/**
@@ -373,6 +393,10 @@ public class GameHandler {
 
 		}
 
+	}
+
+	public boolean getTransition() {
+		return transition;
 	}
 
 	/**
