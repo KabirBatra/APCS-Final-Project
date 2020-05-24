@@ -395,6 +395,17 @@ public class GameHandler {
 		}
 
 	}
+	
+	/** 
+	 * Sets all the current states of keys pressed to false
+	 */
+	public void releaseAllKeys() {
+		up = false;
+		down = false;
+		left = false;
+		right = false;
+		
+	}
 
 	public boolean getTransition() {
 		return transition;

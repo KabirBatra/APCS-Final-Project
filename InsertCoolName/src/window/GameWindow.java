@@ -1,13 +1,9 @@
 package window;
 
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
-
-import com.sun.glass.ui.Timer;
-
 import assets.Assets;
 import gameobject.GameObject;
 import processing.core.PApplet;
+import running.DrawingSurface;
 import running.GameHandler;
 import running.WindowHandler;
 
@@ -67,10 +63,14 @@ public class GameWindow extends Window {
 	public void draw() {
 		
 		s.background(0);
-		if (previousTime == 0)
+		if(previousTime == 0)
 			previousTime = s.millis();
 		ellapsedTime = (s.millis() - previousTime) / 1000f;
 		previousTime = s.millis();
+		if(DrawingSurface.getWindowHandler().wasPaused()) {
+			ellapsedTime = 0;
+			handler.releaseAllKeys();
+		}
 
 		handler.tick(ellapsedTime);
 
