@@ -121,6 +121,9 @@ public abstract class Map {
 			    else if(b == 255) {
 			    	tiles[w][h] = Type.Player;
 			    }
+			    else if (r == 255 && b == 255 && g == 255) {
+			    	tiles[w][h] = Type.EnemyBoss;
+			    }
 			    else { // floor
 			    	tiles[w][h] = Type.Floor;
 			    	//solids[w][h] = false;
