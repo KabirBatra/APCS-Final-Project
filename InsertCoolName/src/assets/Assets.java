@@ -6,6 +6,7 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 import assets.map.EnemyRoom;
+import assets.map.Level0;
 import assets.map.Level1;
 import assets.map.Map;
 import assets.map.Maze1;
@@ -48,6 +49,7 @@ public class Assets {
 		images.put("roll", loadImage("roll.png"));
 		images.put("normalBullet", loadImage("spinningRoll.png"));
 		images.put("Level1", loadImage("Level1.png"));
+		images.put("Level0", loadImage("Level0.png"));
 		
 		
 		spriteSheets.put("playerSheet", new SpriteSheet(images.get("player")));
@@ -62,6 +64,7 @@ public class Assets {
 		maps.put("testRoom3", new Maze1(handler, spriteSheets.get("tileSheet")));
 		maps.put("testRoom4", new EnemyRoom(handler, spriteSheets.get("tileSheet")));
 		maps.put("Level1", new Level1(handler, spriteSheets.get("tileSheet")));
+		maps.put("Level0", new Level0(handler, spriteSheets.get("tileSheet")));
 		
 		
 	}

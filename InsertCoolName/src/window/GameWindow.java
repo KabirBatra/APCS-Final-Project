@@ -40,7 +40,7 @@ public class GameWindow extends Window {
 		super(wh, surface);
 		handler = new GameHandler(wh, surface);
 		new Assets(handler); // initializes all of the assets
-		handler.setMap("Level1");
+		handler.setMap("Level0");
 
 	}
 

@@ -30,7 +30,10 @@ public class GameOverWindow extends Window {
 		sec = frames / 10;
 		
 		
-
+	
+	s.fill(0, sec);
+	s.rect(0, 0, s.width, s.height);
+	
 	
 		}
 	}
