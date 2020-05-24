@@ -360,7 +360,7 @@ public class GameHandler {
 			getPlayer().shoot(s);
 
 		} else if (s.key == 'p' || s.key == 'P') {
-			DrawingSurface.getWindowHandler().setCurrentWindow("pause");
+			((DrawingSurface)(s)).getWindowHandler().setCurrentWindow("pause");
 		}
 		/*
 		 * else if (s.key == 'f' || s.key == 'F') { setMap("testRoom4");

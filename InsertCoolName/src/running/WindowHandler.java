@@ -10,9 +10,7 @@ import window.Window;
  * @author Kabir Batra
  */
 public class WindowHandler {
-	
-	public static final int GAME_WINDOW = 0;
-	
+		
 	private HashMap<String, Window> windows;
 	
 	private String currentWindow;
@@ -53,6 +51,11 @@ public class WindowHandler {
 			wasPaused = true;
 	}
 	
+	/**
+	 * 
+	 * @return whether or not the previous screen was the pause screen.
+	 * (utility for GameWindow)
+	 */
 	public boolean wasPaused() {
 		boolean temp = wasPaused;
 		wasPaused = false;

@@ -67,7 +67,7 @@ public class GameWindow extends Window {
 			previousTime = s.millis();
 		ellapsedTime = (s.millis() - previousTime) / 1000f;
 		previousTime = s.millis();
-		if(DrawingSurface.getWindowHandler().wasPaused()) {
+		if(((DrawingSurface)(s)).getWindowHandler().wasPaused()) {
 			ellapsedTime = 0;
 			handler.releaseAllKeys();
 		}

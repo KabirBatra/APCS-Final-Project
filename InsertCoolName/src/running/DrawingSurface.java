@@ -10,7 +10,7 @@ import window.*;
  */
 public class DrawingSurface extends PApplet {
 
-	private static WindowHandler wh;
+	private WindowHandler wh;
 
 	/**
 	 * Starts running the Processing Applet
@@ -26,14 +26,7 @@ public class DrawingSurface extends PApplet {
 	 * Creates a WindowHandler and adds all the windows to it
 	 */
 	public DrawingSurface() {
-		wh = new WindowHandler();
-		wh.addWindow("game", new GameWindow(wh, this));
-		wh.addWindow("menu", new MenuWindow(wh, this));
-		wh.addWindow("pause", new PauseWindow(wh, this));
-		wh.addWindow("gameOver", new GameOverWindow(wh, this));
-		wh.addWindow("instructions", new InstructionWindow(wh, this));
-
-		wh.setCurrentWindow("menu");
+		reset();
 	}
 
 	/**
@@ -80,7 +73,21 @@ public class DrawingSurface extends PApplet {
 	 * 
 	 * @return returns the current window handler
 	 */
-	public static WindowHandler getWindowHandler() {
+	public WindowHandler getWindowHandler() {
 		return wh;
+	}
+	
+	/**
+	 * 
+	 */
+	public void reset() {
+		wh = new WindowHandler();
+		wh.addWindow("game", new GameWindow(wh, this));
+		wh.addWindow("menu", new MenuWindow(wh, this));
+		wh.addWindow("pause", new PauseWindow(wh, this));
+		wh.addWindow("gameOver", new GameOverWindow(wh, this));
+		wh.addWindow("instructions", new InstructionWindow(wh, this));
+
+		wh.setCurrentWindow("menu");
 	}
 }

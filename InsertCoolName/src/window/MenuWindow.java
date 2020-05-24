@@ -56,7 +56,7 @@ public class MenuWindow extends Window {
  * This draws the menu Window!
  */
 	public void draw() {
-
+		s.background(0);
 		width = s.width;
 		height = s.height;
 
