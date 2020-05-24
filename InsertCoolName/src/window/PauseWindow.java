@@ -11,7 +11,7 @@ import processing.core.PImage;
 import running.WindowHandler;
 
 /*
- * The Main Menu of the game
+ * The Pause Menu of the game
  * @author Kaie Chen
  */
 public class PauseWindow extends Window {
@@ -48,7 +48,7 @@ public class PauseWindow extends Window {
 	boolean overButton1 = false, overButton2 = false;
 
 	public void draw() {
-
+		s.background(0);
 		width = s.width;
 		height = s.height;
 

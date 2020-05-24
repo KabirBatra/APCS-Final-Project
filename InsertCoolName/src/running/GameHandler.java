@@ -12,9 +12,11 @@ import processing.core.PConstants;
 import processing.core.PImage;
 import processing.core.PVector;
 
-/*
- * The class that controls and maintains nearly everything in the game.
- * Updates, collisions, controls, the GameObjects, and the current map are all stored here.
+/**
+ * The class that controls and maintains nearly everything in the game. Updates,
+ * collisions, controls, the GameObjects, and the current map are all stored
+ * here.
+ * 
  * @author Kabir Batra and Kaie Chen
  */
 public class GameHandler {
@@ -35,10 +37,10 @@ public class GameHandler {
 
 	private static final float BORDER_OFFSET_FOR_CREATURES = 0.1F; // values from 0.00001 - 0.1
 
-	/*
+	/**
 	 * Creates the objects list and sets all of the current keys pressed to false.
 	 * 
-	 * @param wh the WindowHandler for changing windows
+	 * @param wh      the WindowHandler for changing windows
 	 * @param surface the PApplet for drawing things like the objects and the map
 	 */
 	public GameHandler(WindowHandler wh, PApplet surface) {
@@ -52,7 +54,7 @@ public class GameHandler {
 		right = false;
 	}
 
-	/*
+	/**
 	 * Sets the current map to mapName and uses the current player if it already
 	 * exists.
 	 * 
@@ -65,7 +67,7 @@ public class GameHandler {
 		}
 		currentMap = Assets.getMap(mapName);
 		currentMap.populateGameObjects(temp);
-		
+
 	}
 
 	public Map getCurrentMap() {
@@ -76,9 +78,9 @@ public class GameHandler {
 		objects.add(obj);
 	}
 
-	/*
+	/**
 	 * @returns the current player; returns null if the player has not been created
-	 * yet
+	 *          yet
 	 */
 	public Player getPlayer() {
 		for (GameObject obj : objects) {
@@ -88,35 +90,36 @@ public class GameHandler {
 		return null;
 	}
 
-	/*
+	/**
 	 * The update method. This method is called every frame and calls the update
 	 * method on every object. Then, it calculates collisions and determines which
 	 * Bullets should be removed from the list of objects. Finally, it moves each
 	 * object via its respective velocity.
 	 * 
 	 * @param ellapsedTime The delta time after each frame used to make velocities
-	 * smooth and constant even when frames are slow.
+	 *                     smooth and constant even when frames are slow.
 	 */
 	public void tick(float ellapsedTime) {
 		
-		if(getPlayer().getHealth() <= 0) {
+		if (getPlayer().getHealth() <= 0) {
+
 			wh.setCurrentWindow("gameOver");
+
 		}
 
 		LinkedList<Bullet> bulletsToRemove = new LinkedList<Bullet>();
 		LinkedList<Enemy> enemiesThatCanShoot = new LinkedList<Enemy>();
 
 		PVector newPos = new PVector();
-		
-		boolean allEnemiesDead = true; //set to false if found enemy that is alive
+
+		boolean allEnemiesDead = true; // set to false if found enemy that is alive
 
 		for (GameObject obj : objects) {
 
 			obj.update(ellapsedTime);
 
-			
-			if(obj instanceof DynamicObject) {
-				DynamicObject obj1 = (DynamicObject)obj;
+			if (obj instanceof DynamicObject) {
+				DynamicObject obj1 = (DynamicObject) obj;
 				newPos.x = obj1.getPosX() + obj1.getVelX() * ellapsedTime;
 				newPos.y = obj1.getPosY() + obj1.getVelY() * ellapsedTime;
 
@@ -125,52 +128,54 @@ public class GameHandler {
 					creatureVsWall(cr, newPos);
 
 				}
-				
+
 				else if (obj instanceof Bullet) {
 					Bullet b = (Bullet) obj;
 					if (bulletVsWall(b, newPos)) {
 						bulletsToRemove.add((Bullet) obj);
 					}
 				}
-				
-				
+
 				if (obj.isSolidVsGameObject()) {
 					for (GameObject obj2 : objects) {
 						if (obj == obj2) {
 							continue;
 						}
-							//creature creature
+						// creature creature
 						if (obj instanceof Creature && obj2 instanceof Creature) {
-							if(creatureVsCreature((Creature) obj, (Creature) obj2, newPos))
+							if (creatureVsCreature((Creature) obj, (Creature) obj2, newPos))
 								obj2.onInteract(obj);
-								
-							//obj.onInteract(obj2);
+
+							// obj.onInteract(obj2);
 						}
 
-						if(obj.getBounds().intersects(obj2.getBounds())) {
+						if (obj.getBounds().intersects(obj2.getBounds())) {
 							// creature bullet
-							if(obj instanceof Creature && obj2 instanceof Bullet) {
-								if(obj2.onInteract(obj))
-									if(bulletsToRemove.indexOf(obj2) == -1) bulletsToRemove.add((Bullet)obj2);
+							if (obj instanceof Creature && obj2 instanceof Bullet) {
+								if (obj2.onInteract(obj))
+									if (bulletsToRemove.indexOf(obj2) == -1)
+										bulletsToRemove.add((Bullet) obj2);
 							}
 							// bullet bullet
-							else if(obj instanceof Bullet && obj2 instanceof Bullet) {
-								if(bulletsToRemove.indexOf(obj) == -1) bulletsToRemove.add((Bullet)obj);
-								if(bulletsToRemove.indexOf(obj2) == -1) bulletsToRemove.add((Bullet)obj2);
+							else if (obj instanceof Bullet && obj2 instanceof Bullet) {
+								if (bulletsToRemove.indexOf(obj) == -1)
+									bulletsToRemove.add((Bullet) obj);
+								if (bulletsToRemove.indexOf(obj2) == -1)
+									bulletsToRemove.add((Bullet) obj2);
 							}
 						}
 					}
 				}
 				// if not solid vs gameobject here
 				obj.setPos(newPos.x, newPos.y);
-				
+
 				if (obj instanceof Enemy) {
 					Enemy temp = (Enemy) obj;
 					if (temp.isShooting()) {
 						enemiesThatCanShoot.add((Enemy) obj);
 					}
-					
-					if(!temp.isDead()) {
+
+					if (!temp.isDead()) {
 						allEnemiesDead = false;
 					}
 				}
@@ -185,26 +190,29 @@ public class GameHandler {
 		for (Enemy enemy : enemiesThatCanShoot) {
 			enemy.shoot();
 		}
-		
-		if(allEnemiesDead) {
-			if(currentMap.startNextWave())
+
+		if (allEnemiesDead) {
+			if (currentMap.startNextWave())
 				System.out.println("THE NEXT WAVE HAS STARTED AND ENEMIES ARE BACK!");
 			else {
 				System.out.println("THE WAVES ARE OVER AND YOU WIN");
 			}
 		}
+
+	
+
 	}
 
-	/*
+	/**
 	 * Draws all of the GameObjects onto the screen.
 	 * 
-	 * @param offsetX The offset between the top-left of the screen and the 0th tile
-	 * in the x direction.
+	 * @param offsetX    The offset between the top-left of the screen and the 0th
+	 *                   tile in the x direction.
 	 * 
-	 * @param offsetY The offset between the top-left of the screen and the 0th tile
-	 * in the x direction.
+	 * @param offsetY    The offset between the top-left of the screen and the 0th
+	 *                   tile in the x direction.
 	 * 
-	 * @param tileWidth The number of pixels in the width of a tile.
+	 * @param tileWidth  The number of pixels in the width of a tile.
 	 * 
 	 * @param tileHeight The number of pixels in the height of a tile.
 	 */
@@ -218,26 +226,26 @@ public class GameHandler {
 				tileHeight, s);
 	}
 
-	/*
+	/**
 	 * Draws all of the tiles of the current map onto the screen.
 	 * 
-	 * @param offsetX The offset between the top-left of the screen and the 0th tile
-	 * in the x direction.
+	 * @param offsetX     The offset between the top-left of the screen and the 0th
+	 *                    tile in the x direction.
 	 * 
-	 * @param offsetY The offset between the top-left of the screen and the 0th tile
-	 * in the y direction.
+	 * @param offsetY     The offset between the top-left of the screen and the 0th
+	 *                    tile in the y direction.
 	 * 
 	 * @param tileOffsetX The fraction of the tile that is visible on the left-most
-	 * column of the screen.
+	 *                    column of the screen.
 	 * 
 	 * @param tileOffsetY The fraction of the tile that is visible on the top-most
-	 * row of the screen.
+	 *                    row of the screen.
 	 * 
 	 * @visibleTilesX The number of tiles visible on the screen in the x direction.
 	 * 
 	 * @visibleTilesY The number of tiles visible on the screen in the y direction.
 	 * 
-	 * @param tileWidth The number of pixels in the width of a tile.
+	 * @param tileWidth  The number of pixels in the width of a tile.
 	 * 
 	 * @param tileHeight The number of pixels in the height of a tile.
 	 */
@@ -252,24 +260,24 @@ public class GameHandler {
 				BufferedImage currentSprite = null;
 				if (tile == Type.Wall) {
 					currentSprite = mapSheet.getSprite(0, 0);
-					//s.fill(0, 0, 255);
-				} 
-				else if (tile == Type.Floor || tile == Type.Enemy || tile == Type.Player) {
-					//s.fill(255);
+					// s.fill(0, 0, 255);
+				} else if (tile == Type.Floor || tile == Type.Enemy || tile == Type.Player) {
+					// s.fill(255);
 					currentSprite = mapSheet.getSprite(1, 0);
-				} 
-				else { // if its Type.None (doesnt exist)
-					//s.fill(51); 
-					currentSprite = mapSheet.getSprite(2,0);
+				} else { // if its Type.None (doesnt exist)
+							// s.fill(51);
+					currentSprite = mapSheet.getSprite(2, 0);
 				}
-				//s.rect(x * tileWidth - tileOffsetX, y * tileHeight - tileOffsetY, tileWidth + 1f, tileHeight + 1f);
-				
-				s.image(new PImage((java.awt.Image)currentSprite), x * tileWidth - tileOffsetX, y * tileHeight - tileOffsetY, tileWidth + 1f, tileHeight + 1f);
+				// s.rect(x * tileWidth - tileOffsetX, y * tileHeight - tileOffsetY, tileWidth +
+				// 1f, tileHeight + 1f);
+
+				s.image(new PImage((java.awt.Image) currentSprite), x * tileWidth - tileOffsetX,
+						y * tileHeight - tileOffsetY, tileWidth + 1f, tileHeight + 1f);
 			}
 		}
 	}
 
-	/*
+	/**
 	 * Displays the players statistics like health.
 	 */
 	public void displayStats() {
@@ -278,35 +286,35 @@ public class GameHandler {
 		s.text("HP: " + getPlayer().getHealth() + "/" + getPlayer().getMaxHealth(), 20, 20);
 	}
 
-	/*
+	/**
 	 * @return whether the up key is pressed or not.
 	 */
 	public boolean getUp() {
 		return up;
 	}
 
-	/*
+	/**
 	 * @return whether the down key is pressed or not.
 	 */
 	public boolean getDown() {
 		return down;
 	}
 
-	/*
+	/**
 	 * @return whether the left key is pressed or not.
 	 */
 	public boolean getLeft() {
 		return left;
 	}
 
-	/*
+	/**
 	 * @return whether the right key is pressed or not.
 	 */
 	public boolean getRight() {
 		return right;
 	}
 
-	/*
+	/**
 	 * Sets the booleans for whether keys for movement have been pressed. The
 	 * movement keys are the arrow keys and WASD.
 	 */
@@ -342,7 +350,7 @@ public class GameHandler {
 
 	}
 
-	/*
+	/**
 	 * Sets the booleans for whether keys for movement have been released. The
 	 * movement keys are the arrow keys and WASD.
 	 */
@@ -363,12 +371,14 @@ public class GameHandler {
 
 	}
 
-	/*
-	 * Changes the value of the parameter newPos based on whether a collision occurred or not
+	/**
+	 * Changes the value of the parameter newPos based on whether a collision
+	 * occurred or not
 	 * 
-	 * @param cr The creature being checked for a collision with a wall
+	 * @param cr     The creature being checked for a collision with a wall
 	 * 
-	 * @param newPos The new position of the creature that is being collision checked
+	 * @param newPos The new position of the creature that is being collision
+	 *               checked
 	 * 
 	 */
 	public void creatureVsWall(Creature cr, PVector newPos) {
@@ -388,9 +398,10 @@ public class GameHandler {
 			cr.setVelX(0);
 			newPos.x = (int) newPos.x + 1;
 
-		} else if (cr.getVelX() > 0 && (currentMap.isSolidTile((int) newPos.x + 1,
-				(int) (cr.getPosY() + BORDER_OFFSET_FOR_CREATURES))
-				|| currentMap.isSolidTile((int) newPos.x + 1, (int) (cr.getPosY() + 1 - BORDER_OFFSET_FOR_CREATURES)))) {
+		} else if (cr.getVelX() > 0
+				&& (currentMap.isSolidTile((int) newPos.x + 1, (int) (cr.getPosY() + BORDER_OFFSET_FOR_CREATURES))
+						|| currentMap.isSolidTile((int) newPos.x + 1,
+								(int) (cr.getPosY() + 1 - BORDER_OFFSET_FOR_CREATURES)))) {
 			cr.setVelX(0);
 			newPos.x = (int) newPos.x;
 
@@ -403,9 +414,10 @@ public class GameHandler {
 			cr.setVelY(0);
 			newPos.y = (int) newPos.y + 1;
 
-		} else if (cr.getVelY() > 0 && (currentMap.isSolidTile((int) (cr.getPosX() + BORDER_OFFSET_FOR_CREATURES),
-				(int) newPos.y + 1)
-				|| currentMap.isSolidTile((int) (cr.getPosX() + 1 - BORDER_OFFSET_FOR_CREATURES), (int) newPos.y + 1))) {
+		} else if (cr.getVelY() > 0
+				&& (currentMap.isSolidTile((int) (cr.getPosX() + BORDER_OFFSET_FOR_CREATURES), (int) newPos.y + 1)
+						|| currentMap.isSolidTile((int) (cr.getPosX() + 1 - BORDER_OFFSET_FOR_CREATURES),
+								(int) newPos.y + 1))) {
 			cr.setVelY(0);
 			newPos.y = (int) newPos.y;
 
@@ -413,8 +425,8 @@ public class GameHandler {
 
 	}
 
-	/*
-	 * @param b The Bullet being checked for a collision with a wall
+	/**
+	 * @param b      The Bullet being checked for a collision with a wall
 	 * 
 	 * @param newPos The new position of the bullet that is being collision checked
 	 * 
@@ -422,7 +434,7 @@ public class GameHandler {
 	 */
 	public boolean bulletVsWall(Bullet b, PVector newPos) {
 		// movement/collisions
-		
+
 		if (newPos.x < 0 || newPos.y < 0)
 			return true;
 
@@ -457,31 +469,32 @@ public class GameHandler {
 		return false;
 	}
 
-	/*
-	 * Changes the value of the parameter newPos based on whether a collision occurred or not
+	/**
+	 * Changes the value of the parameter newPos based on whether a collision
+	 * occurred or not
 	 * 
-	 * @param obj1 The first object being checked for a collision with the the
-	 * second object
+	 * @param obj1   The first object being checked for a collision with the the
+	 *               second object
 	 * 
-	 * @param obj2 The second object being checked for a collision with the the
-	 * first object
+	 * @param obj2   The second object being checked for a collision with the the
+	 *               first object
 	 * 
 	 * @param newPos The new position of the bullet that is being collision checked
 	 * @return true if there was a collision
 	 */
 	public boolean creatureVsCreature(Creature obj1, Creature obj2, PVector newPos) {
-		
-		if(obj1.isDead() || obj2.isDead()) {
+
+		if (obj1.isDead() || obj2.isDead()) {
 			return false;
 		}
-		
+
 		boolean collisionOccurred = false;
 
 		Rectangle2D r1 = obj1.getBounds();
 		Rectangle2D r2 = obj1.getBounds();
 
 		// x direction
-		//DO NOT DELETE THIS
+		// DO NOT DELETE THIS
 		if (newPos.x < (obj2.getPosX() + r2.getWidth()) && (newPos.x + r1.getWidth()) > obj2.getPosX()
 				&& obj1.getPosY() < (obj2.getPosY() + r2.getHeight())
 				&& (obj1.getPosY() + r1.getHeight()) > obj2.getPosY()) {

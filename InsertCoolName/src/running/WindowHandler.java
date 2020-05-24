@@ -4,7 +4,7 @@ import java.util.HashMap;
 import processing.core.PApplet;
 import window.Window;
 
-/*
+/**
  * The class that controls and maintains the all of the different windows.
  * Windows are stored, switched, and displayed using this class.
  * @author Kabir Batra
@@ -23,7 +23,7 @@ public class WindowHandler {
 
 	}
 	
-	/*
+	/**
 	 * Adds a window to the list of windows.
 	 * @param name The name of the window.
 	 * @param w The window object being added.
@@ -34,14 +34,14 @@ public class WindowHandler {
 		windows.put(name, w);
 	}
 	
-	/*
+	/**
 	 * @return The current window being displayed
 	 */
 	public Window getCurrentWindow() {
 		return windows.get(currentWindow);
 	}
 	
-	/*
+	/**
 	 * Sets the current window to be drawn.
 	 * @param name The name of the window added using the addWindow method.
 	 */

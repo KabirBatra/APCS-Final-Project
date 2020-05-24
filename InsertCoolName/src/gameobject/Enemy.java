@@ -6,7 +6,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import running.GameHandler;
 
-/*
+/**
  * Represents an enemy in the game
  * @author Kaie Chen and Kabir Batra
  */
@@ -23,6 +23,14 @@ public class Enemy extends Creature {
 	private boolean canMoveX = true;
 	private boolean canMoveY = true;
 
+	/**
+	 * This creates an enemy!
+	 * @param x This is the x position of the enemy (top left corner)
+	 * @param y This is the y position of the enemy (top left corner)
+	 * @param fireRate This determines the fire rate of the enemy!
+	 * @param name This is the tag/name of this enemy!
+	 * @param handler This is the gameHandler list that manages all the creature objects!
+	 */
 	public Enemy(float x, float y, int fireRate, String name, GameHandler handler) {
 		super(x, y, name, ss);
 		this.handler = handler;
@@ -35,9 +43,14 @@ public class Enemy extends Creature {
 		health = 50;
 		maxHealth = 50;
 	}
-
-	/*
-	 * Moves the enemy using the player's position
+	 
+	/** The update method. This method is called every frame and calls the update
+	 * method on every object. Then, it calculates collisions and determines which
+	 * Bullets should be removed from the list of objects. Finally, it moves each
+	 * object via its respective velocity.
+	 * 
+	 * @param ellapsedTime The delta time after each frame used to make velocities
+	 * smooth and constant even when frames are slow.
 	 */
 	public void update(float ellapsedTime) {
 		super.update(ellapsedTime);
@@ -115,23 +128,24 @@ public class Enemy extends Creature {
 		}
 	}
 
-	public void setCanMoveX(boolean maybe) {
-		canMoveX = maybe;
-	}
 
-	public void setCanMoveY(boolean maybe) {
-		canMoveY = maybe;
-	}
 
-	/*
-	 * @return whether the enemy is in the state of shooting or not.
+	/**
+	 * 
+	 * @return this returns a boolean that determines if this enemy object is shooting or not!
 	 */
 	public boolean isShooting() {
 		return isShooting;
 	}
 
-	/*
-	 * Draws the enemy as a green square
+
+	/**
+	 * This draws the enemy!
+	 * @param x this is the x position of the creature (Must be within the bounds of the map!)
+	 * @param y this is the y position of the creature (Must be within the bounds of the map!)
+	 * @param tileWidth this is how wide the creature object is! (must be 1)
+	 * @param tileHeight this is how tall the creature object is! (must be 1)
+	 * @param s this is the drawing PApplet, must be initialized 
 	 */
 	public void drawSelf(float x, float y, int tileWidth, int tileHeight, PApplet s) {
 //		s.fill(0, 255, 0);
@@ -153,6 +167,10 @@ public class Enemy extends Creature {
 	/*
 	 * Called when a player or bullet collides with the enemy. Does knock-back
 	 */
+	
+	/**
+	 * This method helps with interactions between the enemy and other objects!
+	 */
 	public boolean onInteract(GameObject obj) {
 		if(obj instanceof Player && state != AnimationState.DEAD) {
 			attack((Player)obj); // shouldnt attack if dead
@@ -171,7 +189,9 @@ public class Enemy extends Creature {
 	 * Creates a bullet object traveling in the direction of the player.
 	 */
 	private float angle;
-
+/**
+ * This creates a bullet object that is traveling at the direction of the player.
+ */
 	public void shoot() {
 
 		Player closestPlayer = null;
@@ -207,7 +227,10 @@ public class Enemy extends Creature {
 		}
 
 	}
-	
+	/**
+	 * This method is when the enemy is in contact with the player!
+	 * @param p must be an initialized player object!
+	 */
 	public void attack(Player p) {
 		p.deltaHealth(-5);
 	}

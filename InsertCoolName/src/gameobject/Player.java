@@ -7,7 +7,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import running.GameHandler;
 
-/*
+/**
  * Represents the controllable Player of the game
  * @author Kabir Batra
  */
@@ -17,7 +17,7 @@ public class Player extends Creature {
 
 	private GameHandler handler;
 	
-	/*
+	/**
 	 * sets health and speed to defaults
 	 */
 	public Player(float x, float y, String name, GameHandler handler) {
@@ -28,7 +28,7 @@ public class Player extends Creature {
 		health = 500;
 	}
 
-	/*
+	/**
 	 * Updates the velocity of the player depending on the state of keys 
 	 * in the handler
 	 */
@@ -59,7 +59,7 @@ public class Player extends Creature {
 		}
 	}
 	
-	/*
+	/**
 	 * Creates a bullet game object at the player's position
 	 */
 	public void shoot(PApplet s) {
@@ -90,7 +90,7 @@ public class Player extends Creature {
 		handler.addGameObject(new NormalBullet(this.posX+0.5f, this.posY+0.5f, angle, this, "308"));
 	}
 
-	/*
+	/**
 	 * Draws the player using the current sprite
 	 */
 	public void drawSelf(float x, float y, int tileWidth, int tileHeight, PApplet s) {

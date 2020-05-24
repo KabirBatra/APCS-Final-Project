@@ -1,5 +1,10 @@
 package window;
 
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
+import com.sun.glass.ui.Timer;
+
 import assets.Assets;
 import gameobject.GameObject;
 import processing.core.PApplet;
@@ -12,33 +17,33 @@ import running.WindowHandler;
  * @author Kabir Batra
  */
 public class GameWindow extends Window {
-	
+
 	private GameHandler handler;
 	private float cameraX, cameraY;
-	
+
 	private int tileWidth = 64;
 	private int tileHeight = 64;
 
-	//integers that are repeatedly reassigned in the draw method:
+	// integers that are repeatedly reassigned in the draw method:
 	private int visibleTilesX, visibleTilesY;
 	private float offsetX, offsetY, tileOffsetX, tileOffsetY;
 	private GameObject player;
-	
+
 	private float ellapsedTime;
 	private int previousTime;
-	
+
 	/*
-	 * Instantiates the Assets class and stores a reference to the Processing PApplet 
-	 * for to draw things.
+	 * Instantiates the Assets class and stores a reference to the Processing
+	 * PApplet for to draw things.
 	 */
 	public GameWindow(WindowHandler wh, PApplet surface) {
 		super(wh, surface);
 		handler = new GameHandler(wh, surface);
 		new Assets(handler); // initializes all of the assets
 		handler.setMap("Level1");
-		
+
 	}
-	
+
 	/*
 	 * Initializes the camera position
 	 */
@@ -51,53 +56,60 @@ public class GameWindow extends Window {
 		cameraY = player.getPosY();
 		System.out.println(handler.getPlayer() + " exists");
 	}
-	
+
 	/*
-	 * Updates the camera and calls GameHandler's tick and draw methods.
-	 * Also calculates values to display tiles properly 
+	 * Updates the camera and calls GameHandler's tick and draw methods. Also
+	 * calculates values to display tiles properly
 	 */
 	public void draw() {
 		s.background(0);
-		if(previousTime == 0) previousTime = s.millis();
-		ellapsedTime = (s.millis() - previousTime)/1000f;
+		if (previousTime == 0)
+			previousTime = s.millis();
+		ellapsedTime = (s.millis() - previousTime) / 1000f;
 		previousTime = s.millis();
-		
+
 		handler.tick(ellapsedTime);
-		
-		visibleTilesX = s.width/tileWidth;
-		visibleTilesY = s.height/tileHeight;
+
+		visibleTilesX = s.width / tileWidth;
+		visibleTilesY = s.height / tileHeight;
 
 		// smooth camera
 		cameraX -= (cameraX - player.getPosX()) * 0.1f;
 		cameraY -= (cameraY - player.getPosY()) * 0.1f;
-				
+
 		// distance from camera to topLeft
-		offsetX = cameraX - visibleTilesX/2f;
-		offsetY = cameraY - visibleTilesY/2f;
-		
-		if(offsetX < 0) offsetX = 0;
-		if(offsetY < 0) offsetY = 0;
-		
-		if(offsetX > handler.getCurrentMap().getWidth() - visibleTilesX) offsetX = handler.getCurrentMap().getWidth() - visibleTilesX;
-		if(offsetY > handler.getCurrentMap().getHeight() - visibleTilesY) offsetY = handler.getCurrentMap().getHeight() - visibleTilesY;
+		offsetX = cameraX - visibleTilesX / 2f;
+		offsetY = cameraY - visibleTilesY / 2f;
 
-		
-		tileOffsetX = (offsetX - (int)offsetX) * tileWidth;
-		tileOffsetY = (offsetY - (int)offsetY) * tileHeight;
+		if (offsetX < 0)
+			offsetX = 0;
+		if (offsetY < 0)
+			offsetY = 0;
 
-		handler.drawMap(offsetX, offsetY, tileOffsetX, tileOffsetY, visibleTilesX, visibleTilesY, tileWidth, tileHeight);
+		if (offsetX > handler.getCurrentMap().getWidth() - visibleTilesX)
+			offsetX = handler.getCurrentMap().getWidth() - visibleTilesX;
+		if (offsetY > handler.getCurrentMap().getHeight() - visibleTilesY)
+			offsetY = handler.getCurrentMap().getHeight() - visibleTilesY;
+
+		tileOffsetX = (offsetX - (int) offsetX) * tileWidth;
+		tileOffsetY = (offsetY - (int) offsetY) * tileHeight;
+
+		handler.drawMap(offsetX, offsetY, tileOffsetX, tileOffsetY, visibleTilesX, visibleTilesY, tileWidth,
+				tileHeight);
 		handler.drawObjects(offsetX, offsetY, tileWidth, tileHeight);
 		handler.displayStats();
-		
+
+	
+
 	}
-		
+
 	/**
 	 * Calls the keyPressed method of the GameHandler
 	 */
 	public void keyPressed() {
 		handler.keyPressed();
 	}
-	
+
 	/**
 	 * Calls the keyReleased method of the GameHandler
 	 */

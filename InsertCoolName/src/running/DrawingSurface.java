@@ -12,7 +12,7 @@ public class DrawingSurface extends PApplet {
 
 	private static WindowHandler wh;
 
-	/*
+	/**
 	 * Starts running the Processing Applet
 	 * 
 	 * @param args not used
@@ -76,7 +76,10 @@ public class DrawingSurface extends PApplet {
 	public void keyReleased() {
 		wh.getCurrentWindow().keyReleased();
 	}
-
+/**
+ * 
+ * @return returns the current window handler
+ */
 	public static WindowHandler getWindowHandler() {
 		return wh;
 	}

@@ -145,22 +145,34 @@ public abstract class Creature extends GameObject implements DynamicObject {
 		this.velY = velY;
 	}
 	
-	
+	/**
+	 * Getter for the creature's health!
+	 * @return the current health of this creature
+	 */
 	public int getHealth() {
 		return health;
 	}
 	
-	
+	/**
+	 * Setter for the creature's health!
+	 * @param health must be a positive integer that is zero or above
+	 */
 	public void setHealth(int health) {
 		this.health = health;
 	}
 
-	
+	/**
+	 * This is a getter for the max health of this creature!
+	 * @return the maxHealth of this creature
+	 */
 	public int getMaxHealth() {
 		return maxHealth;
 	}
 
-	
+/**
+ * This changes the max health of this creature if this creature recieves a buff	
+ * @param maxHealth must be a positive whole number above 0!
+ */
 	public void setMaxHealth(int maxHealth) {
 		this.maxHealth = maxHealth;
 	}
@@ -173,7 +185,9 @@ public abstract class Creature extends GameObject implements DynamicObject {
 	public void setSpriteSheet(SpriteSheet ss) {
 		this.ss = ss;
 	}
-
+/**
+ * This draws a Rectangle2D hit box around this creature object!
+ */
 	public Rectangle2D.Double getBounds() {
 		return new Rectangle2D.Double(posX, posY, 1, 1);
 	}
@@ -183,12 +197,18 @@ public abstract class Creature extends GameObject implements DynamicObject {
 	public float getMaxSpeed() {
 		return maxSpeed;
 	}
-	
+	/**
+	 * This increments the health of this creature by healthPoints!
+	 * @param healthPoints changes the health of the creature by healthPoints. Can be positive or negative whole numbers
+	 */
 	public void deltaHealth(int healthPoints) {
 		health += healthPoints;
 		System.out.println(healthPoints);
 	}
-	
+	/**
+	 * This makes the creature dead
+	 * @return the state of the creature being dead
+	 */
 	public boolean isDead() {
 		return state == AnimationState.DEAD;
 	}

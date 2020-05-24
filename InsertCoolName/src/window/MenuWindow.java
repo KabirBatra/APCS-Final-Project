@@ -17,13 +17,19 @@ import running.WindowHandler;
 public class MenuWindow extends Window {
 
 	private static PImage toiletPaper;
-	
+	/**
+	 * Creates a menu window!
+	 * @param wh must be initialized!
+	 * @param surface must be initialized!
+	 */
 	public MenuWindow(WindowHandler wh, PApplet surface) {
 		super(wh, surface);
 	}
 
 	PFont zigBlack;
-
+/**
+ * This helps setup the menu!
+ */
 	public void setup() {
 		
 		BufferedImage img = null;
@@ -46,7 +52,9 @@ public class MenuWindow extends Window {
 
 	float rectX, rectY, rectX2, rectY2, width, height;
 	boolean overButton1 = false, overButton2 = false;
-
+/**
+ * This draws the menu Window!
+ */
 	public void draw() {
 
 		width = s.width;
