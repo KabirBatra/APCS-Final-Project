@@ -14,24 +14,27 @@ import running.WindowHandler;
  * The Main Menu of the game
  * @author Kaie Chen
  */
-public class MenuWindow extends Window {
+public class InstructionWindow extends Window {
 
 	private static PImage toiletPaper;
+
 	/**
 	 * Creates a menu window!
-	 * @param wh must be initialized!
+	 * 
+	 * @param wh      must be initialized!
 	 * @param surface must be initialized!
 	 */
-	public MenuWindow(WindowHandler wh, PApplet surface) {
+	public InstructionWindow(WindowHandler wh, PApplet surface) {
 		super(wh, surface);
 	}
 
 	PFont zigBlack;
-/**
- * This helps setup the menu!
- */
+
+	/**
+	 * This helps setup the menu!
+	 */
 	public void setup() {
-		
+
 		BufferedImage img = null;
 		try {
 			img = ImageIO.read(getClass().getClassLoader().getResource("toiletPaper.png"));
@@ -39,7 +42,7 @@ public class MenuWindow extends Window {
 			System.out.println("image load unsuccessful");
 			e.printStackTrace();
 		}
-		toiletPaper = new PImage((java.awt.Image)img);
+		toiletPaper = new PImage((java.awt.Image) img);
 
 		s.background(0);
 		s.fill(0);
@@ -52,48 +55,60 @@ public class MenuWindow extends Window {
 
 	float rectX, rectY, rectX2, rectY2, width, height;
 	boolean overButton1 = false, overButton2 = false;
-/**
- * This draws the menu Window!
- */
+
+	/**
+	 * This draws the menu Window!
+	 */
 	public void draw() {
 
 		width = s.width;
 		height = s.height;
 
-
-//		this is the toliet paper
-//		s.fill(255);
-//
-//		s.stroke(0);
-//		s.ellipse(width / 2, height / 2 + 80, width / 6, height / 12);
-//
-//		s.noStroke();
-//		s.rect(width / 2 - 50, height / 2, width / 6, height / 7.5f);
-//
-//		s.stroke(0);
-//		s.ellipse(width / 2, height / 2, width / 6, height / 12);
-//
-//		s.stroke(128, 108, 81);
-//		s.fill(173, 135, 98);
-//		s.ellipse(width / 2, height / 2, width / 24, height / 50);
-//		
-		// attempt to draw toilet paper image 
-
-		float imgWidth = toiletPaper.width/10;
-		float imgHeight = toiletPaper.height/10;
-		
-		s.image(toiletPaper, width/2 - imgWidth/2, height/2 - imgHeight/2, imgWidth, imgHeight);
-		
-		
-		s.fill(173, 0, 0);
 		s.textAlign(s.CENTER);
 		s.textSize(50);
 
 		// This is the text
-		s.text("THE REVENGE \n OF THE \n TOLIET PAPER!", width / 2, height / 10);
 
+		s.fill(173, 0, 0);
+		s.text("Instructions", width / 2, height / 10);
+
+		// These are the keys
+		s.fill(125);
+		s.stroke(150);
+		s.rect(width * 2 / 7, height / 7, width / 10, height / 10);
+		s.rect(width / 7, height * 2 / 7, width / 10, height / 10);
+		s.rect(width * 2 / 7, height * 2 / 7, width / 10, height / 10);
+		s.rect(width * 3 / 7, height * 2 / 7, width / 10, height / 10);
+		s.rect(width / 9, height * 4 / 9, width / 2, height / 10);
+
+		// Text over Keys
+		s.fill(0);
+		s.textSize(50);
+		s.text("W", width * 2 / 7 + width / 20, height / 7 + height / 13);
+		s.text("A", width / 7 + width / 20, height * 2 / 7 + height / 13);
+		s.text("S", width * 2 / 7 + width / 20, height * 2 / 7 + height / 13);
+		s.text("D", width * 3 / 7 + width / 20, height * 2 / 7 + height / 13);
+		s.text("SPACE BAR", width / 9 + width / 4, (height * 4 / 9) + height / 13);
+
+		// Instructional text
+		s.textAlign(s.LEFT);
+		s.textSize(20);
+		s.fill(173, 0, 0);
+		s.text("W - move up \n A - move left \n S - move down \n D - move right \n Space bar - shoot a bullet \n    with autoaim!",
+				width * 4 / 7 + width / 20, height / 7 + height / 13);
+		s.textAlign(s.CENTER);
+		s.fill(255);
+		s.text("Kill ALL the slimes with toliet paper and don't die!! "
+				+ "\n (slimes can and will shoot you and can hurt you by touching you)"
+				+ "\n You have infinite ammo and your health is in the top left of the UI!"
+				+ "\n Most importantly, HAVE FUN!"
+			, width / 2, height *  7 / 12);
+		
+
+		// check to see if the curosr is over the buttons
 		overButton1 = overButton(rectX, rectY, s.mouseX, s.mouseY, width / 4, height / 4);
 		overButton2 = overButton(rectX2, rectY2, s.mouseX, s.mouseY, width / 4, height / 4);
+
 		// this changes the color
 
 		s.stroke(173, 0, 0);
@@ -127,18 +142,17 @@ public class MenuWindow extends Window {
 
 		s.fill(173, 0, 0);
 		s.textSize(20);
-		s.text("Let's Do This", rectX + width / 8, rectY + height / 20);
-		s.text("Nah I am good", rectX2 + width / 8, rectY2 + height / 20);
-	
-		
-		
-		// I tried to use the void ousePresed() as in processing, but it didn't work so this is probably going to
+		s.text("Let's get to it!", rectX + width / 8, rectY + height / 20);
+		s.text("Psych I am out", rectX2 + width / 8, rectY2 + height / 20);
+
+		// I tried to use the void ousePresed() as in processing, but it didn't work so
+		// this is probably going to
 		// be the solution
 		if (s.mousePressed && s.mouseButton == s.LEFT && overButton1) {
 			System.out.println("LETS A GOOOO");
 
 			// START GAME
-			wh.setCurrentWindow("instructions");
+			wh.setCurrentWindow("game");
 			wh.getCurrentWindow().setup();
 
 		}
