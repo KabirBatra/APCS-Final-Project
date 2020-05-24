@@ -93,7 +93,7 @@ public class Enemy extends Creature {
 		canMoveY = false;
 		while (!handler.getCurrentMap().isSolidTile(checkingX, checkingY)) {
 			//System.out.println(theDist);
-			if (checkingX == aproxPlayerX && checkingY == aproxPlayerY && theDist < 10) {
+			if (checkingX == aproxPlayerX && checkingY == aproxPlayerY && theDist < 12) {
 				isShooting = true;
 				checkingX = (int) enemyX;
 				checkingY = (int) enemyY;
