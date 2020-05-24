@@ -101,7 +101,7 @@ public class InstructionWindow extends Window {
 				+ "S - move down \n "
 				+ "D - move right \n "
 				+ "Space bar - shoot a bullet"
-				+ " \n    with autoaim! \n P  - pause/unpause",
+				+ " \n    with autoaim! \n P  - pause",
 				width * 4 / 7 + width / 20, height / 7 + height / 13);
 		s.textAlign(s.CENTER);
 		s.fill(255);

@@ -104,7 +104,7 @@ public class GameWindow extends Window {
 		handler.displayStats();
 
 		if (handler.getTransition()) {
-			s.textSize(50);
+			s.textSize(30);
 			s.textAlign(s.CENTER);
 			s.text("PREPARE FOR NEXT WAVE OR LEVEL", s.width/ 2, s.height/2);
 			s.textAlign(s.LEFT);
