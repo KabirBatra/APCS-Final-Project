@@ -192,6 +192,10 @@ public class GameHandler {
 		}
 
 		if (allEnemiesDead) {
+			
+	
+			
+			
 			if (currentMap.startNextWave())
 				System.out.println("THE NEXT WAVE HAS STARTED AND ENEMIES ARE BACK!");
 			else {

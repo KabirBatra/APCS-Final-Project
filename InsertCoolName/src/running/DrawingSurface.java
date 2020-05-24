@@ -32,6 +32,7 @@ public class DrawingSurface extends PApplet {
 		wh.addWindow("pause", new MenuWindow(wh, this));
 		wh.addWindow("gameOver", new GameOverWindow(wh, this));
 		wh.addWindow("instructions", new InstructionWindow(wh, this));
+	
 
 		wh.setCurrentWindow("menu");
 	}
@@ -57,11 +58,9 @@ public class DrawingSurface extends PApplet {
 	 * Draws the current window of the WindowHandler
 	 */
 	public void draw() {
-	
+
 		wh.getCurrentWindow().draw();
-		
-		
-		
+
 	}
 
 	/**
@@ -77,10 +76,11 @@ public class DrawingSurface extends PApplet {
 	public void keyReleased() {
 		wh.getCurrentWindow().keyReleased();
 	}
-/**
- * 
- * @return returns the current window handler
- */
+
+	/**
+	 * 
+	 * @return returns the current window handler
+	 */
 	public static WindowHandler getWindowHandler() {
 		return wh;
 	}
