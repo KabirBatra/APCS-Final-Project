@@ -9,6 +9,5 @@ public enum Type {
 	Floor,
 	Player, 
 	Enemy,
-	AmmoCrate,
 	EnemyBoss
 }

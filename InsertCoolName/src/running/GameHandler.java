@@ -296,7 +296,7 @@ public class GameHandler {
 				if (tile == Type.Wall) {
 					currentSprite = mapSheet.getSprite(0, 0);
 					// s.fill(0, 0, 255);
-				} else if (tile == Type.Floor || tile == Type.Enemy || tile == Type.Player) {
+				} else if (tile == Type.Floor || tile == Type.Enemy || tile == Type.Player || tile == Type.EnemyBoss) {
 					// s.fill(255);
 					currentSprite = mapSheet.getSprite(1, 0);
 				} else { // if its Type.None (doesnt exist)

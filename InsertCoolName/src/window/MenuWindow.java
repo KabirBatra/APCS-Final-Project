@@ -61,7 +61,7 @@ public class MenuWindow extends Window {
 		height = s.height;
 
 
-//		this is the toliet paper
+//		this is the toilet paper
 //		s.fill(255);
 //
 //		s.stroke(0);
