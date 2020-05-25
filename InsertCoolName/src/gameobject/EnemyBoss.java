@@ -1,15 +1,38 @@
 package gameobject;
 
+import assets.Assets;
+import assets.SpriteSheet;
+import processing.core.PApplet;
+import processing.core.PImage;
 import running.GameHandler;
 
 public class EnemyBoss extends Enemy {
 
 	public EnemyBoss(float x, float y, int fireRate, String name, GameHandler handler) {
-		super(x, y,  24, name, handler);
-		health = 1000;
-		maxHealth = 1000;
+		super(x, y, 6, name, handler);
+
+		health = 600;
+		maxHealth = 600;
 		maxSpeed = 1;
+
 		// TODO Auto-generated constructor stub
+	}
+
+	public void drawSelf(float x, float y, int tileWidth, int tileHeight, PApplet s) {
+//		s.fill(0, 255, 0);
+//		s.rect(x, y, tileWidth, tileHeight);
+setSpriteSheet(Assets.getSpriteSheet("BossSheet"));
+		if (currentSprite != null) {
+			PImage img = new PImage((java.awt.Image) currentSprite);
+			s.image(img, x, y, tileWidth, tileHeight);
+			s.fill(255, 0, 0);
+			s.rect(x, y, tileWidth, 10);
+			s.fill(0, 255, 0);
+			s.rect(x, y, tileWidth * (float) health / maxHealth, 10);
+		} else {
+			s.fill(0);
+			s.rect(x, y, tileWidth, tileHeight);
+		}
 	}
 
 }

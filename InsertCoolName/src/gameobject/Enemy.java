@@ -12,7 +12,7 @@ import running.GameHandler;
  */
 public class Enemy extends Creature {
 	
-	private static SpriteSheet ss = Assets.getSpriteSheet("slimeSheet");
+	protected static SpriteSheet ss = Assets.getSpriteSheet("slimeSheet");
 
 	private GameHandler handler;
 

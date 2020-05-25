@@ -56,12 +56,13 @@ public class Assets {
 		images.put("easylevel", loadImage("EasiestLevel.png"));
 		images.put("Level2", loadImage("Level2.png"));
 		images.put("Level3", loadImage("Level3.png"));
-		
+		images.put("EnemyBoss", loadImage("EnemyBoss.png"));
 		
 		spriteSheets.put("playerSheet", new SpriteSheet(images.get("player")));
 		spriteSheets.put("slimeSheet", new SpriteSheet(images.get("slime")));
 		spriteSheets.put("tileSheet", new SpriteSheet(images.get("tiles")));
 		spriteSheets.put("normalBulletSheet", new SpriteSheet(images.get("normalBullet")));
+		spriteSheets.put("BossSheet", new SpriteSheet(images.get("EnemyBoss")));
 		
 		// maps
 		//maps.put("testRoom", new Map(getBufferedImage("bigTestRoom"), new SpriteSheet("testRoomSpriteSheet"), handler));

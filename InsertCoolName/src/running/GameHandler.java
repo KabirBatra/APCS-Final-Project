@@ -201,11 +201,17 @@ public class GameHandler {
 			if (frames / 60 > 2) {
 				frames = 0;
 				transition = false;
-				if (currentMap.startNextWave())
+				if (currentMap.startNextWave()) {
 
 					System.out.println("THE NEXT WAVE HAS STARTED AND ENEMIES ARE BACK!");
 
-				else {
+					if (getPlayer().getHealth() <= getPlayer().getMaxHealth() / 2) {
+						getPlayer().setHealth(getPlayer().getHealth() + getPlayer().getMaxHealth() / 2);
+					} else {
+						getPlayer().setHealth(getPlayer().getMaxHealth());
+					}
+
+				} else {
 
 					if (level == 0) {
 						getPlayer().setMaxHealth(600);
