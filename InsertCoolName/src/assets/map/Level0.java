@@ -4,7 +4,7 @@ import assets.SpriteSheet;
 import gameobject.Player;
 import running.GameHandler;
 /**
- * This is Level1 of the game!
+ * This is 0th level of the game!
  * @author kaiechen
  *
  */
