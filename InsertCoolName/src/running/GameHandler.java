@@ -204,20 +204,24 @@ public class GameHandler {
 				if (currentMap.startNextWave())
 
 					System.out.println("THE NEXT WAVE HAS STARTED AND ENEMIES ARE BACK!");
+
 				else {
+
 					if (level == 0) {
 						getPlayer().setMaxHealth(600);
 						getPlayer().setHealth(600);
 
-					} else if (level > 1) {
-						getPlayer().setMaxHealth(600 * (level + 1));
-						getPlayer().setHealth(600 * (level + 1));
+					} else if (level >= 1) {
+						getPlayer().setMaxHealth((600 * (level + 1)));
+						getPlayer().setHealth(((600 * (level + 1))));
 					}
 					// System.out.println("THE WAVES ARE OVER AND YOU WIN");
+
+					System.out.println(level + "this is the level");
+
 					setMap("Level" + level);
-					if (level < 3) {
-						level++;
-					}
+
+					level++;
 
 				}
 			} else {
@@ -360,7 +364,7 @@ public class GameHandler {
 			getPlayer().shoot(s);
 
 		} else if (s.key == 'p' || s.key == 'P') {
-			((DrawingSurface)(s)).getWindowHandler().setCurrentWindow("pause");
+			((DrawingSurface) (s)).getWindowHandler().setCurrentWindow("pause");
 		}
 		/*
 		 * else if (s.key == 'f' || s.key == 'F') { setMap("testRoom4");
@@ -395,8 +399,8 @@ public class GameHandler {
 		}
 
 	}
-	
-	/** 
+
+	/**
 	 * Sets all the current states of keys pressed to false
 	 */
 	public void releaseAllKeys() {
@@ -404,7 +408,7 @@ public class GameHandler {
 		down = false;
 		left = false;
 		right = false;
-		
+
 	}
 
 	public boolean getTransition() {
