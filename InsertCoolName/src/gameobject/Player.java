@@ -3,6 +3,7 @@ package gameobject;
 
 import assets.Assets;
 import assets.SpriteSheet;
+import gameobject.Creature.AnimationState;
 import processing.core.PApplet;
 import processing.core.PImage;
 import running.GameHandler;
@@ -104,10 +105,13 @@ public class Player extends Creature {
 	}
 
 	public boolean onInteract(GameObject obj) {
-		if(obj instanceof Enemy || obj instanceof Bullet) {
+		if(obj instanceof Enemy && !( ((Enemy)(obj)).isDead()) ) {// || obj instanceof Bullet) {
 			//take knock back 
 //			velX *= -1; // temporary code
 //			velY *= -1;
+			
+			
+			((Enemy)(obj)).attack(this);
 			return true;
 		}
 		return false;

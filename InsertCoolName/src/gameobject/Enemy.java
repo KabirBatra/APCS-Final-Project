@@ -172,7 +172,7 @@ public class Enemy extends Creature {
 	 * This method helps with interactions between the enemy and other objects!
 	 */
 	public boolean onInteract(GameObject obj) {
-		if(obj instanceof Player && state != AnimationState.DEAD) {
+		if(obj instanceof Player && !isDead()) {
 			attack((Player)obj); // shouldnt attack if dead
 			return true;
 		}
@@ -232,7 +232,7 @@ public class Enemy extends Creature {
 	 * @param p must be an initialized player object!
 	 */
 	public void attack(Player p) {
-		p.deltaHealth(-5);
+		p.deltaHealth(-1);
 	}
 
 
