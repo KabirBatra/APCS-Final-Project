@@ -24,7 +24,7 @@ This solves the problem that Covid-19 has created: boredom because of isolation.
 What is the story?
 
 
-You are trying to buy some toilet paper at Costco, and as you grasp the package of toilet paper, you find yourself surrounded by many people who want to kill you for that toilet paper. Thus, with the limited ammo and weapons that you can find within this amazing Costco that supplies weapons and ammunition, you must fight your way through the horde of people trying to kill you to the checkout line! Do you have what it takes to purchase this last package of toilet paper? Let’s find out……..
+You are trying to buy some toilet paper at Costco, and as you grasp the package of toilet paper, you suddenly teleport into a slimy sewer like room. Thus, with the limited ammo and weapons that you had purchased from Costco that you brought with you, you must fight your way through the horde of slimes trying to kill you! Do you have what it takes to get home safely with the toilet paper you purchased? Let’s find out……..
 
 
 What are the rules? What is the goal?
@@ -33,7 +33,7 @@ What are the rules? What is the goal?
 Rule #1: No cheating
 Rule #2: Utilize your current tool to make the enemies not living
 Rule #3: Try to get to the checkout line
-Rule #4: You can’t win…… There are too many people who want that toilet paper. 
+Rule #4: You can’t win…… There are too many slimes who want that toilet paper. 
 
 
 Who would want to use your program?
@@ -46,10 +46,10 @@ What are the primary features of your program?
 
 
 Feature #1: It provides insight into how valuable toilet paper is during this pandemic.
-Feature #2: It will have cool weapons that you can use!
-Feature #3: You can throw the toilet paper to distract the enemies! However, if someone holds it for 5 seconds you lose! 
-Feature #4: There will be a slow-motion clock that allows you to slow down time to get those easy kills!
-Feature #5: Multiple waves of angry shoppers trying to get your paper towel and different kinds of shoppers too!
+Feature #2: It will have auto aim!
+Feature #3: Different kinds of enemies!~
+Feature #4: Collisions with walls and creatures!
+Feature #5: Multiple waves of angry slimes trying to get your toilet papers!
 
 
 ________________
@@ -66,7 +66,7 @@ a- Move Left
 D- Move right
 
 
-Space bar- slow downtime so that the objects in the game move slower? attack
+Space bar- Attack!! (shoot toilet paper at the nearest enemy)
 
 
 
@@ -76,16 +76,14 @@ Space bar- slow downtime so that the objects in the game move slower? attack
 Where will you need to click? 
 
 
-Click on buttons to start tutorial(?) and start game and chose between easy and hard
-You can also click the pause button
-You will need to click with the left mouse click on enemies to kill them within the windowed game!
+Click on buttons to start game and you can also click the pause button to pause the game
 
 
 Will you have menus that need to be navigated? What will they look like? 
 
 
-There will be two buttons: One easy mode, One hard mode
-Possibly a tutorial as well
+There will be two buttons: One play, one quit
+Then there will be an instructions menu, which then offers the button to the game
 
 
 Do actions need to be taken in a certain order?]
