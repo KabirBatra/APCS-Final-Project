@@ -82,7 +82,7 @@ public class PauseWindow extends Window {
 		s.textSize(50);
 
 		// This is the text
-		s.text("THE REVENGE \n OF THE \n TOLIET PAPER!", width / 2, height / 10);
+		s.text("Return of the \n the Toilet Paoer \n Insurrection!", width / 2, height / 10);
 
 		overButton1 = overButton(rectX, rectY, s.mouseX, s.mouseY, width / 4, height / 4);
 		overButton2 = overButton(rectX2, rectY2, s.mouseX, s.mouseY, width / 4, height / 4);

@@ -6,13 +6,11 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import running.GameHandler;
 /**
- * This creates an enem
+ * This creates an enemy boss
  * @author kaiechen
  *
  */
 public class EnemyBoss extends Enemy {
-	
-	protected static SpriteSheet ss = Assets.getSpriteSheet("BossSheet");
 
 	public EnemyBoss(float x, float y, int fireRate, String name, GameHandler handler) {
 		super(x, y, 6, name, handler);
@@ -28,7 +26,7 @@ public class EnemyBoss extends Enemy {
 //		s.fill(0, 255, 0);
 //		s.rect(x, y, tileWidth, tileHeight);
 		// hello
-		setSpriteSheet(ss);
+setSpriteSheet(Assets.getSpriteSheet("BossSheet"));
 		if (currentSprite != null) {
 			PImage img = new PImage((java.awt.Image) currentSprite);
 			s.image(img, x, y, tileWidth, tileHeight);
