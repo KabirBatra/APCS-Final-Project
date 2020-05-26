@@ -11,6 +11,8 @@ import running.GameHandler;
  *
  */
 public class EnemyBoss extends Enemy {
+	
+	protected static SpriteSheet ss = Assets.getSpriteSheet("BossSheet");
 
 	public EnemyBoss(float x, float y, int fireRate, String name, GameHandler handler) {
 		super(x, y, 6, name, handler);
@@ -26,7 +28,7 @@ public class EnemyBoss extends Enemy {
 //		s.fill(0, 255, 0);
 //		s.rect(x, y, tileWidth, tileHeight);
 		// hello
-setSpriteSheet(Assets.getSpriteSheet("BossSheet"));
+		setSpriteSheet(ss);
 		if (currentSprite != null) {
 			PImage img = new PImage((java.awt.Image) currentSprite);
 			s.image(img, x, y, tileWidth, tileHeight);
