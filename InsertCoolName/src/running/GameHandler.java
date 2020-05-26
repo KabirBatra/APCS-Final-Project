@@ -218,12 +218,12 @@ public class GameHandler {
 						getPlayer().setHealth(600);
 
 					} else if (level >= 1) {
-						getPlayer().setMaxHealth((600 * (level + 1)));
-						getPlayer().setHealth(((600 * (level + 1))));
+						getPlayer().setMaxHealth((600 + (100 * (level))));
+						getPlayer().setHealth(((600 + (100 * level))));
 					}
 					// System.out.println("THE WAVES ARE OVER AND YOU WIN");
 
-					System.out.println(level + "this is the level");
+//					System.out.println(level + "this is the level");
 
 					setMap("Level" + level);
 
