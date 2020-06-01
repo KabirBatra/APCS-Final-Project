@@ -48,41 +48,15 @@ public class PauseWindow extends Window {
 	boolean overButton1 = false, overButton2 = false;
 
 	public void draw() {
-		s.background(0);
 		width = s.width;
 		height = s.height;
 
-
-//		this is the toliet paper
-//		s.fill(255);
-//
-//		s.stroke(0);
-//		s.ellipse(width / 2, height / 2 + 80, width / 6, height / 12);
-//
-//		s.noStroke();
-//		s.rect(width / 2 - 50, height / 2, width / 6, height / 7.5f);
-//
-//		s.stroke(0);
-//		s.ellipse(width / 2, height / 2, width / 6, height / 12);
-//
-//		s.stroke(128, 108, 81);
-//		s.fill(173, 135, 98);
-//		s.ellipse(width / 2, height / 2, width / 24, height / 50);
-//		
-		// attempt to draw toilet paper image 
-
-//		float imgWidth = toiletPaper.width/10;
-//		float imgHeight = toiletPaper.height/10;
-		
-//		s.image(toiletPaper, width/2 - imgWidth/2, height/2 - imgHeight/2, imgWidth, imgHeight);
-		
-		
 		s.fill(173, 0, 0);
 		s.textAlign(s.CENTER);
 		s.textSize(50);
 
 		// This is the text
-		s.text("Return of the \n the Toilet Paper \n Insurrection!", width / 2, height / 10);
+		s.text("Game is Paused", width / 2, height / 2);
 
 		overButton1 = overButton(rectX, rectY, s.mouseX, s.mouseY, width / 4, height / 4);
 		overButton2 = overButton(rectX2, rectY2, s.mouseX, s.mouseY, width / 4, height / 4);
@@ -119,8 +93,8 @@ public class PauseWindow extends Window {
 
 		s.fill(173, 0, 0);
 		s.textSize(20);
-		s.text("Let's Do This", rectX + width / 8, rectY + height / 20);
-		s.text("Nah I am good", rectX2 + width / 8, rectY2 + height / 20);
+		s.text("Continue", rectX + width / 8, rectY + height / 20);
+		s.text("Quit", rectX2 + width / 8, rectY2 + height / 20);
 	
 		
 		
