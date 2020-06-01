@@ -37,7 +37,7 @@ public class GameHandler {
 
 	private int level = 0;
 	private boolean transition = false;
-	float frames = 0;
+	int frames = 0;
 
 	private static final float BORDER_OFFSET_FOR_CREATURES = 0.1F; // values from 0.00001 - 0.1
 
@@ -198,7 +198,7 @@ public class GameHandler {
 		if (allEnemiesDead) {
 			transition = true;
 
-			if (frames / 60 > 2) {
+			if (frames > 70) {
 				frames = 0;
 				transition = false;
 				if (currentMap.startNextWave()) {
@@ -232,7 +232,7 @@ public class GameHandler {
 				}
 			} else {
 				frames++;
-				System.out.println(frames);
+				System.out.println(frames + " / 70");
 
 			}
 		}

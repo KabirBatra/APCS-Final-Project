@@ -41,7 +41,7 @@ public class DrawingSurface extends PApplet {
 	 */
 	public void setup() {
 		surface.setResizable(true);
-		surface.setTitle("REVENGE OF THE TOLIET PAPER");
+		surface.setTitle("Return of the the Toilet Paper Insurrection!");
 		surface.setLocation(0, 0);
 		wh.getCurrentWindow().setup();
 	}
